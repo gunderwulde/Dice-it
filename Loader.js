@@ -45,6 +45,15 @@ function LoadObject(gl, url, onLoad ){
             break;
         }
       }
+// Copone informacion final de vertices.      
+      var positions = [];
+      var normals = [];
+      var uvs = [];
+      
+      for (var i = 0; i < indicesPos.Lenght; ++i ){
+      }
+      
+      
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
