@@ -166,7 +166,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
   
  
-  gl.drawElements(gl.TRIANGLES, buffers.faceCounter*3, gl.UNSIGNED_SHORT, 0);
+  gl.drawElements(gl.TRIANGLES, buffers.faceCounter, gl.UNSIGNED_SHORT, 0);
 
   // Update the rotation for the next draw
   cubeRotation += deltaTime;
@@ -211,7 +211,6 @@ function loadTexture(gl, url) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]) );
-
   const image = new Image();
   image.setAttribute('crossorigin', 'anonymous');
   image.onload = function() {
