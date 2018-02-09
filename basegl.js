@@ -119,13 +119,15 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
   const zNear = 0.1;
   const zFar = 100.0;
+  
   const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
-  const modelViewMatrix = m4.translation(0,0,-20);
-    
-  m4.yRotate(modelViewMatrix,cubeRotation, modelViewMatrix);
+  
+  const modelViewMatrix = m4.translation(0,0,-20);    
+  m4.yRotate(modelViewMatrix, cubeRotation, modelViewMatrix);
   
   const normalMatrix = m4.inverse(modelViewMatrix);
-  m4.transpose(normalMatrix, normalMatrix);  
+  normalMatrix = m4.transpose(normalMatrix );  
+  
 /*
 
   m4.rotate(modelViewMatrix,  // destination matrix
@@ -190,7 +192,6 @@ function initShaderProgram(gl, vsSource, fsSource) {
     alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
     return null;
   }
-
   return shaderProgram;
 }
 
@@ -209,7 +210,6 @@ function loadShader(gl, type, source) {
 function loadTexture(gl, url) {
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
-
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]) );
   const image = new Image();
   image.setAttribute('crossorigin', 'anonymous');

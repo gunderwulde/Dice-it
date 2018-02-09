@@ -10,6 +10,7 @@ function LoadObject(gl, url, onLoad ){
       var indicesPos = [];
       var lines = this.response.split('\n');
       var counter = 0;
+      var index = 0;
       
       for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(' ');
@@ -32,23 +33,22 @@ function LoadObject(gl, url, onLoad ){
             AddIndex( line[1], source, target );
             AddIndex( line[2], source, target );
             AddIndex( line[3], source, target );
-            indicesPos.push(counter+0);
-            indicesPos.push(counter+1);
-            indicesPos.push(counter+2);
+            indicesPos.push(index+0);
+            indicesPos.push(index+1);
+            indicesPos.push(index+2);
+            counter+=3;
             if( line.length ==5) {
-              AddIndex( line[1], source, target );
-              AddIndex( line[3], source, target );
               AddIndex( line[4], source, target );
-              indicesPos.push(counter+0);
-              indicesPos.push(counter+2);
-              indicesPos.push(counter+3);
-              counter+=4;              
-            }else
+              indicesPos.push(index+0);
+              indicesPos.push(index+2);
+              indicesPos.push(index+3);
               counter+=3;
+              index+=4;
+            }else
+              index+=3;
             break;
         }
       }
-      
       
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
