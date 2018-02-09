@@ -4,52 +4,54 @@ function LoadObject(gl, url, onLoad ){
   xhr.overrideMimeType('text/plain; charset=x-user-defined');
   xhr.onload = function(e){
     if (this.status == 200) {
-      var positions = [];
-      var normals = [];
-      var uvs = [];
+      var origin = {
+        positions : [],
+        normals : [],
+        uvs : []
+      };
+      var target = {
+        positions : [],
+        normals : [],
+        uvs : []
+      };
+        
       var indicesPos = [];
-      var indicesNor = [];
-      var indicesTex = [];
       var lines = this.response.split('\n');
       var counter = 0;
       
-      var fPositions = [];
-      var fNormals = [];
-      var fUvs = [];
       
       for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(' ');
         
         switch(line[0]){
           case 'v':
-            positions.push(parseFloat(line[1])); positions.push(parseFloat(line[2])); positions.push(parseFloat(line[3]));
+            origin.positions.push(parseFloat(line[1])); origin.positions.push(parseFloat(line[2])); origin.positions.push(parseFloat(line[3]));
             break;
           case 'vn':
-            normals.push(parseFloat(line[1])); normals.push(parseFloat(line[2])); normals.push(parseFloat(line[3]));
+            origin.normals.push(parseFloat(line[1])); origin.normals.push(parseFloat(line[2])); origin.normals.push(parseFloat(line[3]));
             break;
           case 'vt':
-            uvs.push(parseFloat(line[1])); uvs.push(parseFloat(line[2]));
+            origin.uvs.push(parseFloat(line[1])); origin.uvs.push(parseFloat(line[2]));
             break;
           case 'f':
-            AddVertice( 
-            
-            
-            AddIndex( line[1], indicesPos, indicesTex, indicesNor );
-            AddIndex( line[2], indicesPos, indicesTex, indicesNor );
-            AddIndex( line[3], indicesPos, indicesTex, indicesNor );
-            counter++;
+            AddIndex( line[1], origin, target );
+            AddIndex( line[2], origin, target );
+            AddIndex( line[3], origin, target );
+            indicesPos.Push(counter+0);
+            indicesPos.Push(counter+1);
+            indicesPos.Push(counter+2);
             if( line.length ==5) {
-              AddIndex( line[1], indicesPos, indicesTex, indicesNor );
-              AddIndex( line[3], indicesPos, indicesTex, indicesNor );
-              AddIndex( line[4], indicesPos, indicesTex, indicesNor );
-              counter++;
-            }
+              AddIndex( line[1], origin, target );
+              AddIndex( line[3], origin, target );
+              AddIndex( line[4], origin, target );
+              indicesPos.Push(counter+0);
+              indicesPos.Push(counter+2);
+              indicesPos.Push(counter+3);
+              counter+=4;              
+            }else
+              counter+=3;
             break;
         }
-      }
-// Copone informacion final de vertices.      
-      
-      for (var i = 0; i < indicesPos.Lenght; ++i ){
       }
       
       
@@ -75,9 +77,17 @@ function LoadObject(gl, url, onLoad ){
   xhr.send();
 }
 
-function AddIndex(indices, indicesPos, indicesTex, indicesNor ){
+function AddIndex(indices, origin, target ){
   var splited = indices.split('/');
-  indicesPos.push(parseInt(splited[0])-1);
-  indicesTex.push(parseInt(splited[1])-1);
-  indicesNor.push(parseInt(splited[2])-1);
+  var idVer  = parseInt(splited[0])-1;
+  var idTex = parseInt(splited[1])-1;
+  var idNor  = parseInt(splited[2])-1;
+  target.positions.Push( origin.position[idVer*3+0] );
+  target.positions.Push( origin.position[idVer*3+1] );
+  target.positions.Push( origin.position[idVer*3+2] );
+  target.uvs.Push( origin.uvs[idTex*2+0] );
+  target.uvs.Push( origin.uvs[idTex*2+1] );
+  target.normals.Push( origin.normals[idNor*3+0] );
+  target.normals.Push( origin.normals[idNor*3+1] );
+  target.normals.Push( origin.normals[idNor*3+2] );
 }
