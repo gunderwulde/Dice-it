@@ -81,24 +81,24 @@ function main() {
     function (buffers){
       var then = 0;
       // Draw the scene repeatedly
+      const texture = loadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
       function render(now) {
         now *= 0.001;  // convert to seconds
         const deltaTime = now - then;
         then = now;
-        drawScene(gl, programInfo, buffers, deltaTime);
+        drawScene(gl, programInfo, buffers, texture, deltaTime);
         requestAnimationFrame(render);
       }
       requestAnimationFrame(render);
   });
   
-   const texture = loadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
   
 }
 
 //
 // Draw the scene.
 //
-function drawScene(gl, programInfo, buffers, deltaTime) {
+function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   gl.clearColor(0.2, 0.2, 0.2, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -121,9 +121,11 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   const zFar = 100.0;
   const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
   const modelViewMatrix = m4.translation(0,0,-20);
-  
-  
+    
   m4.yRotate(modelViewMatrix,cubeRotation, modelViewMatrix);
+  
+  const normalMatrix = m4.inverse(modelViewMatrix);
+  m4.transpose(normalMatrix, normalMatrix);  
 /*
 
   m4.rotate(modelViewMatrix,  // destination matrix
@@ -155,7 +157,15 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   // Set the shader uniforms
   gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
-//  console.log(">>> "+ (buffers.faceCounter*3) );
+  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix );
+  
+ gl.activeTexture(gl.TEXTURE0);
+  // Bind the texture to texture unit 0
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  // Tell the shader we bound the texture to texture unit 0
+  gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+  
+ 
   gl.drawElements(gl.TRIANGLES, buffers.faceCounter*3, gl.UNSIGNED_SHORT, 0);
 
   // Update the rotation for the next draw
@@ -203,6 +213,7 @@ function loadTexture(gl, url) {
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]) );
 
   const image = new Image();
+  image.setAttribute('crossorigin', 'anonymous');
   image.onload = function() {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
