@@ -26,9 +26,9 @@ function LoadObject(gl, url, onLoad ){
             uvs.push(parseFloat(line[1])); uvs.push(parseFloat(line[2]));
             break;
           case 'f':
-            AddIndex( line[0].split('/'), indicesPos, indicesTex, indicesNor );
-            AddIndex( line[1].split('/'), indicesPos, indicesTex, indicesNor );
-            AddIndex( line[2].split('/'), indicesPos, indicesTex, indicesNor );
+            AddIndex( line[0], indicesPos, indicesTex, indicesNor );
+            AddIndex( line[1], indicesPos, indicesTex, indicesNor );
+            AddIndex( line[2], indicesPos, indicesTex, indicesNor );
             counter++;
             /*
             if( line.lenght ==4) {
@@ -86,10 +86,9 @@ const positionsAux = [
   xhr.send();
 }
 
-function AddIndex(split, indicesPos, indicesTex, indicesNor ){
-  var int = parseInt(split[0])-1;
-  console.log(">>> "+int);
-  indicesPos.push(int);
-  indicesTex.push(parseInt(split[1])-1);
-  indicesNor.push(parseInt(split[2])-1);
+function AddIndex(indices, indicesPos, indicesTex, indicesNor ){
+  var splited = indices.split(' ')[1].split('/');
+  indicesPos.push(parseInt(splited[0])-1);
+  indicesTex.push(parseInt(splited[1])-1);
+  indicesNor.push(parseInt(splited[2])-1);
 }
