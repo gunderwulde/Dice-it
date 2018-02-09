@@ -122,12 +122,11 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   
   const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
   
-  const modelViewMatrix = m4.translation(0,0,-20);    
-  m4.yRotate(modelViewMatrix, cubeRotation, modelViewMatrix);
+  var modelViewMatrix = m4.translation(0,0,-20);    
+  modelViewMatrix = m4.yRotate(modelViewMatrix, cubeRotation);
   
   
-  const normalMatrix = m4.identity();
-  m4.inverse(modelViewMatrix, normalMatrix);
+  var normalMatrix = m4.invert(modelViewMatrix);
   m4.transpose(normalMatrix, normalMatrix);  
   
   
