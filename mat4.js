@@ -1,14 +1,7 @@
-/**
- * Various 3d math functions.
- *
- * @module webgl-3d-math
- */
-(function(root, factory) {  // eslint-disable-line
+(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
     define([], factory);
   } else {
-    // Browser globals
     root.mat4 = factory();
   }
 }(this, function() {
@@ -101,13 +94,6 @@ function transpose(out, a) {
   return out;
 }
 
-/**
- * Inverts a mat4
- *
- * @param {mat4} out the receiving matrix
- * @param {mat4} a the source matrix
- * @returns {mat4} out
- */
 function invert(out, a) {
   var a00 = a[0],
       a01 = a[1],
@@ -260,7 +246,7 @@ function rotate(out, a, rad, axis) {
       b21 = void 0,
       b22 = void 0;
 
-  if (Math.abs(len) < 0.000001/*glMatrix.EPSILON*/) {
+  if (Math.abs(len) < 0.000001) {
     return null;
   }
 
@@ -308,12 +294,12 @@ function rotate(out, a, rad, axis) {
 
   return {
     create: create,
+    invert: invert,
     perspective: perspective,
+    rotate: rotate,
+    scale: scale,
     transpose: transpose,
     translate: translate,
-    scale: scale,
-    rotate: rotate,
-    invert: invert,
   };
 
 }));
