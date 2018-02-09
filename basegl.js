@@ -52,7 +52,7 @@ function main() {
 
   // Here's where we call the routine that builds all the
   // objects we'll be drawing.
-  LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
+  LoadObject(gl, "./cube.obj", //"https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
     function (buffers){
       var then = 0;
       // Draw the scene repeatedly
@@ -94,6 +94,9 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   const zFar = 100.0;
   const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
   const modelViewMatrix = m4.translation(0,0,-10);
+  
+  
+  m4.rota
 /*
 
   m4.rotate(modelViewMatrix,  // destination matrix
@@ -118,7 +121,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
 //  console.log(">>> "+ (buffers.faceCounter*3) );
-  gl.drawElements(gl.TRIANGLES, buffers.faceCounter, gl.UNSIGNED_SHORT, 0);
+  gl.drawElements(gl.TRIANGLES, buffers.faceCounter*3, gl.UNSIGNED_SHORT, 0);
 
   // Update the rotation for the next draw
   cubeRotation += deltaTime;

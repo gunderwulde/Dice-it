@@ -48,9 +48,9 @@ function LoadObject(gl, url, onLoad ){
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
       
       const indexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-      
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);      
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesPos), gl.STATIC_DRAW);
+      
       onLoad({ position: positionBuffer, indices: indexBuffer, faceCounter: counter });
     }        
   };
@@ -58,7 +58,7 @@ function LoadObject(gl, url, onLoad ){
 }
 
 function AddIndex(split, indicesPos, indicesTex, indicesNor ){
-  indicesPos.push(parseInt(split[0]));
-  indicesTex.push(parseInt(split[1]));
-  indicesNor.push(parseInt(split[2]));
+  indicesPos.push(parseInt(split[0])-1);
+  indicesTex.push(parseInt(split[1])-1);
+  indicesNor.push(parseInt(split[2])-1);
 }
