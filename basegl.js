@@ -93,7 +93,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   const zNear = 0.1;
   const zFar = 100.0;
   const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
-  const modelViewMatrix = m4.translation(0,0,-6);
+  const modelViewMatrix = m4.translation(0,0,-10);
 /*
 
   m4.rotate(modelViewMatrix,  // destination matrix
@@ -117,7 +117,8 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   // Set the shader uniforms
   gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
-  gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+  console.log(">>> "+ (buffers.faceCounter*3) );
+  gl.drawElements(gl.TRIANGLES, 280, gl.UNSIGNED_SHORT, 0);
 
   // Update the rotation for the next draw
 
@@ -138,8 +139,6 @@ function initShaderProgram(gl, vsSource, fsSource) {
   gl.attachShader(shaderProgram, fragmentShader);
   gl.linkProgram(shaderProgram);
 
-  // If creating the shader program failed, alert
-
   if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
     alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
     return null;
@@ -154,17 +153,8 @@ function initShaderProgram(gl, vsSource, fsSource) {
 //
 function loadShader(gl, type, source) {
   const shader = gl.createShader(type);
-
-  // Send the source to the shader object
-
   gl.shaderSource(shader, source);
-
-  // Compile the shader program
-
   gl.compileShader(shader);
-
-  // See if it compiled successfully
-
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
     gl.deleteShader(shader);
