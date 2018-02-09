@@ -108,26 +108,34 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  // Create a perspective matrix, a special matrix that is
-  // used to simulate the distortion of perspective in a camera.
-  // Our field of view is 45 degrees, with a width/height
-  // ratio that matches the display size of the canvas
-  // and we only want to see objects between 0.1 units
-  // and 100 units away from the camera.
+  const projectionMatrix = mat4.create();
 
-  const fieldOfView = 45 * Math.PI / 180;   // in radians
-  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-  const zNear = 0.1;
-  const zFar = 100.0;
+  // note: glmatrix.js always has the first argument
+  // as the destination to receive the result.
+  mat4.perspective(projectionMatrix, 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
   
-  const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
+  const modelViewMatrix = mat4.create();
+  // Now move the drawing position a bit to where we want to
+  // start drawing the square.
+
+  mat4.translate(modelViewMatrix,     // destination matrix
+                 modelViewMatrix,     // matrix to translate
+                 [-0.0, 0.0, -6.0]);  // amount to translate
   
-  var modelViewMatrix = m4.translation(0,0,-20);    
-  modelViewMatrix = m4.yRotate(modelViewMatrix, cubeRotation);
+  mat4.rotate(modelViewMatrix,  // destination matrix
+              modelViewMatrix,  // matrix to rotate
+              cubeRotation,     // amount to rotate in radians
+              [0, 0, 1]);       // axis to rotate around (Z)
   
+  mat4.rotate(modelViewMatrix,  // destination matrix
+              modelViewMatrix,  // matrix to rotate
+              cubeRotation * .7,// amount to rotate in radians
+              [0, 1, 0]);       // axis to rotate around (X)
+
+  const normalMatrix = mat4.create();
+  mat4.invert(normalMatrix, modelViewMatrix);
+  mat4.transpose(normalMatrix, normalMatrix);  
   
-  var normalMatrix = m4.invert(modelViewMatrix);
-  m4.transpose(normalMatrix, normalMatrix);  
   
   
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
