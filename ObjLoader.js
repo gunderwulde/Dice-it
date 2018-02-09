@@ -45,12 +45,71 @@ function LoadObject(gl, url, onLoad ){
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       
       
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+const positionsAux = [    
+    0, 0, 0,
+    // Front face
+    -1.0, -1.0,  1.0,
+     1.0, -1.0,  1.0,
+     1.0,  1.0,  1.0,
+    -1.0,  1.0,  1.0,
+
+    // Back face
+    -1.0, -1.0, -1.0,
+    -1.0,  1.0, -1.0,
+     1.0,  1.0, -1.0,
+     1.0, -1.0, -1.0,
+
+    // Top face
+    -1.0,  1.0, -1.0,
+    -1.0,  1.0,  1.0,
+     1.0,  1.0,  1.0,
+     1.0,  1.0, -1.0,
+
+    // Bottom face
+    -1.0, -1.0, -1.0,
+     1.0, -1.0, -1.0,
+     1.0, -1.0,  1.0,
+    -1.0, -1.0,  1.0,
+
+    // Right face
+     1.0, -1.0, -1.0,
+     1.0,  1.0, -1.0,
+     1.0,  1.0,  1.0,
+     1.0, -1.0,  1.0,
+
+    // Left face
+    -1.0, -1.0, -1.0,
+    -1.0, -1.0,  1.0,
+    -1.0,  1.0,  1.0,
+    -1.0,  1.0, -1.0,
+  ];      
+      
+//      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positionsAux), gl.STATIC_DRAW);
       
       const indexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
       
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesPos), gl.STATIC_DRAW);
+ const indices = [
+  1,2,3,
+  3,2,4,
+  3,4,5,
+5,4,6,
+5,6,7
+7,2/3 6/3/3 8/1/3
+s 4
+f 7/1/4 8/2/4 1/3/4
+f 1/3/4 8/2/4 2/4/4
+s 5
+f 2/1/5 8/2/5 4/3/5
+f 4/3/5 8/2/5 6/4/5
+s 6
+f 7/1/6 1/2/6 5/3/6
+f 5/3/6 1/2/6 3/4/6
+  ];      
+//      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesPos), gl.STATIC_DRAW);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+      counter=12;
       
       onLoad({ position: positionBuffer, indices: indexBuffer, faceCounter: counter });
     }        
