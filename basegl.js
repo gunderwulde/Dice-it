@@ -96,7 +96,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   const modelViewMatrix = m4.translation(0,0,-10);
   
   
-  m4.rota
+  m4.yRotate(modelViewMatrix,cubeRotation, modelViewMatrix);
 /*
 
   m4.rotate(modelViewMatrix,  // destination matrix
