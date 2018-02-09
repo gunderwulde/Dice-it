@@ -19,6 +19,10 @@ function initWebGL(canvas) {
 }
 
 function start() {
+  
+  
+  LoadObject("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195");
+  
   var canvas = document.getElementById("glcanvas");
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
