@@ -12,6 +12,11 @@ function LoadObject(gl, url, onLoad ){
       var indicesTex = [];
       var lines = this.response.split('\n');
       var counter = 0;
+      
+      var fPositions = [];
+      var fNormals = [];
+      var fUvs = [];
+      
       for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(' ');
         
@@ -26,29 +31,23 @@ function LoadObject(gl, url, onLoad ){
             uvs.push(parseFloat(line[1])); uvs.push(parseFloat(line[2]));
             break;
           case 'f':
+            AddVertice( 
+            
+            
+            AddIndex( line[1], indicesPos, indicesTex, indicesNor );
+            AddIndex( line[2], indicesPos, indicesTex, indicesNor );
+            AddIndex( line[3], indicesPos, indicesTex, indicesNor );
+            counter++;
             if( line.length ==5) {
-              AddIndex( line[1], indicesPos, indicesTex, indicesNor );
-              AddIndex( line[2], indicesPos, indicesTex, indicesNor );
-              AddIndex( line[3], indicesPos, indicesTex, indicesNor );
-              counter++;
-
               AddIndex( line[1], indicesPos, indicesTex, indicesNor );
               AddIndex( line[3], indicesPos, indicesTex, indicesNor );
               AddIndex( line[4], indicesPos, indicesTex, indicesNor );
-              counter++;
-            }else if( line.length ==4) {
-              AddIndex( line[1], indicesPos, indicesTex, indicesNor );
-              AddIndex( line[2], indicesPos, indicesTex, indicesNor );
-              AddIndex( line[3], indicesPos, indicesTex, indicesNor );
               counter++;
             }
             break;
         }
       }
 // Copone informacion final de vertices.      
-      var positions = [];
-      var normals = [];
-      var uvs = [];
       
       for (var i = 0; i < indicesPos.Lenght; ++i ){
       }
