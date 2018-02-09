@@ -52,7 +52,7 @@ function main() {
 
   // Here's where we call the routine that builds all the
   // objects we'll be drawing.
-  LoadObject(gl, "./cube.obj", //"https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
+  LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
     function (buffers){
       var then = 0;
       // Draw the scene repeatedly
