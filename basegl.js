@@ -125,20 +125,12 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   const modelViewMatrix = m4.translation(0,0,-20);    
   m4.yRotate(modelViewMatrix, cubeRotation, modelViewMatrix);
   
-  const normalMatrix = m4.inverse(modelViewMatrix);
-  normalMatrix = m4.transpose(normalMatrix );  
   
-/*
-
-  m4.rotate(modelViewMatrix,  // destination matrix
-              modelViewMatrix,  // matrix to rotate
-              cubeRotation,     // amount to rotate in radians
-              [0, 0, 1]);       // axis to rotate around (Z)
-  m4.rotate(modelViewMatrix,  // destination matrix
-              modelViewMatrix,  // matrix to rotate
-              cubeRotation * .7,// amount to rotate in radians
-              [0, 1, 0]);       // axis to rotate around (X)
-*/
+  const normalMatrix = m4.identity();
+  m4.inverse(modelViewMatrix, normalMatrix);
+  m4.transpose(normalMatrix, normalMatrix);  
+  
+  
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
   gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
@@ -192,6 +184,7 @@ function initShaderProgram(gl, vsSource, fsSource) {
     alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
     return null;
   }
+
   return shaderProgram;
 }
 
