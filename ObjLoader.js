@@ -26,16 +26,18 @@ function LoadObject(gl, url, onLoad ){
             uvs.push(parseFloat(line[1])); uvs.push(parseFloat(line[2]));
             break;
           case 'f':
-            AddIndex( line[0].split('/'), indicesPos, indicesNor, indicesTex );
-            AddIndex( line[1].split('/'), indicesPos, indicesNor, indicesTex );
-            AddIndex( line[2].split('/'), indicesPos, indicesNor, indicesTex );
+            AddIndex( line[0].split('/'), indicesPos, indicesTex, indicesNor );
+            AddIndex( line[1].split('/'), indicesPos, indicesTex, indicesNor );
+            AddIndex( line[2].split('/'), indicesPos, indicesTex, indicesNor );
             counter++;
+            /*
             if( line.lenght ==4) {
-              AddIndex( line[3].split('/'), indicesPos, indicesNor, indicesTex );
-              AddIndex( line[2].split('/'), indicesPos, indicesNor, indicesTex );
-              AddIndex( line[1].split('/'), indicesPos, indicesNor, indicesTex );
+              AddIndex( line[3].split('/'), indicesPos, indicesTex, indicesNor );
+              AddIndex( line[2].split('/'), indicesPos, indicesTex, indicesNor );
+              AddIndex( line[1].split('/'), indicesPos, indicesTex, indicesNor );
               counter++;
             }
+            */
             break;
         }
       }
@@ -55,6 +57,8 @@ function LoadObject(gl, url, onLoad ){
   xhr.send();
 }
 
-function AddIndex(split, indicesPos, indicesNor, indicesTex ){
-  indicesPos.push(parseInt(split[0])); indicesNor.push(parseInt(split[1])); indicesTex.push(parseInt(split[2]));
+function AddIndex(split, indicesPos, indicesTex, indicesNor ){
+  indicesPos.push(parseInt(split[0]));
+  indicesTex.push(parseInt(split[1]));
+  indicesNor.push(parseInt(split[2]));
 }

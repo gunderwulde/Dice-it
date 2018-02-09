@@ -117,11 +117,10 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   // Set the shader uniforms
   gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
-  console.log(">>> "+ (buffers.faceCounter*3) );
-  gl.drawElements(gl.TRIANGLES, 280, gl.UNSIGNED_SHORT, 0);
+//  console.log(">>> "+ (buffers.faceCounter*3) );
+  gl.drawElements(gl.TRIANGLES, buffers.faceCounter, gl.UNSIGNED_SHORT, 0);
 
   // Update the rotation for the next draw
-
   cubeRotation += deltaTime;
 }
 
@@ -147,10 +146,6 @@ function initShaderProgram(gl, vsSource, fsSource) {
   return shaderProgram;
 }
 
-//
-// creates a shader of the given type, uploads the source and
-// compiles it.
-//
 function loadShader(gl, type, source) {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, source);
