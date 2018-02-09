@@ -1,4 +1,4 @@
-function LoadObject(gl, url){
+function LoadObject(gl, url, onLoad ){
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.overrideMimeType('text/plain; charset=x-user-defined');
@@ -39,11 +39,11 @@ function LoadObject(gl, url){
       const indexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesPos), gl.STATIC_DRAW);
-      
-      return {
+      console.log("Loaded");
+      onLoad({
         position: positionBuffer,
         indices: indexBuffer,
-      };
+      });
     }        
   };
   xhr.send();

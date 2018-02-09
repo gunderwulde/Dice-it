@@ -62,21 +62,20 @@ function main() {
 console.log("hola");
   // Here's where we call the routine that builds all the
   // objects we'll be drawing.
-  const buffers = LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195");
-
-  var then = 0;
-
-  // Draw the scene repeatedly
-  function render(now) {
-    now *= 0.001;  // convert to seconds
-    const deltaTime = now - then;
-    then = now;
-
-    drawScene(gl, programInfo, buffers, deltaTime);
-
-    requestAnimationFrame(render);
-  }
-  requestAnimationFrame(render);
+  LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
+    function (buffers){
+      var then = 0;
+      // Draw the scene repeatedly
+      function render(now) {
+        now *= 0.001;  // convert to seconds
+        const deltaTime = now - then;
+        then = now;
+        drawScene(gl, programInfo, buffers, deltaTime);
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+  });
+  
 }
 
 //
@@ -103,22 +102,10 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
   const zNear = 0.1;
   const zFar = 100.0;
-  const projectionMatrix = m4.perspective(fieldOfView,
-                   aspect,
-                   zNear,
-                   zFar);
+  const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
+  const modelViewMatrix = m4.translation(0,0,-6);
+/*
 
-
-  // Set the drawing position to the "identity" point, which is
-  // the center of the scene.
-  const modelViewMatrix = m4.translate(
-
-  // Now move the drawing position a bit to where we want to
-  // start drawing the square.
-
-  m4.translate(modelViewMatrix,     // destination matrix
-                 modelViewMatrix,     // matrix to translate
-                 [-0.0, 0.0, -6.0]);  // amount to translate
   m4.rotate(modelViewMatrix,  // destination matrix
               modelViewMatrix,  // matrix to rotate
               cubeRotation,     // amount to rotate in radians
@@ -127,7 +114,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
               modelViewMatrix,  // matrix to rotate
               cubeRotation * .7,// amount to rotate in radians
               [0, 1, 0]);       // axis to rotate around (X)
-
+*/
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute
   {
@@ -148,26 +135,6 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         programInfo.attribLocations.vertexPosition);
   }
 
-  // Tell WebGL how to pull out the colors from the color buffer
-  // into the vertexColor attribute.
-  {
-    const numComponents = 4;
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
-    gl.vertexAttribPointer(
-        programInfo.attribLocations.vertexColor,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset);
-    gl.enableVertexAttribArray(
-        programInfo.attribLocations.vertexColor);
-  }
-
   // Tell WebGL which indices to use to index the vertices
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
@@ -177,20 +144,14 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
 
   // Set the shader uniforms
 
-  gl.uniformMatrix4fv(
-      programInfo.uniformLocations.projectionMatrix,
-      false,
-      projectionMatrix);
-  gl.uniformMatrix4fv(
-      programInfo.uniformLocations.modelViewMatrix,
-      false,
-      modelViewMatrix);
+  gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
+  gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
 
   {
     const vertexCount = 36;
     const type = gl.UNSIGNED_SHORT;
     const offset = 0;
-    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+    gl.drawElements(gl.TRIANGLES, buffers.indices.lenght, type, offset);
   }
 
   // Update the rotation for the next draw
@@ -244,9 +205,5 @@ function loadShader(gl, type, source) {
     gl.deleteShader(shader);
     return null;
   }
-
   return shader;
 }
-
-
-main();
