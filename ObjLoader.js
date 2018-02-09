@@ -7,31 +7,40 @@ function LoadObject(url){
       var position = [];
       var normals = [];
       var uvs = [];
-      var indices = [];
+      var indicesPos = [];
+      var indicesNor = [];
+      var indicesTex = [];
       var lines = this.response.split('\n');
       for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(' ');
+        
         switch(line[0]){
           case 'v':
-            position.push(parseFloat(line[0]));
             position.push(parseFloat(line[1]));
             position.push(parseFloat(line[2]));
+            position.push(parseFloat(line[3]));
             break;
           case 'vt':
-            uvs.push(parseFloat(line[0]));
             uvs.push(parseFloat(line[1]));
             uvs.push(parseFloat(line[2]));
             break;
           case 'vn':
-            normals.push(parseFloat(line[0]));
             normals.push(parseFloat(line[1]));
             normals.push(parseFloat(line[2]));
+            normals.push(parseFloat(line[3]));
             break;
           case 'f':
-            var indices = 
+            for (var j = 0; j < 3; j++) {
+              var idx = line[j].split('/');
+              indicesPos.push(parseInt(idx[0]));
+              indicesNor.push(parseInt(idx[1]));
+              indicesTex.push(parseInt(idx[2]));
+            }
             break;
         }
       }
+            console.log(">>>  "+position[0]);  
+      console.log(">>> positions " + position.lenght );
     }        
   };
   xhr.send();
