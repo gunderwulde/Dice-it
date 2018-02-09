@@ -26,9 +26,7 @@ function LoadObject(gl, url, onLoad ){
             uvs.push(parseFloat(line[1])); uvs.push(parseFloat(line[2]));
             break;
           case 'f':
-            console.log(">>>"+line.length);
             if( line.length ==5) {
-              /*
               AddIndex( line[1], indicesPos, indicesTex, indicesNor );
               AddIndex( line[2], indicesPos, indicesTex, indicesNor );
               AddIndex( line[3], indicesPos, indicesTex, indicesNor );
@@ -38,12 +36,10 @@ function LoadObject(gl, url, onLoad ){
               AddIndex( line[3], indicesPos, indicesTex, indicesNor );
               AddIndex( line[4], indicesPos, indicesTex, indicesNor );
               counter++;
-              */
             }else if( line.length ==4) {
-              console.log("3 vertices");
               AddIndex( line[1], indicesPos, indicesTex, indicesNor );
-              AddIndex( line[3], indicesPos, indicesTex, indicesNor );
               AddIndex( line[2], indicesPos, indicesTex, indicesNor );
+              AddIndex( line[3], indicesPos, indicesTex, indicesNor );
               counter++;
             }
             break;
@@ -52,11 +48,17 @@ function LoadObject(gl, url, onLoad ){
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+      
+      const normalBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
+
+      const textureCoordBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);      
    
       const indexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesPos), gl.STATIC_DRAW);
-      counter=12;
       
       onLoad({ position: positionBuffer, indices: indexBuffer, faceCounter: counter });
     }        

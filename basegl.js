@@ -93,7 +93,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
   const zNear = 0.1;
   const zFar = 100.0;
   const projectionMatrix = m4.perspective(fieldOfView, aspect, zNear, zFar);
-  const modelViewMatrix = m4.translation(0,0,-10);
+  const modelViewMatrix = m4.translation(0,0,-20);
   
   
   m4.yRotate(modelViewMatrix,cubeRotation, modelViewMatrix);
