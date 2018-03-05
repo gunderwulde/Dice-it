@@ -129,11 +129,10 @@ Matrix4.prototype.transposeMultiplyVector = function ( a ) {
 	return new Vector3(x,y,z);
 }
 
-
-Matrix4.prototype.transpose = function () {
+Matrix4.prototype.transpose = function (a) {
 	var te = this.elements;
 	var tmp;
-
+  
 	tmp = te[ 1 ]; te[ 1 ] = te[ 4 ]; te[ 4 ] = tmp;
 	tmp = te[ 2 ]; te[ 2 ] = te[ 8 ]; te[ 8 ] = tmp;
 	tmp = te[ 6 ]; te[ 6 ] = te[ 9 ]; te[ 9 ] = tmp;
@@ -145,25 +144,12 @@ Matrix4.prototype.transpose = function () {
 	return this;
 }
 
-
 Matrix4.prototype.invert = function(a) {
 	var te = this.elements;
-  var a00 = a[0],
-      a01 = a[1],
-      a02 = a[2],
-      a03 = a[3];
-  var a10 = a[4],
-      a11 = a[5],
-      a12 = a[6],
-      a13 = a[7];
-  var a20 = a[8],
-      a21 = a[9],
-      a22 = a[10],
-      a23 = a[11];
-  var a30 = a[12],
-      a31 = a[13],
-      a32 = a[14],
-      a33 = a[15];
+  var a00 = a[ 0], a01 = a[ 1], a02 = a[ 2], a03 = a[ 3];
+  var a10 = a[ 4], a11 = a[ 5], a12 = a[ 6], a13 = a[ 7];
+  var a20 = a[ 8], a21 = a[ 9], a22 = a[10], a23 = a[11];
+  var a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
 
   var b00 = a00 * a11 - a01 * a10;
   var b01 = a00 * a12 - a02 * a10;

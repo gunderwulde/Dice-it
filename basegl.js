@@ -114,8 +114,8 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   // start drawing the square.
 
   const normalMatrix = new Matrix4();
-  mat4.invert(normalMatrix, modelViewMatrix);
-  mat4.transpose(normalMatrix, normalMatrix);  
+  normalMatrix.invert(modelViewMatrix);
+  normalMatrix.transpose();
   
   if(first){
     first=false;
@@ -143,12 +143,12 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
     
     // Set the shader uniforms
-    gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
+    gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);
   
   }
  
-  gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
-  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix );
+  gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
+  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
   
   gl.drawElements(gl.TRIANGLES, buffers.faceCounter, gl.UNSIGNED_SHORT, 0);
 
