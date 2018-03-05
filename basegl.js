@@ -36,7 +36,7 @@ function main() {
       // Apply lighting effect
       highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
       highp vec3 directionalLightColor = vec3(1, 1, 1);
-      highp vec3 directionalVector = normalize(vec3(0.85, 0.8, 0.75));
+      highp vec3 directionalVector = normalize(vec3(-0.85, 0.8, 0.75));
       highp vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
       highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
       vLighting = ambientLight + (directionalLightColor * directional);
@@ -89,6 +89,7 @@ function main() {
 
 var currentIndex = 0;
 var first = true;
+var time = 0;
 //
 // Draw the scene.
 //
@@ -101,14 +102,18 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   
   var modelMatrix = new Matrix4();
-//	modelMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
-//  modelMatrix.position( positions[currentIndex+0], positions[currentIndex+1], positions[currentIndex+2]);
+	modelMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
+  modelMatrix.position( positions[currentIndex+0], positions[currentIndex+1], positions[currentIndex+2]);
   
+  time+=deltaTime;
+  if(time>0.03){
+    time-=0.03;
   if(currentIndex>=positions.length){
     currentIndex=0;
   }else{
     currentIndex+=3;
   }  
+  }
   // Now move the drawing position a bit to where we want to
   // start drawing the square.
 
@@ -149,8 +154,8 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   
   }
  var viewMatrix = new Matrix4();
-	viewMatrix.rotationEuler(90 * 0.0174532924, 0 * 0.0174532924, 0 * 0.0174532924);
-  viewMatrix.position( 0,0,0);
+	viewMatrix.rotationEuler(90 * 0.0174532924, 180 * 0.0174532924, 0 * 0.0174532924);
+  viewMatrix.position( 0,0,-11);
   
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(viewMatrix,modelMatrix);
