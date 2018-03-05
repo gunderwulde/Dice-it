@@ -1,11 +1,3 @@
-console.log("hola1");
-
-var cubeRotation = 0.0;
-
-
-//
-// Start here
-//
 function main() {
   const canvas = document.querySelector('#glcanvas');
   canvas.width  = window.innerWidth;
@@ -94,7 +86,7 @@ var time = 0;
 // Draw the scene.
 //
 function drawScene(gl, programInfo, buffers, texture, deltaTime) {
-  gl.clearColor(0.2, 0.2, 0.2, 1.0);  // Clear to black, fully opaque
+  gl.clearColor(0.75, 0.75, 0.75, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
   gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -147,15 +139,15 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
     const projectionMatrix = new Matrix4();
-    projectionMatrix.perspective(45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
+    projectionMatrix.perspective(-45 * Math.PI / 180, -gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
     
     // Set the shader uniforms
     gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);
   
   }
  var viewMatrix = new Matrix4();
-	viewMatrix.rotationEuler(90 * 0.0174532924, 180 * 0.0174532924, 0 * 0.0174532924);
-  viewMatrix.position( 0,0,-11);
+	viewMatrix.rotationEuler(90 * 0.0174532924, 0.0174532924, 0 * 0.0174532924);
+  viewMatrix.position( 0,0,-15);
   
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(viewMatrix,modelMatrix);
@@ -164,8 +156,6 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
 
-  // Update the rotation for the next draw
-  cubeRotation += deltaTime;
 }
 
 function initShaderProgram(gl, vsSource, fsSource) {
