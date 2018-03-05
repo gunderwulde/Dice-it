@@ -43,8 +43,6 @@ function main() {
     }
   `;
 
-  // Fragment shader program
-
   const fsSource = `
     varying highp vec2 vTextureCoord;
     varying highp vec3 vLighting;
@@ -56,10 +54,6 @@ function main() {
   `;
   const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 
-  // Collect all the info needed to use the shader program.
-  // Look up which attributes our shader program is using
-  // for aVertexPosition, aVertexNormal, aTextureCoord,
-  // and look up uniform locations.
   const programInfo = {
     program: shaderProgram,
     attribLocations: {
@@ -75,13 +69,11 @@ function main() {
     },
   };
 
-  // Here's where we call the routine that builds all the
-  // objects we'll be drawing.
   LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
     function (buffers){
       var then = 0;
       // Draw the scene repeatedly
-      const texture = loadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
+      const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
       function render(now) {
         now *= 0.001;  // convert to seconds
         const deltaTime = now - then;
@@ -109,31 +101,19 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  const projectionMatrix = mat4.create();
+  const projectionMatrix = new Matrix4();
 
   // note: glmatrix.js always has the first argument
   // as the destination to receive the result.
-  mat4.perspective(projectionMatrix, 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
+  projectionMatrix.perspective(45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
   
-  const modelViewMatrix = mat4.create();
+  const modelViewMatrix = new Matrix4();
+  modelViewMatrix.rotationEuler(0,cubeRotation*.7,cubeRotation);
+  modelViewMatrix.position( 0,0,-30);
   // Now move the drawing position a bit to where we want to
   // start drawing the square.
 
-  mat4.translate(modelViewMatrix,     // destination matrix
-                 modelViewMatrix,     // matrix to translate
-                 [-0.0, 0.0, -30.0]);  // amount to translate
-  
-  mat4.rotate(modelViewMatrix,  // destination matrix
-              modelViewMatrix,  // matrix to rotate
-              cubeRotation,     // amount to rotate in radians
-              [0, 0, 1]);       // axis to rotate around (Z)
-  
-  mat4.rotate(modelViewMatrix,  // destination matrix
-              modelViewMatrix,  // matrix to rotate
-              cubeRotation * .7,// amount to rotate in radians
-              [0, 1, 0]);       // axis to rotate around (X)
-
-  const normalMatrix = mat4.create();
+  const normalMatrix = new Matrix4();
   mat4.invert(normalMatrix, modelViewMatrix);
   mat4.transpose(normalMatrix, normalMatrix);  
   
@@ -180,8 +160,8 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 // Initialize a shader program, so WebGL knows how to draw our data
 //
 function initShaderProgram(gl, vsSource, fsSource) {
-  const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-  const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  const vertexShader = LoadShader(gl, gl.VERTEX_SHADER, vsSource);
+  const fragmentShader = LoadShader(gl, gl.FRAGMENT_SHADER, fsSource);
 
   // Create the shader program
 
@@ -198,7 +178,7 @@ function initShaderProgram(gl, vsSource, fsSource) {
   return shaderProgram;
 }
 
-function loadShader(gl, type, source) {
+function LoadShader(gl, type, source) {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
@@ -210,7 +190,7 @@ function loadShader(gl, type, source) {
   return shader;
 }
 
-function loadTexture(gl, url) {
+function LoadTexture(gl, url) {
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]) );
