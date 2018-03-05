@@ -87,7 +87,7 @@ function main() {
   
 }
 
-var  currentIndex = 0;
+var currentIndex = 0;
 var first = true;
 //
 // Draw the scene.
@@ -98,19 +98,12 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
   gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
 
-  // Clear the canvas before we start drawing on it.
-
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-  const projectionMatrix = new Matrix4();
-
-  // note: glmatrix.js always has the first argument
-  // as the destination to receive the result.
-  projectionMatrix.perspective(45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
   
-  var modelViewMatrix = new Matrix4();
-	modelViewMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
-  modelViewMatrix.position( positions[currentIndex+0]*scale ,positions[currentIndex+1]*scale, positions[currentIndex+2]*scale);
+  var modelMatrix = new Matrix4();
+//	modelMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
+//  modelMatrix.position( positions[currentIndex+0], positions[currentIndex+1], positions[currentIndex+2]);
+  
   if(currentIndex>=positions.length){
     currentIndex=0;
   }else{
@@ -120,7 +113,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   // start drawing the square.
 
   const normalMatrix = new Matrix4();
-  normalMatrix.invert(modelViewMatrix);
+  normalMatrix.invert(modelMatrix);
   normalMatrix.transpose();
   
   if(first){
@@ -147,24 +140,29 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     // Tell the shader we bound the texture to texture unit 0
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+
+    const projectionMatrix = new Matrix4();
+    projectionMatrix.perspective(45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
     
     // Set the shader uniforms
     gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);
   
   }
- 
+ var viewMatrix = new Matrix4();
+	viewMatrix.rotationEuler(90 * 0.0174532924, 0 * 0.0174532924, 0 * 0.0174532924);
+  viewMatrix.position( 0,0,0);
+  
+ var modelViewMatrix = new Matrix4();
+  modelViewMatrix.multiply(viewMatrix,modelMatrix);
+  gl.drawElements(gl.TRIANGLES, buffers.faceCounter, gl.UNSIGNED_SHORT, 0);
+
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
-  
-  gl.drawElements(gl.TRIANGLES, buffers.faceCounter, gl.UNSIGNED_SHORT, 0);
 
   // Update the rotation for the next draw
   cubeRotation += deltaTime;
 }
 
-//
-// Initialize a shader program, so WebGL knows how to draw our data
-//
 function initShaderProgram(gl, vsSource, fsSource) {
   const vertexShader = LoadShader(gl, gl.VERTEX_SHADER, vsSource);
   const fragmentShader = LoadShader(gl, gl.FRAGMENT_SHADER, fsSource);

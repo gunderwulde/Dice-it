@@ -207,10 +207,9 @@ Matrix4.prototype.position = function ( x,y,z ) {
 Matrix4.prototype.scale = function ( x,y,z ) {
 	var te = this.elements;
   
-	te[ 0 ] = x;
-	te[ 5 ] = y;
-	te[ 10 ] = z;
-	te[ 15 ] = 1;
+	te[ 0 ] *= x;
+	te[ 5 ] *= y;
+	te[ 10 ] *= z;
   
 	return this;
 }

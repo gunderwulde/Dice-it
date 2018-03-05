@@ -16,9 +16,9 @@ function LoadObject(gl, url, onLoad ){
         var line = lines[i].split(' ');
         switch(line[0]){
           case 'v':
-            source.positions.push(parseFloat(line[1]));
-            source.positions.push(parseFloat(line[2])); 
-            source.positions.push(parseFloat(line[3]));
+            source.positions.push(parseFloat(line[1])*0.1);
+            source.positions.push(parseFloat(line[2])*0.1); 
+            source.positions.push(parseFloat(line[3])*0.1);
             break;
           case 'vn':
             source.normals.push(parseFloat(line[1]));
