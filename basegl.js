@@ -87,6 +87,7 @@ function main() {
   
 }
 
+var  currentIndex = 0;
 var first = true;
 //
 // Draw the scene.
@@ -107,9 +108,14 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   // as the destination to receive the result.
   projectionMatrix.perspective(45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
   
-  const modelViewMatrix = new Matrix4();
-  modelViewMatrix.rotationEuler(0,cubeRotation*.7,cubeRotation);
-  modelViewMatrix.position( 0,0,-30);
+  var modelViewMatrix = new Matrix4();
+	modelViewMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
+  modelViewMatrix.position( positions[currentIndex+0]*scale ,positions[currentIndex+1]*scale, positions[currentIndex+2]*scale);
+  if(currentIndex>=positions.length){
+    currentIndex=0;
+  }else{
+    currentIndex+=3;
+  }  
   // Now move the drawing position a bit to where we want to
   // start drawing the square.
 
