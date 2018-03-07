@@ -145,6 +145,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);
   
   }
+  // la view matrix es la inversa de la camara... se supone
  var viewMatrix = new Matrix4();
 	viewMatrix.rotationEuler(90 * 0.0174532924, 0.0174532924, 0 * 0.0174532924);
   viewMatrix.position( 0,0,-15);
