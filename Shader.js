@@ -2,7 +2,7 @@
 function Shader(){
 }
 
-Shader.prototype.initShaderProgram = function(gl){
+Shader.prototype.Init = function(gl){
 // Vertex shader program
   const vsSource = `
     attribute vec4 aVertexPosition;
@@ -35,8 +35,10 @@ Shader.prototype.initShaderProgram = function(gl){
       gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
     }
   `;
-  const vertexShader = LoadShader(gl, gl.VERTEX_SHADER, vsSource);
-  const fragmentShader = LoadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  
+  const vertexShader = this.LoadShader(gl, gl.VERTEX_SHADER, vsSource);
+  const fragmentShader = this.LoadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  
   // Create the shader program
   const shaderProgram = gl.createProgram();
   gl.attachShader(shaderProgram, vertexShader);
@@ -64,4 +66,16 @@ Shader.prototype.initShaderProgram = function(gl){
   };
   
   return shaderProgram;
+}
+
+Shader.prototype.LoadShader = function(gl, type, source) {
+  const shader = gl.createShader(type);
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+    gl.deleteShader(shader);
+    return null;
+  }
+  return shader;
 }

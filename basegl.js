@@ -1,4 +1,5 @@
 var mesh;
+var shader;
 
 function main() {
   const canvas = document.querySelector('#glcanvas');
@@ -12,57 +13,9 @@ function main() {
     alert('Unable to initialize WebGL. Your browser or machine may not support it.');
     return;
   }
-/*
-  // Vertex shader program
-  const vsSource = `
-    attribute vec4 aVertexPosition;
-    attribute vec3 aVertexNormal;
-    attribute vec2 aTextureCoord;
-    uniform mat4 uNormalMatrix;
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
-    varying highp vec2 vTextureCoord;
-    varying highp vec3 vLighting;
-    void main(void) {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-      vTextureCoord = aTextureCoord;
-      // Apply lighting effect
-      highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
-      highp vec3 directionalLightColor = vec3(1, 1, 1);
-      highp vec3 directionalVector = normalize(vec3(-0.85, 0.8, 0.75));
-      highp vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
-      highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
-      vLighting = ambientLight + (directionalLightColor * directional);
-    }
-  `;
-
-  const fsSource = `
-    varying highp vec2 vTextureCoord;
-    varying highp vec3 vLighting;
-    uniform sampler2D uSampler;
-    void main(void) {
-      highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
-      gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
-    }
-  `;
-  const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
-
-  const programInfo = {
-    program: shaderProgram,
-    attribLocations: {
-      vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-      vertexNormal: gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
-      textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
-    },
-    uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-      normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
-      uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-    },
-  };
-  */
   mesh = new Mesh();
+  shader = new Shader();
+  shader.Init(gl);
   
   mesh.LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (){
@@ -74,7 +27,7 @@ function main() {
         now *= 0.001;  // convert to seconds
         const deltaTime = now - then;
         then = now;
-        drawScene(gl, programInfo, texture, deltaTime);
+        drawScene(gl, shader.programInfo, texture, deltaTime);
         requestAnimationFrame(render);
       }
       requestAnimationFrame(render);
@@ -116,6 +69,8 @@ function drawScene(gl, programInfo, texture, deltaTime) {
   const normalMatrix = new Matrix4();
   normalMatrix.invert(modelMatrix);
   normalMatrix.transpose();
+  
+  gl.useProgram(programInfo.program);
   gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
   
   if(first){
@@ -124,13 +79,12 @@ function drawScene(gl, programInfo, texture, deltaTime) {
     
     const projectionMatrix = new Matrix4();
     projectionMatrix.perspective(-45 * Math.PI / 180, -gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
-    gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);
-    
+    gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);    
   }
   
   // la view matrix es la inversa de la camara... se supone
  var viewMatrix = new Matrix4();
-	viewMatrix.rotationEuler(90 * 0.0174532924, 0.0174532924, 0 * 0.0174532924);
+	viewMatrix.rotationEuler(90 * 0.0174532924, 0 * 0.0174532924, 0 * 0.0174532924);
   viewMatrix.position( 0,0,-15);
   
  var modelViewMatrix = new Matrix4();
@@ -138,20 +92,6 @@ function drawScene(gl, programInfo, texture, deltaTime) {
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   
   mesh.Draw(gl, programInfo, texture);
-
-}
-
-
-function LoadShader(gl, type, source) {
-  const shader = gl.createShader(type);
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
-    gl.deleteShader(shader);
-    return null;
-  }
-  return shader;
 }
 
 function LoadTexture(gl, url) {

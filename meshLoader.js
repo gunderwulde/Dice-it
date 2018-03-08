@@ -8,7 +8,6 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
   xhr.responseType = 'arraybuffer';
   xhr.mesh = this;
   xhr.onload = function(e){
-    console.log(e);
     if (this.status == 200) {
       var view = new DataView( this.response );
       var positions = [];
