@@ -40,19 +40,19 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
         indexOffset += indexCount;
       }
       
-      const positionBuffer = gl.createBuffer();
+      this.positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(target.positions), gl.STATIC_DRAW);
       
-      const normalBuffer = gl.createBuffer();
+      this.normalBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(target.normals), gl.STATIC_DRAW);
 
-      const textureCoordBuffer = gl.createBuffer();
+      this.textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);      
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(target.uvs), gl.STATIC_DRAW );
       
-      const indexBuffer = gl.createBuffer();
+      this.indexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(target.indices), gl.STATIC_DRAW);
       
@@ -62,6 +62,28 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
   xhr.send();
 }
 
-Mesh.prototype.Draw = function(){
+Mesh.prototype.Draw = function(programInfo, texture){
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
+    gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
+    gl.vertexAttribPointer( programInfo.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray( programInfo.attribLocations.vertexNormal);
+    
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
+    gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray( programInfo.attribLocations.textureCoord);
+
+    // Tell WebGL which indices to use to index the vertices
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+    // Tell WebGL to use our program when drawing
+    gl.useProgram(programInfo.program);
+
   
+    gl.activeTexture(gl.TEXTURE0);
+    // Bind the texture to texture unit 0
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // Tell the shader we bound the texture to texture unit 0
+    gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 }

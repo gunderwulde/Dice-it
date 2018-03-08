@@ -1,3 +1,5 @@
+var mesh;
+
 function main() {
   const canvas = document.querySelector('#glcanvas');
   canvas.width  = window.innerWidth;
@@ -60,10 +62,10 @@ function main() {
     },
   };
   
-  var mesh = new Mesh();
+  mesh = new Mesh();
   
   mesh.LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
-    function (buffers){
+    function (){
       var then = 0;
       // Draw the scene repeatedly
       //const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
@@ -72,7 +74,7 @@ function main() {
         now *= 0.001;  // convert to seconds
         const deltaTime = now - then;
         then = now;
-        drawScene(gl, programInfo, buffers, texture, deltaTime);
+        drawScene(gl, programInfo, texture, deltaTime);
         requestAnimationFrame(render);
       }
       requestAnimationFrame(render);
@@ -134,6 +136,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   
   if(first){
     first=false;
+    /*
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
@@ -156,7 +159,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     // Tell the shader we bound the texture to texture unit 0
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
-
+*/
     const projectionMatrix = new Matrix4();
     projectionMatrix.perspective(-45 * Math.PI / 180, -gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
     
@@ -171,10 +174,10 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(viewMatrix,modelMatrix);
-  for( var i=0;i<buffers.submeshes.length;++i) {
-    // Poner cada material.
+  
+  mesh.Draw(programInfo, texture);
+  for( var i=0;i<buffers.submeshes.length;++i)
     gl.drawElements(gl.TRIANGLES, buffers.submeshes[i].count, gl.UNSIGNED_SHORT, buffers.submeshes[i].offset*2);
-  }
  
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
