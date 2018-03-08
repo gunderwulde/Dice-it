@@ -104,7 +104,7 @@ var time = 0;
 //
 // Draw the scene.
 //
-function drawScene(gl, programInfo, buffers, texture, deltaTime) {
+function drawScene(gl, programInfo, texture, deltaTime) {
   gl.clearColor(0.75, 0.75, 0.75, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -152,7 +152,6 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     // Tell WebGL which indices to use to index the vertices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
     // Tell WebGL to use our program when drawing
-    gl.useProgram(programInfo.program);
 
     gl.activeTexture(gl.TEXTURE0);
     // Bind the texture to texture unit 0
@@ -160,9 +159,9 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     // Tell the shader we bound the texture to texture unit 0
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 */
+    gl.useProgram(programInfo.program);
     const projectionMatrix = new Matrix4();
     projectionMatrix.perspective(-45 * Math.PI / 180, -gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
-    
     // Set the shader uniforms
     gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);
   
@@ -175,9 +174,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(viewMatrix,modelMatrix);
   
-  mesh.Draw(programInfo, texture);
-  for( var i=0;i<buffers.submeshes.length;++i)
-    gl.drawElements(gl.TRIANGLES, buffers.submeshes[i].count, gl.UNSIGNED_SHORT, buffers.submeshes[i].offset*2);
+  mesh.Draw(gl, programInfo, texture);
  
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
