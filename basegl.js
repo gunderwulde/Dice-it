@@ -60,6 +60,21 @@ function main() {
       uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
     },
   };
+  
+  LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520510113934", 
+    function (buffers){
+      var then = 0;
+      // Draw the scene repeatedly
+      const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
+      function render(now) {
+        now *= 0.001;  // convert to seconds
+        const deltaTime = now - then;
+        then = now;
+        drawScene(gl, programInfo, buffers, texture, deltaTime);
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+  });
 
   LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
     function (buffers){
