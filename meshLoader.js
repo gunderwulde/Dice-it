@@ -1,4 +1,5 @@
 function Mesh() {
+  this.submeshes = [];
 }
 
 Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
@@ -6,6 +7,7 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
   xhr.onload = function(e){
+    console.log(e);
     if (this.status == 200) {
       var view = new DataView( this.response );
       var positions = [];
@@ -31,10 +33,10 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
       }
       var indexOffset = 0;
       var subMeshCount = view.getUint16(idx,true); idx+=2;
-      this.submeshes = [];
+      
       for (var j = 0; j < subMeshCount; j++) {
         var indexCount = view.getUint16(idx,true); idx+=2;
-        this.submeshes.push( { offset:indexOffset, count: indexCount } );
+//        this.submeshes.push( { offset:indexOffset, count: indexCount } );
         for (var i = 0; i < indexCount; i++) {
           indices.push( view.getUint16(idx,true) ); idx+=2;
         }
@@ -87,7 +89,9 @@ Mesh.prototype.Draw = function(gl, programInfo, texture){
     // Tell the shader we bound the texture to texture unit 0
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
     
-    for( var i=0;i<this.submeshes.length;++i)
-      gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
+//    for( var i=0;i<this.submeshes.length;++i)
+  var i=0;
+//      gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
+      gl.drawElements(gl.TRIANGLES,256, gl.UNSIGNED_SHORT,0);
   
 }
