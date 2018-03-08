@@ -61,7 +61,7 @@ function main() {
     },
   };
   
-  LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520510113934", 
+  LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (buffers){
       var then = 0;
       // Draw the scene repeatedly
@@ -75,7 +75,7 @@ function main() {
       }
       requestAnimationFrame(render);
   });
-
+/*
   LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
     function (buffers){
       var then = 0;
@@ -90,7 +90,7 @@ function main() {
       }
       requestAnimationFrame(render);
   });
-  
+  */
   
 }
 

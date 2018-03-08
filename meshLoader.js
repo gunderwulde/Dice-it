@@ -25,55 +25,14 @@ function LoadMesh(gl, url, onLoad ){
       }
       var subMeshCount = view.getUint16(idx,true); idx+=2;
       console.log("subMeshCount "+subMeshCount);
-      for (var j = 0; j < subMeshCount; j++) {
-        var subMeshCount = view.getUint16(idx,true); idx+=2;
-        for (var i = 0; i < subMeshCount; j++) {
-        target.indicesPos.push()
-      }
-      /*
-      var source = {positions : [], normals : [], uvs : [] };
-        
-      var lines = this.response.split('\n');
-      var counter = 0;
-      var index = 0;
-      
-      for (var i = 0; i < lines.length; i++) {
-        var line = lines[i].split(' ');
-        switch(line[0]){
-          case 'v':
-            source.positions.push(parseFloat(line[1])*0.1);
-            source.positions.push(parseFloat(line[2])*0.1); 
-            source.positions.push(parseFloat(line[3])*0.1);
-            break;
-          case 'vn':
-            source.normals.push(parseFloat(line[1]));
-            source.normals.push(parseFloat(line[2]));
-            source.normals.push(parseFloat(line[3]));
-            break;
-          case 'vt':
-            source.uvs.push(parseFloat(line[1]));
-            source.uvs.push(parseFloat(line[2]));
-            break;
-          case 'f':
-            AddIndex( line[1], source, target );
-            AddIndex( line[2], source, target );
-            AddIndex( line[3], source, target );
-            indicesPos.push(index+0);
-            indicesPos.push(index+1);
-            indicesPos.push(index+2);
-            counter+=3;
-            if( line.length ==5) {
-              AddIndex( line[4], source, target );
-              indicesPos.push(index+0);
-              indicesPos.push(index+2);
-              indicesPos.push(index+3);
-              counter+=3;
-              index+=4;
-            }else
-              index+=3;
-            break;
+      for (var j = 0; j < subMeshCount; j++) 
+      {
+        var indexCount = view.getUint16(idx,true); idx+=2;
+        for (var i = 0; i < indexCount; i++) {
+          target.indicesPos.push(view.getUint16(idx,true) ); idx+=2;
         }
       }
+      
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(target.positions), gl.STATIC_DRAW);
@@ -88,10 +47,9 @@ function LoadMesh(gl, url, onLoad ){
       
       const indexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesPos), gl.STATIC_DRAW);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(target.indicesPos), gl.STATIC_DRAW);
       
-      onLoad({ position: positionBuffer, normal: normalBuffer, textureCoord: textureCoordBuffer, indices: indexBuffer, faceCounter: counter });
-      */
+      onLoad({ position: positionBuffer, normal: normalBuffer, textureCoord: textureCoordBuffer, indices: indexBuffer, faceCounter: target.indicesPos.lenght / 3 });
     }        
   };
   xhr.send();
