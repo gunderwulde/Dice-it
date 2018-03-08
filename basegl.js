@@ -1,5 +1,6 @@
 var mesh;
 var shader;
+var texture;
 
 function main() {
   const canvas = document.querySelector('#glcanvas');
@@ -20,14 +21,15 @@ function main() {
   mesh.LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (){
       var then = 0;
-      // Draw the scene repeatedly
-      //const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
-      const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
+    
+      texture = new Texture();
+      texture.Load(gl,"https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857" );
+    
       function render(now) {
         now *= 0.001;  // convert to seconds
         const deltaTime = now - then;
         then = now;
-        drawScene(gl, shader.programInfo, texture, deltaTime);
+        drawScene(gl, shader.programInfo, deltaTime);
         requestAnimationFrame(render);
       }
       requestAnimationFrame(render);
@@ -40,7 +42,7 @@ var time = 0;
 //
 // Draw the scene.
 //
-function drawScene(gl, programInfo, texture, deltaTime) {
+function drawScene(gl, programInfo, deltaTime) {
   gl.clearColor(0.75, 0.75, 0.75, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -94,26 +96,6 @@ function drawScene(gl, programInfo, texture, deltaTime) {
   mesh.Draw(gl, programInfo, texture);
 }
 
-function LoadTexture(gl, url) {
-  const texture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]) );
-  const image = new Image();
-  image.setAttribute('crossorigin', 'anonymous');
-  image.onload = function() {
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-       gl.generateMipmap(gl.TEXTURE_2D);
-    } else {
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    }
-  };
-  image.src = url;
-return texture;
-}
 
 
 function isPowerOf2(value) {

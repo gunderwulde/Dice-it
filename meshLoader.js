@@ -82,13 +82,7 @@ Mesh.prototype.Draw = function(gl, programInfo, texture){
     // Tell WebGL to use our program when drawing
     gl.useProgram(programInfo.program);
   
- 
-    gl.activeTexture(gl.TEXTURE0);
-    // Bind the texture to texture unit 0
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    // Tell the shader we bound the texture to texture unit 0
-    gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
-    
+     
     for( var i=0;i<this.submeshes.length;++i)
       gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
   
