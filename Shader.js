@@ -1,4 +1,4 @@
-
+var currentShadere;
 function Shader(){
 }
 
@@ -63,7 +63,10 @@ Shader.prototype.Init = function(gl){
 }
 
 Shader.prototype.Use = function(gl){
-  gl.useProgram(this.shaderProgram);
+  if(currentShadere!=this){
+    gl.useProgram(this.shaderProgram);
+    currentShadere=this;
+  }
 }
 
 Shader.prototype.LoadShader = function(gl, type, source) {
@@ -78,16 +81,12 @@ Shader.prototype.LoadShader = function(gl, type, source) {
   return shader;
 }
 
-
 Shader.prototype.setProjectionMatrix = function(gl, matrix){
+  this.Use(gl);
   gl.uniformMatrix4fv( this.uniformLocations.projectionMatrix, false, matrix.elements);
 }
 
 Shader.prototype.setModelViewMatrix = function(gl, matrix){
+  this.Use(gl);
   gl.uniformMatrix4fv( this.uniformLocations.modelViewMatrix, false, matrix.elements);
 }
-
-  shader.setModelViewMatrix(gl, modelViewMatrix);
-  
-
-

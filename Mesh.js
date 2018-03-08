@@ -2,7 +2,10 @@ function Mesh() {
   this.submeshes = [];
   this.modelMatrix = new Matrix4();
   this.normalMatrix = new Matrix4();
+  this.texture = new Texture();
 }
+
+
 
 Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
   var xhr = new XMLHttpRequest();
@@ -66,32 +69,30 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
   xhr.send();
 }
 
-Mesh.prototype.Draw = function(gl, programInfo, texture){
+Mesh.prototype.Draw = function(gl, shader){
   gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-  gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
-  gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
+  gl.vertexAttribPointer( shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
+  gl.enableVertexAttribArray( shader.attribLocations.vertexPosition); 
 
   gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-  gl.vertexAttribPointer( programInfo.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray( programInfo.attribLocations.vertexNormal);
+  gl.vertexAttribPointer( shader.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray( shader.attribLocations.vertexNormal);
     
   gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-  gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray( programInfo.attribLocations.textureCoord);
+  gl.vertexAttribPointer( shader.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray( shader.attribLocations.textureCoord);
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
   
-  gl.useProgram(programInfo.program);
+  shader.Use(gl);
   
   this.normalMatrix.invert(this.modelMatrix);
   this.normalMatrix.transpose();
   
-  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, this.normalMatrix.elements);
-
-  
-    texture.Set(gl,programInfo);
+  gl.uniformMatrix4fv( shader.uniformLocations.normalMatrix, false, this.normalMatrix.elements);
+  this.texture.Set(gl, shader);
     
-    for( var i=0;i<this.submeshes.length;++i)
-      gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
+  for( var i=0;i<this.submeshes.length;++i)
+    gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
   
 }
