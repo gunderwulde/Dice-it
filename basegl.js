@@ -12,7 +12,7 @@ function main() {
     alert('Unable to initialize WebGL. Your browser or machine may not support it.');
     return;
   }
-
+/*
   // Vertex shader program
   const vsSource = `
     attribute vec4 aVertexPosition;
@@ -61,7 +61,7 @@ function main() {
       uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
     },
   };
-  
+  */
   mesh = new Mesh();
   
   mesh.LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
@@ -79,23 +79,6 @@ function main() {
       }
       requestAnimationFrame(render);
   });
-/*
-  LoadObject(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Lowpoly.obj?1518164652195", 
-    function (buffers){
-      var then = 0;
-      // Draw the scene repeatedly
-      const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
-      function render(now) {
-        now *= 0.001;  // convert to seconds
-        const deltaTime = now - then;
-        then = now;
-        drawScene(gl, programInfo, buffers, texture, deltaTime);
-        requestAnimationFrame(render);
-      }
-      requestAnimationFrame(render);
-  });
-*/
-  
 }
 
 var currentIndex = 0;
@@ -133,39 +116,18 @@ function drawScene(gl, programInfo, texture, deltaTime) {
   const normalMatrix = new Matrix4();
   normalMatrix.invert(modelMatrix);
   normalMatrix.transpose();
+  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
   
   if(first){
     first=false;
-    /*
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-    gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
-    gl.vertexAttribPointer( programInfo.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray( programInfo.attribLocations.vertexNormal);
-    
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
-    gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray( programInfo.attribLocations.textureCoord);
-
-    // Tell WebGL which indices to use to index the vertices
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
-    // Tell WebGL to use our program when drawing
-
-    gl.activeTexture(gl.TEXTURE0);
-    // Bind the texture to texture unit 0
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    // Tell the shader we bound the texture to texture unit 0
-    gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
-*/
     gl.useProgram(programInfo.program);
+    
     const projectionMatrix = new Matrix4();
     projectionMatrix.perspective(-45 * Math.PI / 180, -gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
-    // Set the shader uniforms
     gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);
-  
+    
   }
+  
   // la view matrix es la inversa de la camara... se supone
  var viewMatrix = new Matrix4();
 	viewMatrix.rotationEuler(90 * 0.0174532924, 0.0174532924, 0 * 0.0174532924);
@@ -173,32 +135,12 @@ function drawScene(gl, programInfo, texture, deltaTime) {
   
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(viewMatrix,modelMatrix);
+  gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   
   mesh.Draw(gl, programInfo, texture);
- 
-  gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
-  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
 
 }
 
-function initShaderProgram(gl, vsSource, fsSource) {
-  const vertexShader = LoadShader(gl, gl.VERTEX_SHADER, vsSource);
-  const fragmentShader = LoadShader(gl, gl.FRAGMENT_SHADER, fsSource);
-
-  // Create the shader program
-
-  const shaderProgram = gl.createProgram();
-  gl.attachShader(shaderProgram, vertexShader);
-  gl.attachShader(shaderProgram, fragmentShader);
-  gl.linkProgram(shaderProgram);
-
-  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-    alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
-    return null;
-  }
-
-  return shaderProgram;
-}
 
 function LoadShader(gl, type, source) {
   const shader = gl.createShader(type);

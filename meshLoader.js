@@ -6,6 +6,7 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
+  xhr.mesh = this;
   xhr.onload = function(e){
     console.log(e);
     if (this.status == 200) {
@@ -36,27 +37,27 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
       
       for (var j = 0; j < subMeshCount; j++) {
         var indexCount = view.getUint16(idx,true); idx+=2;
-//        this.submeshes.push( { offset:indexOffset, count: indexCount } );
+        this.mesh.submeshes.push( { offset:indexOffset, count: indexCount } );
         for (var i = 0; i < indexCount; i++) {
           indices.push( view.getUint16(idx,true) ); idx+=2;
         }
         indexOffset += indexCount;
       }
       
-      this.positionBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
+      this.mesh.positionBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.mesh.positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
       
-      this.normalBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
+      this.mesh.normalBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.mesh.normalBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 
-      this.textureCoordBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);      
+      this.mesh.textureCoordBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.mesh.textureCoordBuffer);      
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW );
       
-      this.indexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+      this.mesh.indexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);      
       onLoad();
     }        
@@ -81,17 +82,15 @@ Mesh.prototype.Draw = function(gl, programInfo, texture){
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
     // Tell WebGL to use our program when drawing
     gl.useProgram(programInfo.program);
-
   
+ 
     gl.activeTexture(gl.TEXTURE0);
     // Bind the texture to texture unit 0
     gl.bindTexture(gl.TEXTURE_2D, texture);
     // Tell the shader we bound the texture to texture unit 0
     gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
     
-//    for( var i=0;i<this.submeshes.length;++i)
-  var i=0;
-//      gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
-      gl.drawElements(gl.TRIANGLES,256, gl.UNSIGNED_SHORT,0);
+    for( var i=0;i<this.submeshes.length;++i)
+      gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
   
 }
