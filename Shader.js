@@ -36,36 +36,34 @@ Shader.prototype.Init = function(gl){
     }
   `;
   
-  const vertexShader = this.LoadShader(gl, gl.VERTEX_SHADER, vsSource);
+  const vertexShader   = this.LoadShader(gl, gl.VERTEX_SHADER, vsSource);
   const fragmentShader = this.LoadShader(gl, gl.FRAGMENT_SHADER, fsSource);
   
   // Create the shader program
-  const shaderProgram = gl.createProgram();
-  gl.attachShader(shaderProgram, vertexShader);
-  gl.attachShader(shaderProgram, fragmentShader);
-  gl.linkProgram(shaderProgram);
+  this.shaderProgram = gl.createProgram();
+  gl.attachShader(this.shaderProgram, vertexShader);
+  gl.attachShader(this.shaderProgram, fragmentShader);
+  gl.linkProgram(this.shaderProgram);
 
-  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-    alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
+  if (!gl.getProgramParameter(this.shaderProgram, gl.LINK_STATUS)) {
+    alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(this.shaderProgram));
     return null;
   }
-
-  this.programInfo = {
-    program: shaderProgram,
-    attribLocations: {
-      vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-      vertexNormal: gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
-      textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
-    },
-    uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-      normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
-      uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-    },
+  this.attribLocations = {
+    vertexPosition: gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
+    vertexNormal:   gl.getAttribLocation(this.shaderProgram, 'aVertexNormal'),
+    textureCoord:   gl.getAttribLocation(this.shaderProgram, 'aTextureCoord'),
   };
-  
-  return shaderProgram;
+  this.uniformLocations = {
+    projectionMatrix: gl.getUniformLocation(this.shaderProgram, 'uProjectionMatrix'),
+    modelViewMatrix:  gl.getUniformLocation(this.shaderProgram, 'uModelViewMatrix'),
+    normalMatrix:     gl.getUniformLocation(this.shaderProgram, 'uNormalMatrix'),
+    uSampler:         gl.getUniformLocation(this.shaderProgram, 'uSampler'),
+  }
+}
+
+Shader.prototype.Use = function(gl){
+  gl.useProgram(this.shaderProgram);
 }
 
 Shader.prototype.LoadShader = function(gl, type, source) {
@@ -79,3 +77,17 @@ Shader.prototype.LoadShader = function(gl, type, source) {
   }
   return shader;
 }
+
+
+Shader.prototype.setProjectionMatrix = function(gl, matrix){
+  gl.uniformMatrix4fv( this.uniformLocations.projectionMatrix, false, matrix.elements);
+}
+
+Shader.prototype.setModelViewMatrix = function(gl, matrix){
+  gl.uniformMatrix4fv( this.uniformLocations.modelViewMatrix, false, matrix.elements);
+}
+
+  shader.setModelViewMatrix(gl, modelViewMatrix);
+  
+
+
