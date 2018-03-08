@@ -12,7 +12,6 @@ function main() {
   }
 
   // Vertex shader program
-
   const vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec3 aVertexNormal;
@@ -90,7 +89,7 @@ function main() {
       }
       requestAnimationFrame(render);
   });
-  */
+*/
   
 }
 
@@ -109,6 +108,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   
   var modelMatrix = new Matrix4();
+  /*
 	modelMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
   modelMatrix.position( positions[currentIndex+0], positions[currentIndex+1], positions[currentIndex+2]);
   
@@ -121,6 +121,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     currentIndex+=3;
   }  
   }
+  */
   // Now move the drawing position a bit to where we want to
   // start drawing the square.
 
@@ -134,13 +135,13 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
-    gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray( programInfo.attribLocations.textureCoord);
-
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
     gl.vertexAttribPointer( programInfo.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray( programInfo.attribLocations.vertexNormal);
+    
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+    gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray( programInfo.attribLocations.textureCoord);
 
     // Tell WebGL which indices to use to index the vertices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
@@ -167,8 +168,11 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(viewMatrix,modelMatrix);
-  gl.drawElements(gl.TRIANGLES, buffers.faceCounter, gl.UNSIGNED_SHORT, 0);
-
+  for( var i=0;i<buffers.submeshes.length;++i){
+    // Poner cada material.
+    gl.drawElements(gl.TRIANGLES, buffers.submeshes[i].count/3, gl.UNSIGNED_SHORT, buffers.submeshes[i].offset);
+  }
+ 
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
 
