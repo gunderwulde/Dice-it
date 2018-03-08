@@ -18,21 +18,21 @@ function main() {
   camera.Position(0, 8.5, -10)
   camera.Rotation(48, 0, 0);
   
-  mesh = new Mesh();
-  shader = new Shader();
-  shader.Init(gl);
+  mesh = new Mesh(gl);
+  shader = new Shader(gl);
+  shader.Init();
   
 //  gl.useProgram(shader.programInfo.program);
   const projectionMatrix = new Matrix4();
   projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
   shader.setProjectionMatrix(gl, projectionMatrix);
   
-  mesh.Load( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
+  mesh.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (){
       var then = 0; 
       var tex0 = new Texture(gl);
       tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
-      mesh.textures.push( tex0 );
+      mesh.textures.push(tex0 );
     
       var tex1 = new Texture(gl);
       tex1.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891");
@@ -73,5 +73,5 @@ function drawScene(gl, programInfo, deltaTime) {
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(camera.Matrix() ,modelMatrix);
   shader.setModelViewMatrix(gl, modelViewMatrix);
-  mesh.Draw(gl, shader);
+  mesh.Draw(shader);
 }

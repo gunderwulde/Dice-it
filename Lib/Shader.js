@@ -1,8 +1,9 @@
 var currentShadere;
-function Shader(){
+function Shader(gl){
+  this.gl=gl;
 }
 
-Shader.prototype.Init = function(gl){
+Shader.prototype.Init = function(){
 // Vertex shader program
   const vsSource = `
     attribute vec4 aVertexPosition;
@@ -38,6 +39,7 @@ Shader.prototype.Init = function(gl){
       gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
     }
   `;
+  var gl=this.gl;
   
   const vertexShader   = this.LoadShader(gl, gl.VERTEX_SHADER, vsSource);
   const fragmentShader = this.LoadShader(gl, gl.FRAGMENT_SHADER, fsSource);
@@ -53,21 +55,29 @@ Shader.prototype.Init = function(gl){
   }
   
   this.attribLocations = {
-    vertexPosition:   gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
-    vertexNormal:     gl.getAttribLocation(this.shaderProgram, 'aVertexNormal'),
-    textureCoord:     gl.getAttribLocation(this.shaderProgram, 'aTextureCoord'),
+    vertexPosition:   this.GetAttribLocation('aVertexPosition'),
+    vertexNormal:     this.GetAttribLocation('aVertexNormal'),
+    textureCoord:     this.GetAttribLocation('aTextureCoord'),
   };
   this.uniformLocations = {
-    projectionMatrix: gl.getUniformLocation(this.shaderProgram, 'uProjectionMatrix'),
-    modelViewMatrix:  gl.getUniformLocation(this.shaderProgram, 'uModelViewMatrix'),
-    normalMatrix:     gl.getUniformLocation(this.shaderProgram, 'uNormalMatrix'),
-    uSampler:         gl.getUniformLocation(this.shaderProgram, 'uSampler'),
+    projectionMatrix: this.GetUniformLocation('uProjectionMatrix'),
+    modelViewMatrix:  this.GetUniformLocation('uModelViewMatrix'),
+    normalMatrix:     this.GetUniformLocation('uNormalMatrix'),
+    uSampler:         this.GetUniformLocation('uSampler'),
   }
 }
 
-Shader.prototype.Use = function(gl){
+Shader.prototype.GetAttribLocation = function(name){
+  return this.gl.getAttribLocation(this.shaderProgram, name);
+}
+
+Shader.prototype.GetUniformLocation = function(name){
+  return this.gl.getUniformLocation(this.shaderProgram, name);
+}
+
+Shader.prototype.Use = function(){
   if(currentShadere!=this){
-    gl.useProgram(this.shaderProgram);
+    this.gl.useProgram(this.shaderProgram);
     currentShadere=this;
   }
 }
@@ -85,11 +95,11 @@ Shader.prototype.LoadShader = function(gl, type, source) {
 }
 
 Shader.prototype.setProjectionMatrix = function(gl, matrix){
-  this.Use(gl);
-  gl.uniformMatrix4fv( this.uniformLocations.projectionMatrix, false, matrix.elements);
+  this.Use();
+  this.gl.uniformMatrix4fv( this.uniformLocations.projectionMatrix, false, matrix.elements);
 }
 
 Shader.prototype.setModelViewMatrix = function(gl, matrix){
-  this.Use(gl);
-  gl.uniformMatrix4fv( this.uniformLocations.modelViewMatrix, false, matrix.elements);
+  this.Use();
+  this.gl.uniformMatrix4fv( this.uniformLocations.modelViewMatrix, false, matrix.elements);
 }
