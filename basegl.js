@@ -17,8 +17,8 @@ function main() {
   }
   
   camera = new Camera();
-  camera.Position(0,0,-15)
-  camera.Rotation(90, 0, 0);
+  camera.Position(0,8.5,-10)
+  camera.Rotation(48, 0, 0);
   
   mesh = new Mesh();
   shader = new Shader();
@@ -87,7 +87,7 @@ function drawScene(gl, programInfo, deltaTime) {
   // la view matrix es la inversa de la camara... se supone
   
  var modelViewMatrix = new Matrix4();
-  modelViewMatrix.multiply(ca,e,modelMatrix);
+  modelViewMatrix.multiply(camera.Matrix() ,modelMatrix);
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   
   mesh.Draw(gl, programInfo, texture);

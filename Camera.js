@@ -12,6 +12,8 @@ Camera.prototype.Matrix = function(){
   if(this.dirty){
 	  this.viewMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
     this.viewMatrix.position( this.px,this.py,this.pz);
+    
+    this.viewMatrix.inverse()
     this.dirty=false;
   }
   return this.viewMatrix;
