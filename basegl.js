@@ -1,6 +1,7 @@
 var mesh;
 var shader;
 var texture;
+var camera;
 
 function main() {
   const canvas = document.querySelector('#glcanvas');
@@ -14,6 +15,11 @@ function main() {
     alert('Unable to initialize WebGL. Your browser or machine may not support it.');
     return;
   }
+  
+  camera = new Camera();
+  camera.Position(0,0,-15)
+  camera.Rotation(90, 0, 0);
+  
   mesh = new Mesh();
   shader = new Shader();
   shader.Init(gl);
@@ -67,13 +73,7 @@ function drawScene(gl, programInfo, deltaTime) {
   */
   // Now move the drawing position a bit to where we want to
   // start drawing the square.
-
-  const normalMatrix = new Matrix4();
-  normalMatrix.invert(modelMatrix);
-  normalMatrix.transpose();
   
-  gl.useProgram(programInfo.program);
-  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, normalMatrix.elements);
   
   if(first){
     first=false;
@@ -85,12 +85,9 @@ function drawScene(gl, programInfo, deltaTime) {
   }
   
   // la view matrix es la inversa de la camara... se supone
- var viewMatrix = new Matrix4();
-	viewMatrix.rotationEuler(90 * 0.0174532924, 0 * 0.0174532924, 0 * 0.0174532924);
-  viewMatrix.position( 0,0,-15);
   
  var modelViewMatrix = new Matrix4();
-  modelViewMatrix.multiply(viewMatrix,modelMatrix);
+  modelViewMatrix.multiply(ca,e,modelMatrix);
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
   
   mesh.Draw(gl, programInfo, texture);

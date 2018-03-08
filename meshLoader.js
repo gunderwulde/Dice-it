@@ -1,8 +1,7 @@
 function Mesh() {
   this.submeshes = [];
   this.modelMatrix = new Matrix4();
-    const normalMatrix = new Matrix4();
-
+  this.normalMatrix = new Matrix4();
 }
 
 Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
@@ -68,24 +67,27 @@ Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
 }
 
 Mesh.prototype.Draw = function(gl, programInfo, texture){
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-    gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
+  gl.vertexAttribPointer( programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
+  gl.enableVertexAttribArray( programInfo.attribLocations.vertexPosition); 
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-    gl.vertexAttribPointer( programInfo.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray( programInfo.attribLocations.vertexNormal);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
+  gl.vertexAttribPointer( programInfo.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray( programInfo.attribLocations.vertexNormal);
     
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-    gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray( programInfo.attribLocations.textureCoord);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
+  gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray( programInfo.attribLocations.textureCoord);
 
-    // Tell WebGL which indices to use to index the vertices
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-    // Tell WebGL to use our program when drawing
-    gl.useProgram(programInfo.program);
-// Falta poner las matrices de este objeto.  
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
   
+  gl.useProgram(programInfo.program);
+  
+  this.normalMatrix.invert(this.modelMatrix);
+  this.normalMatrix.transpose();
+  
+  gl.uniformMatrix4fv( programInfo.uniformLocations.normalMatrix, false, this.normalMatrix.elements);
+
   
     texture.Set(gl,programInfo);
     
