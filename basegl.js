@@ -27,10 +27,16 @@ function main() {
   projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
   shader.setProjectionMatrix(gl, projectionMatrix);
   
-  mesh.LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
+  mesh.Load( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (){
-      var then = 0;    
-      mesh.texture.Load(gl,"https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857" );
+      var then = 0; 
+      var tex0 = new Texture(gl);
+      tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
+      mesh.textures.push( tex0 );
+    
+      var tex1 = new Texture(gl);
+      tex1.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891");
+      mesh.textures.push( tex1 );
     
       function render(now) {
         now *= 0.001;  // convert to seconds

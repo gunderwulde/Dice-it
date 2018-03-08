@@ -1,7 +1,9 @@
-function Texture() {
+function Texture(gl) {
+  this.gl = gl;
 }
 
-Texture.prototype.Load = function(gl, url, onLoad){
+Texture.prototype.Load = function(url, onLoad){
+  var gl = this.gl;
   this.texture = gl.createTexture();
   
   gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -25,7 +27,8 @@ Texture.prototype.Load = function(gl, url, onLoad){
   image.src = url;
 }
 
-Texture.prototype.Set = function(gl, shader){
+Texture.prototype.Set = function(shader){
+  var gl = this.gl;
   gl.activeTexture(gl.TEXTURE0);
   // Bind the texture to texture unit 0
   gl.bindTexture(gl.TEXTURE_2D, this.texture);

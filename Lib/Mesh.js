@@ -2,12 +2,10 @@ function Mesh() {
   this.submeshes = [];
   this.modelMatrix = new Matrix4();
   this.normalMatrix = new Matrix4();
-  this.texture = new Texture();
+  this.textures = [];
 }
 
-
-
-Mesh.prototype.LoadMesh = function(gl, url, onLoad ){
+Mesh.prototype.Load = function(gl, url, onLoad ){
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
@@ -90,9 +88,9 @@ Mesh.prototype.Draw = function(gl, shader){
   this.normalMatrix.transpose();
   
   gl.uniformMatrix4fv( shader.uniformLocations.normalMatrix, false, this.normalMatrix.elements);
-  this.texture.Set(gl, shader);
     
-  for( var i=0;i<this.submeshes.length;++i)
+  for( var i=0;i<this.submeshes.length;++i){
+    this.textures[i].Set(gl, shader);
     gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
-  
+  }
 }
