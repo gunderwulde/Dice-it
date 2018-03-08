@@ -1,9 +1,9 @@
-function Texture(gl) {
-  this.gl = gl;
+var currentTexture;
+
+function Texture() {
 }
 
 Texture.prototype.Load = function(url, onLoad){
-  var gl = this.gl;
   this.texture = gl.createTexture();
   
   gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -28,12 +28,13 @@ Texture.prototype.Load = function(url, onLoad){
 }
 
 Texture.prototype.Set = function(shader){
-  var gl = this.gl;
-  gl.activeTexture(gl.TEXTURE0);
-  // Bind the texture to texture unit 0
-  gl.bindTexture(gl.TEXTURE_2D, this.texture);
-  // Tell the shader we bound the texture to texture unit 0
-  gl.uniform1i(shader.uniformLocations.uSampler, 0);
+  shader.Use();
+  shader.Se
+  if(currentTexture!=this){
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.uniform1i(shader.uniformLocations.uSampler, 0);
+  }
 };
 
 Texture.prototype.isPowerOf2 = function(value) {

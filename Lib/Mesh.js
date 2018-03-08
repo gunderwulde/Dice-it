@@ -1,13 +1,11 @@
-function Mesh(gl) {
+function Mesh() {
   this.submeshes = [];
   this.modelMatrix = new Matrix4();
   this.normalMatrix = new Matrix4();
   this.textures = [];
-  this.gl = gl;
 }
 
 Mesh.prototype.Load = function(url, onLoad ){
-  var gl = this.gl;
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
@@ -70,7 +68,6 @@ Mesh.prototype.Load = function(url, onLoad ){
 }
 
 Mesh.prototype.Draw = function(shader){
-  var gl = this.gl;
   gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
   gl.vertexAttribPointer( shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( shader.attribLocations.vertexPosition); 
