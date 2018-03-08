@@ -60,7 +60,9 @@ function main() {
     },
   };
   
-  LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
+  var mesh = new Mesh();
+  
+  mesh.LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (buffers){
       var then = 0;
       // Draw the scene repeatedly
