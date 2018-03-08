@@ -5,12 +5,34 @@ function LoadMesh(gl, url, onLoad ){
   xhr.onload = function(e){
     if (this.status == 200) {
       var view = new DataView( this.response );
-      console.log( ">>> "+ view.getUint16(1) );
+      var target = {positions : [], normals : [], uvs : [], indicesPos : [] };
+      var idx = 0;
+      var vertices = view.getUint16(idx,true); idx+=2;
+      for (var i = 0; i < vertices; i++) {
+        target.positions.push( view.getFloat32(idx+0,true) ); idx+=4;
+        target.positions.push( view.getFloat32(idx+4,true) ); idx+=4;
+        target.positions.push( view.getFloat32(idx+8,true) ); idx+=4;
+      }
+      for (var i = 0; i < vertices; i++) {
+        target.normals.push( view.getFloat32(idx+0,true) ); idx+=4;
+        target.normals.push( view.getFloat32(idx+4,true) ); idx+=4;
+        target.normals.push( view.getFloat32(idx+8,true) ); idx+=4;
+      }
+      for (var i = 0; i < vertices; i++) {
+        target.uvs.push( view.getFloat32(idx,true) ); idx+=4;
+        target.uvs.push( view.getFloat32(idx,true) ); idx+=4;
+        
+      }
+      var subMeshCount = view.getUint16(idx,true); idx+=2;
+      console.log("subMeshCount "+subMeshCount);
+      for (var j = 0; j < subMeshCount; j++) {
+        var subMeshCount = view.getUint16(idx,true); idx+=2;
+        for (var i = 0; i < subMeshCount; j++) {
+        target.indicesPos.push()
+      }
       /*
       var source = {positions : [], normals : [], uvs : [] };
-      var target = {positions : [], normals : [], uvs : [] };
         
-      var indicesPos = [];
       var lines = this.response.split('\n');
       var counter = 0;
       var index = 0;
@@ -52,7 +74,6 @@ function LoadMesh(gl, url, onLoad ){
             break;
         }
       }
-      
       const positionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(target.positions), gl.STATIC_DRAW);
@@ -71,7 +92,7 @@ function LoadMesh(gl, url, onLoad ){
       
       onLoad({ position: positionBuffer, normal: normalBuffer, textureCoord: textureCoordBuffer, indices: indexBuffer, faceCounter: counter });
       */
-      }        
+    }        
   };
   xhr.send();
 }
