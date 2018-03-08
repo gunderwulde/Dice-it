@@ -90,7 +90,7 @@ Mesh.prototype.Draw = function(shader){
   gl.uniformMatrix4fv( shader.uniformLocations.normalMatrix, false, this.normalMatrix.elements);
     
   for( var i=0;i<this.submeshes.length;++i){
-    this.textures[i].Set(shader);
+    shader.UseTexture(this.textures[i]);
     gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
   }
 }

@@ -73,6 +73,13 @@ Shader.prototype.Use = function(){
   }
 }
 
+Shader.prototype.UseTexture= function(texture){
+  this.Use();
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture.texture);
+  gl.uniform1i(this.uniformLocations.uSampler, 0);
+}
+
 Shader.prototype.LoadShader = function(type, source) {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, source);

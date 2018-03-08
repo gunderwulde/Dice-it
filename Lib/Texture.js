@@ -1,5 +1,3 @@
-var currentTexture;
-
 function Texture() {
 }
 
@@ -26,16 +24,6 @@ Texture.prototype.Load = function(url, onLoad){
   };
   image.src = url;
 }
-
-Texture.prototype.Set = function(shader){
-  shader.Use();
-  shader.Se
-  if(currentTexture!=this){
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-    gl.uniform1i(shader.uniformLocations.uSampler, 0);
-  }
-};
 
 Texture.prototype.isPowerOf2 = function(value) {
   return (value & (value - 1)) == 0;
