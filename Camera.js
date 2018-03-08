@@ -1,7 +1,6 @@
 function Camera() {
+  
   this.viewMatrix = new Matrix4();
-	this.viewMatrix.rotationEuler(90 * 0.0174532924, 0 * 0.0174532924, 0 * 0.0174532924);
-  this.viewMatrix.position( 0,0,-15);
   this.dirty = true;
 }
 
@@ -10,10 +9,13 @@ Camera.prototype.Rotation = function (x,y,z) { this.rx=x; this.ry=y; this.rz=z; 
 
 Camera.prototype.Matrix = function(){
   if(this.dirty){
-	  this.viewMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
-    this.viewMatrix.position( this.px,this.py,this.pz);
+    var rotationMatrix = new Matrix4();
+	  rotationMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
+    var positionMatrix = new Matrix4();
+    positionMatrix.position( this.px,this.py, this.pz);
     
-    this.viewMatrix.inverse()
+    this.viewMatrix.multiply(rotationMatrix,positionMatrix );
+    
     this.dirty=false;
   }
   return this.viewMatrix;

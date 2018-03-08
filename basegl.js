@@ -17,12 +17,17 @@ function main() {
   }
   
   camera = new Camera();
-  camera.Position(0,8.5,-10)
+  camera.Position(10, -8.5, -10)
   camera.Rotation(48, 0, 0);
   
   mesh = new Mesh();
   shader = new Shader();
   shader.Init(gl);
+  
+  gl.useProgram(shader.programInfo.program);
+  const projectionMatrix = new Matrix4();
+  projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
+  gl.uniformMatrix4fv( shader.programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);    
   
   mesh.LoadMesh( gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (){
@@ -75,14 +80,6 @@ function drawScene(gl, programInfo, deltaTime) {
   // start drawing the square.
   
   
-  if(first){
-    first=false;
-    gl.useProgram(programInfo.program);
-    
-    const projectionMatrix = new Matrix4();
-    projectionMatrix.perspective(-45 * Math.PI / 180, -gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
-    gl.uniformMatrix4fv( programInfo.uniformLocations.projectionMatrix, false, projectionMatrix.elements);    
-  }
   
   // la view matrix es la inversa de la camara... se supone
   
