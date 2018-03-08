@@ -3,9 +3,9 @@ var shader;
 var camera;
 
 function main() {
-  const canvas = document.querySelector('#glcanvas');
+  const canvas =  document.getElementById("glcanvas");
   canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;  
+  canvas.height = window.innerHeight;
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
   
