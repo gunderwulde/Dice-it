@@ -27,9 +27,10 @@ function LoadMesh(gl, url, onLoad ){
       var subMeshCount = view.getUint16(idx,true); idx+=2;
       for (var j = 0; j < subMeshCount; j++) {
         var indexCount = view.getUint16(idx,true); idx+=2;
+        console.log(">>> index "+indexOffset+" indexCount "+indexCount);
         target.submeshes.push( { offset:indexOffset, count: indexCount } );
         for (var i = 0; i < indexCount; i++) {
-          target.indices.push(view.getUint16(idx,true) ); idx+=2;
+          target.indices.push( view.getUint16(idx,true) ); idx+=2;
         }
         indexOffset += indexCount;
       }

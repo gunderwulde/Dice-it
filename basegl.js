@@ -64,7 +64,8 @@ function main() {
     function (buffers){
       var then = 0;
       // Draw the scene repeatedly
-      const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
+      //const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice%20Texture%20Color.jpg?1518164631735");
+      const texture = LoadTexture(gl, "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
       function render(now) {
         now *= 0.001;  // convert to seconds
         const deltaTime = now - then;
@@ -168,9 +169,9 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(viewMatrix,modelMatrix);
-  for( var i=0;i<buffers.submeshes.length;++i){
+  for( var i=0;i<buffers.submeshes.length;++i) {
     // Poner cada material.
-    gl.drawElements(gl.TRIANGLES, buffers.submeshes[i].count/3, gl.UNSIGNED_SHORT, buffers.submeshes[i].offset);
+    gl.drawElements(gl.TRIANGLES, buffers.submeshes[i].count, gl.UNSIGNED_SHORT, buffers.submeshes[i].offset*2);
   }
  
   gl.uniformMatrix4fv( programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix.elements);
