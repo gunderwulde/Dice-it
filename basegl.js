@@ -17,7 +17,7 @@ function main() {
   }
   
   camera = new Camera();
-  camera.Position(10, -8.5, -10)
+  camera.Position(0, 8.5, -10)
   camera.Rotation(48, 0, 0);
   
   mesh = new Mesh();

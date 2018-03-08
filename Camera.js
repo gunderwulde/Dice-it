@@ -12,10 +12,8 @@ Camera.prototype.Matrix = function(){
     var rotationMatrix = new Matrix4();
 	  rotationMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
     var positionMatrix = new Matrix4();
-    positionMatrix.position( this.px,this.py, this.pz);
-    
+    positionMatrix.position( this.px, -this.py, this.pz);
     this.viewMatrix.multiply(rotationMatrix,positionMatrix );
-    
     this.dirty=false;
   }
   return this.viewMatrix;
