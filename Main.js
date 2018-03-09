@@ -11,10 +11,10 @@ function main() {
   
   var scene = new Scene();  
   
-  scene.camera.Position(0, 8.5, -10)
-  scene.camera.Rotation(48, 0, 0);
-  
+  scene.camera.Position(0, 0, -5)
+  scene.camera.Rotation(0, 0, 0);
   var shader = new Shader("Default.shader", function(shader){    
+  /*
     scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
       function (mesh){
         var tex0 = new Texture();
@@ -25,7 +25,7 @@ function main() {
         tex1.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891");
         mesh.textures.push( tex1 );
     });
-
+*/
     dice = scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
       function (mesh){
         var tex0 = new Texture();
@@ -35,8 +35,8 @@ function main() {
   });
   
   scene.Update = function(deltaTime){
-    dice.Position(0,7,-9);
-    dice.Rotate(0,deltaTime*180,0);
+//    dice.Position(0, 3.5, -7.5);
+    dice.Position(0, 0, 0);
   }
   
   
