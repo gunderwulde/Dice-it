@@ -4,7 +4,12 @@ function Mesh(shader) {
   this.submeshes = [];
   this.modelMatrix = new Matrix4();
   this.normalMatrix = new Matrix4();
+  this.modelViewMatrix = new Matrix4();
   this.textures = [];
+  this.dirty = true;
+  
+  this.Position(0,0,0);
+  this.Rotation = function (x,y,z) { this.rx=x; this.ry=y; this.rz=z; this.dirty = true;}
 }
 
 Mesh.prototype.Load = function(url, onLoad ){
@@ -12,7 +17,8 @@ Mesh.prototype.Load = function(url, onLoad ){
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
   var self = this;
-  mainScene.Loader.Push(self);
+  
+  mainScene.Loader.Push(self);  
   xhr.onload = function(e){
     if (this.status == 200) {
       var view = new DataView( this.response );
@@ -64,7 +70,9 @@ Mesh.prototype.Load = function(url, onLoad ){
       self.indexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, self.indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);      
+      
       onLoad(self);
+      
       mainScene.Loader.Pop(self);
     }        
   };
@@ -74,7 +82,41 @@ Mesh.prototype.Load = function(url, onLoad ){
 
 Mesh.prototype.Draw = function(){
   var shader = this.shader;
-  console.log("Draw " +shader.name);
+  shader.Use(gl);
+  
+//  if(this.dirty)
+  {
+    /*
+    var rotationMatrix = new Matrix4();
+	  rotationMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
+    var positionMatrix = new Matrix4();
+    positionMatrix.position( this.px, -this.py, this.pz);
+    this.modelMatrix.multiply(rotationMatrix, positionMatrix );
+    */
+    this.normalMatrix.invert(this.modelMatrix);
+    shader.setNormalMatrix(this.normalMatrix);
+  
+    this.modelViewMatrix.multiply(currentCamera.Matrix() ,this.modelMatrix);
+    shader.setModelViewMatrix(this.modelViewMatrix);
+    
+    
+  
+    this.dirty=false;
+  }  
+  
+  this.BindBuffers(shader);
+  currentCamera.SetProyectionMatrix(shader);
+  
+  
+//  this.normalMatrix.transpose();
+    
+  for( var i=0;i<this.submeshes.length;++i){
+    shader.UseTexture(this.textures[i]);
+    gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
+  }
+}
+
+Mesh.prototype.BindBuffers = function(shader){
   gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
   gl.vertexAttribPointer( shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( shader.attribLocations.vertexPosition); 
@@ -88,23 +130,7 @@ Mesh.prototype.Draw = function(){
   gl.enableVertexAttribArray( shader.attribLocations.textureCoord);
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-  
-  shader.Use(gl);
-
-  currentCamera.SetProyectionMatrix(shader);
-  
-//  shader.setModelViewMatrix(modelViewMatrix);
-  
-  var modelViewMatrix = new Matrix4();
-  modelViewMatrix.multiply(currentCamera.Matrix() ,this.modelMatrix);
-  shader.setModelViewMatrix(modelViewMatrix);
-  
-  this.normalMatrix.invert(this.modelMatrix);
-//  this.normalMatrix.transpose();
-  gl.uniformMatrix4fv( shader.uniformLocations.normalMatrix, false, this.normalMatrix.elements);
-    
-  for( var i=0;i<this.submeshes.length;++i){
-    shader.UseTexture(this.textures[i]);
-    gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
-  }
 }
+
+Mesh.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
+Mesh.prototype.Rotation = function (x,y,z) { this.rx=x; this.ry=y; this.rz=z; this.dirty = true;}

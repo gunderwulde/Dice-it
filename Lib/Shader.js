@@ -92,3 +92,9 @@ Shader.prototype.setModelViewMatrix = function(matrix){
   this.Use();
   gl.uniformMatrix4fv( this.uniformLocations.modelViewMatrix, false, matrix.elements);
 }
+
+Shader.prototype.setNormalMatrix = function(matrix){
+  this.Use();    
+  gl.uniformMatrix4fv( this.uniformLocations.normalMatrix, false, matrix.elements);
+}
+

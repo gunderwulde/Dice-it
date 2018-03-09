@@ -12,8 +12,8 @@ Scene.prototype.Push = function (entity) {
   return entity;
 }
 
-Scene.prototype.CreateMesh = function(){
-  return this.Push(new Mesh());
+Scene.prototype.CreateMesh = function(shader){
+  return this.Push(new Mesh(shader));
 }
 
 Scene.prototype.Draw = function() {  
