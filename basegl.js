@@ -1,5 +1,6 @@
-var table;
+/var table;
 var dice;
+var scene;
 var shader;
 var camera;
 var gl;
@@ -16,6 +17,8 @@ function main() {
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
   
+  scene = new Scene();
+  
   camera = new Camera();
   camera.Position(0, 8.5, -10)
   camera.Rotation(48, 0, 0);
@@ -26,8 +29,7 @@ function main() {
   projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
   shader.setProjectionMatrix(projectionMatrix);
   
-  table = new Mesh();
-  table.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
+  scene.Push(new Mesh()).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (mesh){
       var tex0 = new Texture();
       tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
@@ -38,8 +40,7 @@ function main() {
       mesh.textures.push( tex1 );
   });
   
-  dice = new Mesh();
-  dice.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
+  scene.Push(new Mesh()).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
     function (mesh){
       var tex0 = new Texture();
       tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");

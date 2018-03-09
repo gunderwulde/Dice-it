@@ -65,6 +65,7 @@ Mesh.prototype.Load = function(url, onLoad ){
     }        
   };
   xhr.send();
+  return this;
 }
 
 Mesh.prototype.Draw = function(shader){
