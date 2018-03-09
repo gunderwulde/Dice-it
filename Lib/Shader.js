@@ -1,7 +1,9 @@
 var currentShader;
 
-function Shader(url){
+function Shader(url, OnLoad ){
+  this.OnLoad = OnLoad;
   this.Load(url);
+  
 }
 
 Shader.prototype.Load = function(url){
@@ -18,6 +20,7 @@ Shader.prototype.Load = function(url){
       var vsSource = this.response.substring(vertexStar+8,faceStar);
       var fsSource = this.response.substring(faceStar+6);
       self.Init(vsSource,fsSource);
+      if (this.OnLoad!=undefined) this.OnLoad(self);
       scene.Loader.Pop(self);
     }
   }

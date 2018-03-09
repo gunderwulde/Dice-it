@@ -72,6 +72,7 @@ Mesh.prototype.Load = function(url, onLoad ){
 }
 
 Mesh.prototype.Draw = function(){
+  console.log("Draw");
   var shader = this.shader;
   gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
   gl.vertexAttribPointer( shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
@@ -89,7 +90,9 @@ Mesh.prototype.Draw = function(){
   
   shader.Use(gl);
 
-  shader.setModelViewMatrix(modelViewMatrix);
+  currentCamera.SetProyectionMatrix(shader);
+  
+//  shader.setModelViewMatrix(modelViewMatrix);
   
   var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(currentCamera.Matrix() ,this.modelMatrix);

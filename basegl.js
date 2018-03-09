@@ -18,24 +18,24 @@ function main() {
   camera.Position(0, 8.5, -10)
   camera.Rotation(48, 0, 0);
   
-  shader = new Shader("Default.shader");
- 
-  scene.Push(new Mesh()).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
-    function (mesh){
-      var tex0 = new Texture();
-      tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
-      mesh.textures.push(tex0 );
-    
-      var tex1 = new Texture();
-      tex1.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891");
-      mesh.textures.push( tex1 );
-  });
-  
-  scene.Push(new Mesh()).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
-    function (mesh){
-      var tex0 = new Texture();
-      tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
-      mesh.textures.push(tex0 );
+  scene.Shader = new Shader("Default.shader", function(shader){
+    scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
+      function (mesh){
+        var tex0 = new Texture();
+        tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
+        mesh.textures.push(tex0 );
+
+        var tex1 = new Texture();
+        tex1.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891");
+        mesh.textures.push( tex1 );
+    });
+
+    scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
+      function (mesh){
+        var tex0 = new Texture();
+        tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
+        mesh.textures.push(tex0);
+    });
   });
 }
 

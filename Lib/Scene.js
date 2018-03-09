@@ -1,6 +1,7 @@
 function Scene() {
+  this.name = "Scene";
   this.Entities = [];
-  this.Loader = new Loader(this.OnReady);
+  this.Loader = new Loader(this.OnReady);  
 }
 
 Scene.prototype.Push = function (entity) {
@@ -8,23 +9,29 @@ Scene.prototype.Push = function (entity) {
   return entity;
 }
 
-Scene.prototype.Draw = function(){
+Scene.prototype.CreateMesh = function(){
+  var mesh = new Mesh();
+  this.Entities.push(mesh);
+  return mesh;
+}
+
+Scene.prototype.Draw = function() {  
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  console.log("Draw "+this.Name);
   for( var i=0;i<this.Entities.length;++i){
     this.Entities[i].Draw();
   }
 }
 
 Scene.prototype.OnReady = function(){  
-    var then = 0;
-  var self = this;
-    function render(now) {
-      now *= 0.001;  // convert to seconds
-      const deltaTime = now - then;
-      then = now;
-      console.log(">>> "+self);
-      self.Draw();
-      requestAnimationFrame(render);
-    }
+  
+var then = 0;
+  function render(now) {
+    now *= 0.001;  // convert to seconds
+    const deltaTime = now - then;
+    then = now;      
+    scene.Draw();
     requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
 }

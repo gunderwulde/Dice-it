@@ -1,4 +1,5 @@
 function Loader(OnReady) {
+  this.name = "Loader";
   this.OnReady = OnReady;
   this.Pending = [];
 }
