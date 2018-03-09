@@ -88,10 +88,10 @@ Mesh.prototype.Draw = function(scene){
   shader.Use(gl);
   
   if(this.dirty) {
-    this.modelMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
+    this.modelMatrix.rotationEuler(this.rx, this.ry, this.rz);
     this.modelMatrix.position( -this.px, this.py, -this.pz);
     this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
-    this.normalMatrix.rotationEuler( this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
+    this.normalMatrix.rotationEuler( this.rx, this.ry, this.rz);
     this.dirty=false;
   }  
 
@@ -106,5 +106,5 @@ Mesh.prototype.Draw = function(scene){
 }
 
 Mesh.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
-Mesh.prototype.Rotation = function (x,y,z) { this.rx=x; this.ry=y; this.rz=z; this.dirty = true;}
-Mesh.prototype.Rotate = function (x,y,z) { this.rx+=x; this.ry+=y; this.rz+=z; this.dirty = true;}
+Mesh.prototype.Rotation = function (x,y,z) { this.rx=x* Math.PI / 180; this.ry=y* Math.PI / 180; this.rz=z* Math.PI / 180; this.dirty = true;}
+Mesh.prototype.Rotate   = function (x,y,z) { this.rx+=x* Math.PI / 180; this.ry+=y* Math.PI / 180; this.rz+=z* Math.PI / 180; this.dirty = true;}

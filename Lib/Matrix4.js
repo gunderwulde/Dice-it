@@ -27,9 +27,9 @@ return m;
 Matrix4.prototype.rotationEuler = function ( x,y,z ) {
 	var te = this.elements;
 
-	var a = Math.cos( x ), b = Math.sin( x );
-	var c = Math.cos( y ), d = Math.sin( y );
-	var e = Math.cos( z ), f = Math.sin( z );
+	var a = Math.cos(x), b = Math.sin(x);
+	var c = Math.cos(y), d = Math.sin(y);
+	var e = Math.cos(z), f = Math.sin(z);
 
     var ae = a * e, af = a * f, be = b * e, bf = b * f;
 
