@@ -1,7 +1,9 @@
 var currentShader;
 
 function Shader(){
+  this.Init();
 }
+
 
 Shader.prototype.Init = function(){
 // Vertex shader program
@@ -74,10 +76,12 @@ Shader.prototype.Use = function(){
 }
 
 Shader.prototype.UseTexture= function(texture){
-  this.Use();
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, texture.texture);
-  gl.uniform1i(this.uniformLocations.uSampler, 0);
+  if(texture!=undefined){
+    this.Use();
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture.texture);
+    gl.uniform1i(this.uniformLocations.uSampler, 0);
+  }
 }
 
 Shader.prototype.LoadShader = function(type, source) {

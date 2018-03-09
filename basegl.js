@@ -1,4 +1,5 @@
-var mesh;
+var table;
+var dice;
 var shader;
 var camera;
 var gl;
@@ -19,18 +20,15 @@ function main() {
   camera.Position(0, 8.5, -10)
   camera.Rotation(48, 0, 0);
   
-  mesh = new Mesh();
   shader = new Shader();
-  shader.Init();
   
-//  gl.useProgram(shader.programInfo.program);
   const projectionMatrix = new Matrix4();
   projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
   shader.setProjectionMatrix(projectionMatrix);
   
-  mesh.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
-    function (){
-      var then = 0; 
+  table = new Mesh();
+  table.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
+    function (mesh){
       var tex0 = new Texture();
       tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
       mesh.textures.push(tex0 );
@@ -38,20 +36,29 @@ function main() {
       var tex1 = new Texture();
       tex1.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891");
       mesh.textures.push( tex1 );
-    
-      function render(now) {
-        now *= 0.001;  // convert to seconds
-        const deltaTime = now - then;
-        then = now;
-        drawScene(shader.programInfo, deltaTime);
-        requestAnimationFrame(render);
-      }
-      requestAnimationFrame(render);
+  });
+  
+  dice = new Mesh();
+  dice.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
+    function (mesh){
+      var tex0 = new Texture();
+      tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
+      mesh.textures.push(tex0 );
   });
 }
 
+var then = 0; 
+function render(now) {
+  now *= 0.001;  // convert to seconds
+  const deltaTime = now - then;
+  then = now;
+  if(shader!=undefined) drawScene(shader.programInfo, deltaTime);
+  
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+
 var currentIndex = 0;
-var first = true;
 var time = 0;
 
 function drawScene(programInfo, deltaTime) {
@@ -74,5 +81,6 @@ function drawScene(programInfo, deltaTime) {
  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(camera.Matrix() ,modelMatrix);
   shader.setModelViewMatrix(modelViewMatrix);
-  mesh.Draw(shader);
+  table.Draw(shader);
+  dice.Draw(shader);
 }
