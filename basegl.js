@@ -24,11 +24,7 @@ function main() {
   camera.Rotation(48, 0, 0);
   
   shader = new Shader("Default.shader");
-  
-  const projectionMatrix = new Matrix4();
-  projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
-  shader.setProjectionMatrix(projectionMatrix);
-  
+ 
   scene.Push(new Mesh()).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
     function (mesh){
       var tex0 = new Texture();
@@ -46,6 +42,12 @@ function main() {
       tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
       mesh.textures.push(tex0 );
   });
+  
+  
+  
+  const projectionMatrix = new Matrix4();
+  projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
+  shader.setProjectionMatrix(projectionMatrix);
 }
 
 var then = 0; 

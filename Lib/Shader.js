@@ -1,10 +1,8 @@
 var currentShader;
 
 function Shader(url){
-//  this.Init();
   this.Load(url);
 }
-
 
 Shader.prototype.Load = function(url){
   var xhr = new XMLHttpRequest();
@@ -12,13 +10,15 @@ Shader.prototype.Load = function(url){
   xhr.responseType = 'text';
   var self = this;
   
+  scene.Loader.Push(self);  
   xhr.onload = function(e){
     if (this.status == 200) {
       var vertexStar = this.response.indexOf("[vertex]");
       var faceStar = this.response.indexOf("[face]");
       var vsSource = this.response.substring(vertexStar+8,faceStar);
       var fsSource = this.response.substring(faceStar+6);
-      console.log(fsSource);
+      self.Init(vsSource,fsSource);
+      scene.Loader.Pop(self);
     }
   }
   xhr.send();
@@ -61,7 +61,7 @@ Shader.prototype.Init = function(vsSource,fsSource){
       gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
     }
   `;
-  
+  */
   const vertexShader   = this.LoadShader(gl.VERTEX_SHADER, vsSource);
   const fragmentShader = this.LoadShader(gl.FRAGMENT_SHADER, fsSource);
   

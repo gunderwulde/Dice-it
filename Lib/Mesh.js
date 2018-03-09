@@ -10,6 +10,7 @@ Mesh.prototype.Load = function(url, onLoad ){
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
   var self = this;
+  scene.Loader.Push(self);
   xhr.onload = function(e){
     if (this.status == 200) {
       var view = new DataView( this.response );
@@ -62,6 +63,7 @@ Mesh.prototype.Load = function(url, onLoad ){
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, self.indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);      
       onLoad(self);
+      scene.Loader.Pop(self);
     }        
   };
   xhr.send();
