@@ -84,9 +84,12 @@ Mesh.prototype.Draw = function(shader){
   
   shader.Use(gl);
   
-  this.normalMatrix.invert(this.modelMatrix);
-  this.normalMatrix.transpose();
+ var modelViewMatrix = new Matrix4();
+  modelViewMatrix.multiply(currentCamera.Matrix() ,this.modelMatrix);
+  shader.setModelViewMatrix(modelViewMatrix);
   
+  this.normalMatrix.invert(this.modelMatrix);
+//  this.normalMatrix.transpose();
   gl.uniformMatrix4fv( shader.uniformLocations.normalMatrix, false, this.normalMatrix.elements);
     
   for( var i=0;i<this.submeshes.length;++i){

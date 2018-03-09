@@ -1,7 +1,9 @@
+var currentCamera;
+
 function Camera() {
-  
   this.viewMatrix = new Matrix4();
   this.dirty = true;
+  currentCamera = this;
 }
 
 Camera.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}

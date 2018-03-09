@@ -78,9 +78,6 @@ function drawScene(programInfo, deltaTime) {
   }  
   }
 */
- var modelViewMatrix = new Matrix4();
-  modelViewMatrix.multiply(camera.Matrix() ,modelMatrix);
-  shader.setModelViewMatrix(modelViewMatrix);
   table.Draw(shader);
   dice.Draw(shader);
 }
