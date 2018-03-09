@@ -2,6 +2,7 @@ var currentCamera;
 
 function Camera() {
   this.name = "Camera";
+  this.viewProjectionMatrix = new Matrix4();
   this.viewMatrix = new Matrix4();
   this.dirty = true;
   currentCamera = this;
@@ -25,6 +26,8 @@ Camera.prototype.Matrix = function(){
     var positionMatrix = new Matrix4();
     positionMatrix.position( this.px, -this.py, this.pz);
     this.viewMatrix.multiply(rotationMatrix, positionMatrix );
+    
+    this.viewProjectionMatrix.multiply(this.projectionMatrix, this.viewMatrix );
     this.dirty=false;
   }
   return this.viewMatrix;
