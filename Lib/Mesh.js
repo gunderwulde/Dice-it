@@ -88,8 +88,8 @@ Mesh.prototype.Draw = function(){
     var rotationMatrix = new Matrix4();
 	  rotationMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
     var positionMatrix = new Matrix4();
-    positionMatrix.position( this.px, -this.py, this.pz);
-    this.modelMatrix.multiply(rotationMatrix, positionMatrix );
+    positionMatrix.position( -this.px, this.py, -this.pz);
+    this.modelMatrix.multiply(positionMatrix, rotationMatrix );
     this.normalMatrix.invert(this.modelMatrix);
 //  this.normalMatrix.transpose();
   
@@ -97,6 +97,10 @@ Mesh.prototype.Draw = function(){
   
     this.dirty=false;
   }  
+  
+  shader.setNormalMatrix(this.normalMatrix);
+  shader.setModelViewMatrix(this.modelViewMatrix);    
+  shader.setProjectionMatrix( currentCamera.projectionMatrix );    
   
   shader.BindBuffers(this);
   for( var i=0;i<this.submeshes.length;++i){
