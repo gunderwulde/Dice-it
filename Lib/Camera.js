@@ -11,7 +11,7 @@ function Camera() {
   gl.clearDepth(1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
-  
+  console.log(">>> gl.canvas.clientWidth "+gl.canvas.clientWidth+ " "+gl.canvas.clientHeight);
   this.projectionMatrix = new Matrix4();
   this.projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 20.0);  
 }
