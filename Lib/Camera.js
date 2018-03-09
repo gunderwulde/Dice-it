@@ -19,7 +19,7 @@ function Camera() {
 Camera.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
 Camera.prototype.Rotation = function (x,y,z) { this.rx=x; this.ry=y; this.rz=z; this.dirty = true;}
 
-Camera.prototype.Matrix = function(){
+Camera.prototype.Update = function(){
   if(this.dirty){
     var rotationMatrix = new Matrix4();
 	  rotationMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
@@ -30,5 +30,4 @@ Camera.prototype.Matrix = function(){
     this.viewProjectionMatrix.multiply(this.projectionMatrix, this.viewMatrix );
     this.dirty=false;
   }
-  return this.viewMatrix;
 }
