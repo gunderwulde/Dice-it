@@ -39,7 +39,7 @@ function main() {
   
   scene.Update = function(deltaTime){
     dice.Position(0,7,-9);
-    dice.Rotate(0,deltaTime*90,0);
+    dice.Rotate(0,deltaTime*180,0);
   }
   
   

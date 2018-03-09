@@ -42,7 +42,7 @@ Mesh.prototype.Load = function(url, onLoad ){
         var u = view.getFloat32(idx,true); idx+=4;
         var v = view.getFloat32(idx,true); idx+=4;
         uvs.push( u ); 
-        uvs.push( v-0.05 ); //????
+        uvs.push( v-0.06 ); //???? Magic number
         
       }
       var indexOffset = 0;
@@ -87,15 +87,14 @@ Mesh.prototype.Draw = function(){
   shader.Use(gl);
   
   if(this.dirty) {
-    var rotationMatrix = new Matrix4();
-	  rotationMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
-    var positionMatrix = new Matrix4();
-    positionMatrix.position( -this.px, this.py, -this.pz);
-    this.modelMatrix.multiply(positionMatrix, rotationMatrix );
-    this.normalMatrix.invert(this.modelMatrix);
-//  this.normalMatrix.transpose();
-  
+    this.modelMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
+    this.modelMatrix.position( -this.px, this.py, -this.pz);
     this.modelViewMatrix.multiply(currentCamera.Matrix() ,this.modelMatrix);
+    
+    this.normalMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
+//    this.normalMatrix.invert(this.modelMatrix);
+//    this.normalMatrix.transpose(this.modelMatrix);
+  
   
     this.dirty=false;
   }  

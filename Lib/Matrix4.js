@@ -131,15 +131,14 @@ Matrix4.prototype.transposeMultiplyVector = function ( a ) {
 
 Matrix4.prototype.transpose = function (a) {
 	var te = this.elements;
-	var tmp;
-  
-	tmp = te[ 1 ]; te[ 1 ] = te[ 4 ]; te[ 4 ] = tmp;
-	tmp = te[ 2 ]; te[ 2 ] = te[ 8 ]; te[ 8 ] = tmp;
-	tmp = te[ 6 ]; te[ 6 ] = te[ 9 ]; te[ 9 ] = tmp;
+	var tmp;  
+	tmp = a[ 1 ]; te[ 1 ] = a[ 4 ]; te[ 4 ] = tmp;
+	tmp = a[ 2 ]; te[ 2 ] = a[ 8 ]; te[ 8 ] = tmp;
+	tmp = a[ 6 ]; te[ 6 ] = a[ 9 ]; te[ 9 ] = tmp;
 
-	tmp = te[ 3 ]; te[ 3 ] = te[ 12 ]; te[ 12 ] = tmp;
-	tmp = te[ 7 ]; te[ 7 ] = te[ 13 ]; te[ 13 ] = tmp;
-	tmp = te[ 11 ]; te[ 11 ] = te[ 14 ]; te[ 14 ] = tmp;
+//	tmp = a[ 3 ]; te[ 3 ] = a[ 12 ]; te[ 12 ] = tmp;
+//	tmp = a[ 7 ]; te[ 7 ] = a[ 13 ]; te[ 13 ] = tmp;
+//	tmp = a[ 11 ]; te[ 11 ] = a[ 14 ]; te[ 14 ] = tmp;
 
 	return this;
 }
