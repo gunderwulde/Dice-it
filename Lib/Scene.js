@@ -19,7 +19,7 @@ Scene.prototype.CreateMesh = function(shader){
 
 Scene.prototype.Draw = function() {  
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  currentCamera.Update();
+  this.camera.Update();
   for( var i=0;i<this.Entities.length;++i){
     this.Entities[i].Draw(this);
   }

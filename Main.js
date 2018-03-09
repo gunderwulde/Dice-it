@@ -6,10 +6,15 @@ function main() {
   const canvas =  document.getElementById("glcanvas");
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
+  /*
+  canvas.width  = window.innerHeight * 0.56;
+  canvas.height = window.innerHeight;
+  */
+  
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
   
-  var scene = new Scene();  
+  var scene = new Scene();
   
   scene.camera.Position(0, 4, -8)
   scene.camera.Rotation(40, 0, 0);
