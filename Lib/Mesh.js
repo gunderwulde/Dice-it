@@ -1,4 +1,5 @@
-function Mesh() {
+function Mesh(shader) {
+  this.shader = shader;
   this.submeshes = [];
   this.modelMatrix = new Matrix4();
   this.normalMatrix = new Matrix4();
@@ -70,7 +71,8 @@ Mesh.prototype.Load = function(url, onLoad ){
   return this;
 }
 
-Mesh.prototype.Draw = function(shader){
+Mesh.prototype.Draw = function(){
+  var shader = this.shader;
   gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
   gl.vertexAttribPointer( shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( shader.attribLocations.vertexPosition); 
@@ -86,8 +88,10 @@ Mesh.prototype.Draw = function(shader){
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
   
   shader.Use(gl);
+
+  shader.setModelViewMatrix(modelViewMatrix);
   
- var modelViewMatrix = new Matrix4();
+  var modelViewMatrix = new Matrix4();
   modelViewMatrix.multiply(currentCamera.Matrix() ,this.modelMatrix);
   shader.setModelViewMatrix(modelViewMatrix);
   

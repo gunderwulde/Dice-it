@@ -12,11 +12,6 @@ function main() {
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
   
-  gl.clearColor(0.75, 0.75, 0.75, 1.0);
-  gl.clearDepth(1.0);
-  gl.enable(gl.DEPTH_TEST);
-  gl.depthFunc(gl.LEQUAL);
-  
   scene = new Scene();
   
   camera = new Camera();
@@ -42,24 +37,8 @@ function main() {
       tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
       mesh.textures.push(tex0 );
   });
-  
-  
-  
-  const projectionMatrix = new Matrix4();
-  projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
-  shader.setProjectionMatrix(projectionMatrix);
 }
 
-var then = 0; 
-function render(now) {
-  now *= 0.001;  // convert to seconds
-  const deltaTime = now - then;
-  then = now;
-  if(shader!=undefined) drawScene(shader.programInfo, deltaTime);
-  
-  requestAnimationFrame(render);
-}
-requestAnimationFrame(render);
 
 var currentIndex = 0;
 var time = 0;
