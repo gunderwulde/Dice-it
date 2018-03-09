@@ -2,6 +2,7 @@ var mainScene;
 
 function Scene() {
   mainScene = this;
+  this.camera = new Camera();
   this.name = "Scene";
   this.Entities = [];  
   this.Loader = new Loader(this, this.OnReady );
@@ -20,7 +21,7 @@ Scene.prototype.Draw = function() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   currentCamera.Update();
   for( var i=0;i<this.Entities.length;++i){
-    this.Entities[i].Draw();
+    this.Entities[i].Draw(this);
   }
 }
 

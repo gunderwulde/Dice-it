@@ -83,14 +83,14 @@ Mesh.prototype.Load = function(url, onLoad ){
   return this;
 }
 
-Mesh.prototype.Draw = function(){
+Mesh.prototype.Draw = function(scene){
   var shader = this.shader;
   shader.Use(gl);
   
   if(this.dirty) {
     this.modelMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
     this.modelMatrix.position( -this.px, this.py, -this.pz);
-    this.modelViewProyectionMatrix.multiply(currentCamera.viewProjectionMatrix,this.modelMatrix );
+    this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
     this.normalMatrix.rotationEuler( this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
     this.dirty=false;
   }  

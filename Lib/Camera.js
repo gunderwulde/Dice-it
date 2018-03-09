@@ -1,5 +1,3 @@
-var currentCamera;
-
 function Camera() {
   this.name = "Camera";
   this.viewProjectionMatrix = new Matrix4();
@@ -13,7 +11,7 @@ function Camera() {
   gl.depthFunc(gl.LEQUAL);
   
   this.projectionMatrix = new Matrix4();
-  this.projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  
+  this.projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 20.0);  
 }
 
 Camera.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
@@ -31,3 +29,4 @@ Camera.prototype.Update = function(){
     this.dirty=false;
   }
 }
+

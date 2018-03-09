@@ -1,7 +1,5 @@
 //var table;
 var dice;
-var shader;
-var camera;
 var gl;
 
 function main() {
@@ -13,9 +11,8 @@ function main() {
   
   var scene = new Scene();  
   
-  camera = new Camera();
-  camera.Position(0, 8.5, -10)
-  camera.Rotation(48, 0, 0);
+  scene.camera.Position(0, 8.5, -10)
+  scene.camera.Rotation(48, 0, 0);
   
   var shader = new Shader("Default.shader", function(shader){    
     scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
