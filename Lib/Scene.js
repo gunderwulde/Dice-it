@@ -12,5 +12,4 @@ Scene.prototype.Draw = function(shader){
   for( var i=0;i<this.entities.length;++i){
     this.entities[i].Draw(shader);
   }
-
 }

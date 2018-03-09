@@ -23,7 +23,7 @@ function main() {
   camera.Position(0, 8.5, -10)
   camera.Rotation(48, 0, 0);
   
-  shader = new Shader();
+  shader = new Shader("Default.shader");
   
   const projectionMatrix = new Matrix4();
   projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);  

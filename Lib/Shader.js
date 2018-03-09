@@ -1,11 +1,31 @@
 var currentShader;
 
-function Shader(){
-  this.Init();
+function Shader(url){
+//  this.Init();
+  this.Load(url);
 }
 
 
-Shader.prototype.Init = function(){
+Shader.prototype.Load = function(url){
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'text';
+  var self = this;
+  
+  xhr.onload = function(e){
+    if (this.status == 200) {
+      var vertexStar = this.response.indexOf("[vertex]");
+      var faceStar = this.response.indexOf("[face]");
+      var vsSource = this.response.substring(vertexStar+8,faceStar);
+      var fsSource = this.response.substring(faceStar+6);
+      console.log(fsSource);
+    }
+  }
+  xhr.send();
+}
+
+Shader.prototype.Init = function(vsSource,fsSource){
+  /*
 // Vertex shader program
   const vsSource = `
     attribute vec4 aVertexPosition;
