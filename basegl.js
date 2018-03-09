@@ -1,5 +1,5 @@
-/var table;
-var dice;
+//var table;
+//var dice;
 var scene;
 var shader;
 var camera;
@@ -63,8 +63,7 @@ var currentIndex = 0;
 var time = 0;
 
 function drawScene(programInfo, deltaTime) {
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  var modelMatrix = new Matrix4();
+  scene.Draw(shader);
 /*
 	modelMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
   modelMatrix.position( positions[currentIndex+0], positions[currentIndex+1], positions[currentIndex+2]);
@@ -79,6 +78,4 @@ function drawScene(programInfo, deltaTime) {
   }  
   }
 */
-  table.Draw(shader);
-  dice.Draw(shader);
 }
