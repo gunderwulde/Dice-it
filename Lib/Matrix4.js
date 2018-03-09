@@ -212,7 +212,7 @@ Matrix4.prototype.perspective = function(fovy, aspect, near, far) {
   var te = this.elements;
   var f = 1.0 / Math.tan(fovy / 2);
   var nf = 1 / (near - far);
-  te[0] = f / aspect;
+  te[0] = f / -aspect;
   te[1] = 0;
   te[2] = 0;
   te[3] = 0;
@@ -224,8 +224,8 @@ Matrix4.prototype.perspective = function(fovy, aspect, near, far) {
   
   te[8] = 0;
   te[9] = 0;
-  te[10] = (far - near) * nf;
-  te[11] = -1;
+  te[10] = ( near-far) * nf;
+  te[11] = 1;
   
   te[12] = 0;
   te[13] = 0;

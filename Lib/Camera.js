@@ -2,7 +2,9 @@ function Camera() {
   this.name = "Camera";
   this.viewProjectionMatrix = new Matrix4();
   this.viewMatrix = new Matrix4();
-  this.dirty = true;
+  this.Position(0,0,0);
+  this.Rotation(0,0,0);
+  
   currentCamera = this;
   
   gl.clearColor(0.75, 0.75, 0.75, 1.0);
@@ -24,9 +26,9 @@ Camera.prototype.Update = function(){
     this.viewMatrix.position( this.px, this.py, this.pz);
 */    
     var rotationMatrix = new Matrix4();
-	  rotationMatrix.rotationEuler(this.rx, this.ry, this.rz);
+	  rotationMatrix.rotationEuler(-this.rx, -this.ry, -this.rz);
     var positionMatrix = new Matrix4();
-    positionMatrix.position( this.px, this.py, this.pz);
+    positionMatrix.position( -this.px, -this.py, -this.pz);
     this.viewMatrix.multiply(rotationMatrix, positionMatrix );
 
     this.viewProjectionMatrix.multiply(this.projectionMatrix, this.viewMatrix );

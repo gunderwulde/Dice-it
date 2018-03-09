@@ -7,8 +7,6 @@ function Mesh(shader) {
   this.modelViewMatrix = new Matrix4();
   this.modelViewProyectionMatrix = new Matrix4();
   this.textures = [];
-  this.dirty = true;
-  
   this.Position(0,0,0);
   this.Rotation(0,0,0);
 }
