@@ -35,7 +35,7 @@ function main() {
   });
   
   scene.Update = function(deltaTime){
-    dice.Position(0.1, 3.5, -7.5);
+    dice.Position(0, 3.5, -7.5);
   }
   
   
