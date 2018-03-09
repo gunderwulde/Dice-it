@@ -11,7 +11,7 @@ function main() {
   
   var scene = new Scene();  
   
-  scene.camera.Position(0, 0, -5)
+  scene.camera.Position(0, 0, 0)
   scene.camera.Rotation(0, 0, 0);
   var shader = new Shader("Default.shader", function(shader){    
   /*
@@ -36,7 +36,7 @@ function main() {
   
   scene.Update = function(deltaTime){
 //    dice.Position(0, 3.5, -7.5);
-    dice.Position(0, 0, 0);
+    dice.Position(0, 0, 1);
   }
   
   

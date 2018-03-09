@@ -216,14 +216,17 @@ Matrix4.prototype.perspective = function(fovy, aspect, near, far) {
   te[1] = 0;
   te[2] = 0;
   te[3] = 0;
+  
   te[4] = 0;
   te[5] = f;
   te[6] = 0;
   te[7] = 0;
+  
   te[8] = 0;
   te[9] = 0;
-  te[10] = (far + near) * nf;
+  te[10] = (far - near) * nf;
   te[11] = -1;
+  
   te[12] = 0;
   te[13] = 0;
   te[14] = 2 * far * near * nf;
