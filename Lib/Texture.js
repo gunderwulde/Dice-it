@@ -1,4 +1,5 @@
 function Texture() {
+  this.name = "Texture";
 }
 
 Texture.prototype.Load = function(url, onLoad){
@@ -10,7 +11,7 @@ Texture.prototype.Load = function(url, onLoad){
   const image = new Image();
   image.setAttribute('crossorigin', 'anonymous');
   var self = this;
-  scene.Loader.Push(self);
+  mainScene.Loader.Push(self);
   image.onload = function() {
     gl.bindTexture(gl.TEXTURE_2D, self.texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
@@ -22,7 +23,7 @@ Texture.prototype.Load = function(url, onLoad){
        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     }
     if(onLoad!=undefined) onLoad(self);
-    scene.Loader.Pop(self);
+    mainScene.Loader.Pop(self);
   };
   image.src = url;
 }

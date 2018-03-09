@@ -1,6 +1,7 @@
 var currentCamera;
 
 function Camera() {
+  this.name = "Camera";
   this.viewMatrix = new Matrix4();
   this.dirty = true;
   currentCamera = this;

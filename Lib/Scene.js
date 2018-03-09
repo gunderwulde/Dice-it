@@ -1,7 +1,10 @@
+var mainScene;
+
 function Scene() {
+  mainScene = this;
   this.name = "Scene";
-  this.Entities = [];
-  this.Loader = new Loader(this.OnReady);  
+  this.Entities = [];  
+  this.Loader = new Loader(this, this.OnReady);
 }
 
 Scene.prototype.Push = function (entity) {
@@ -10,26 +13,22 @@ Scene.prototype.Push = function (entity) {
 }
 
 Scene.prototype.CreateMesh = function(){
-  var mesh = new Mesh();
-  this.Entities.push(mesh);
-  return mesh;
+  return this.Push(new Mesh());
 }
 
 Scene.prototype.Draw = function() {  
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  console.log("Draw "+this.Name);
   for( var i=0;i<this.Entities.length;++i){
     this.Entities[i].Draw();
   }
 }
 
-Scene.prototype.OnReady = function(){  
-  
-var then = 0;
+Scene.prototype.OnReady = function(scene){
+  var then = 0;
   function render(now) {
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
-    then = now;      
+    then = now;    
     scene.Draw();
     requestAnimationFrame(render);
   }

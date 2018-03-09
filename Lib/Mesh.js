@@ -1,4 +1,5 @@
 function Mesh(shader) {
+  this.name = "Mesh";
   this.shader = shader;
   this.submeshes = [];
   this.modelMatrix = new Matrix4();
@@ -11,7 +12,7 @@ Mesh.prototype.Load = function(url, onLoad ){
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
   var self = this;
-  scene.Loader.Push(self);
+  mainScene.Loader.Push(self);
   xhr.onload = function(e){
     if (this.status == 200) {
       var view = new DataView( this.response );
@@ -64,7 +65,7 @@ Mesh.prototype.Load = function(url, onLoad ){
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, self.indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);      
       onLoad(self);
-      scene.Loader.Pop(self);
+      mainScene.Loader.Pop(self);
     }        
   };
   xhr.send();
@@ -72,8 +73,8 @@ Mesh.prototype.Load = function(url, onLoad ){
 }
 
 Mesh.prototype.Draw = function(){
-  console.log("Draw");
   var shader = this.shader;
+  console.log("Draw " +shader.name);
   gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
   gl.vertexAttribPointer( shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( shader.attribLocations.vertexPosition); 

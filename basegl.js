@@ -1,6 +1,5 @@
 //var table;
 //var dice;
-var scene;
 var shader;
 var camera;
 var gl;
@@ -12,13 +11,13 @@ function main() {
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
   
-  scene = new Scene();
+  var scene = new Scene();
   
   camera = new Camera();
   camera.Position(0, 8.5, -10)
   camera.Rotation(48, 0, 0);
   
-  scene.Shader = new Shader("Default.shader", function(shader){
+  var shader = new Shader("Default.shader", function(shader){
     scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
       function (mesh){
         var tex0 = new Texture();
@@ -39,13 +38,13 @@ function main() {
   });
 }
 
-
+/*
 var currentIndex = 0;
 var time = 0;
 
 function drawScene(programInfo, deltaTime) {
   scene.Draw(shader);
-/*
+
 	modelMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
   modelMatrix.position( positions[currentIndex+0], positions[currentIndex+1], positions[currentIndex+2]);
   
@@ -58,5 +57,6 @@ function drawScene(programInfo, deltaTime) {
     currentIndex+=3;
   }  
   }
-*/
+
 }
+*/
