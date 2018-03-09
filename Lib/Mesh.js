@@ -39,8 +39,10 @@ Mesh.prototype.Load = function(url, onLoad ){
         normals.push( view.getFloat32(idx,true) ); idx+=4;
       }
       for (var i = 0; i < vertices; i++) {
-        uvs.push( view.getFloat32(idx,true) ); idx+=4;
-        uvs.push( view.getFloat32(idx,true) ); idx+=4;
+        var u = view.getFloat32(idx,true); idx+=4;
+        var v = view.getFloat32(idx,true); idx+=4;
+        uvs.push( u ); 
+        uvs.push( v-0.05 ); //????
         
       }
       var indexOffset = 0;
