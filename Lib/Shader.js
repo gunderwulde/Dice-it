@@ -98,3 +98,20 @@ Shader.prototype.setNormalMatrix = function(matrix){
   gl.uniformMatrix4fv( this.uniformLocations.normalMatrix, false, matrix.elements);
 }
 
+Shader.prototype.BindBuffers = function(mesh){
+  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.positionBuffer);
+  gl.vertexAttribPointer( this.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
+  gl.enableVertexAttribArray( this.attribLocations.vertexPosition); 
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.normalBuffer);
+  gl.vertexAttribPointer( this.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray( this.attribLocations.vertexNormal);
+    
+  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoordBuffer);
+  gl.vertexAttribPointer( this.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray( this.attribLocations.textureCoord);
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mesh.indexBuffer);
+
+}
+

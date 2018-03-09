@@ -29,8 +29,3 @@ Camera.prototype.Matrix = function(){
   }
   return this.viewMatrix;
 }
-
-Camera.prototype.SetProyectionMatrix = function(shader){
-    shader.setProjectionMatrix(this.projectionMatrix);
-
-}

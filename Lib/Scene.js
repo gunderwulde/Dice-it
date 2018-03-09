@@ -4,7 +4,7 @@ function Scene() {
   mainScene = this;
   this.name = "Scene";
   this.Entities = [];  
-  this.Loader = new Loader(this, this.OnReady);
+  this.Loader = new Loader(this, this.OnReady );
 }
 
 Scene.prototype.Push = function (entity) {
@@ -23,13 +23,14 @@ Scene.prototype.Draw = function() {
   }
 }
 
-Scene.prototype.OnReady = function(scene){
+Scene.prototype.OnReady = function(self){
   var then = 0;
-  function render(now) {
+  function render(now) {    
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
-    then = now;    
-    scene.Draw();
+    then = now;
+    if(self.Update!=undefined) self.Update(deltaTime);
+    self.Draw();
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);

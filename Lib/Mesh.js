@@ -9,7 +9,7 @@ function Mesh(shader) {
   this.dirty = true;
   
   this.Position(0,0,0);
-  this.Rotation = function (x,y,z) { this.rx=x; this.ry=y; this.rz=z; this.dirty = true;}
+  this.Rotation(0,0,0);
 }
 
 Mesh.prototype.Load = function(url, onLoad ){
@@ -84,53 +84,27 @@ Mesh.prototype.Draw = function(){
   var shader = this.shader;
   shader.Use(gl);
   
-//  if(this.dirty)
-  {
-    /*
+  if(this.dirty) {
     var rotationMatrix = new Matrix4();
 	  rotationMatrix.rotationEuler(this.rx * 0.0174532924, this.ry * 0.0174532924, this.rz * 0.0174532924);
     var positionMatrix = new Matrix4();
     positionMatrix.position( this.px, -this.py, this.pz);
     this.modelMatrix.multiply(rotationMatrix, positionMatrix );
-    */
     this.normalMatrix.invert(this.modelMatrix);
-    shader.setNormalMatrix(this.normalMatrix);
+//  this.normalMatrix.transpose();
   
     this.modelViewMatrix.multiply(currentCamera.Matrix() ,this.modelMatrix);
-    shader.setModelViewMatrix(this.modelViewMatrix);
-    
-    
   
     this.dirty=false;
   }  
   
-  this.BindBuffers(shader);
-  currentCamera.SetProyectionMatrix(shader);
-  
-  
-//  this.normalMatrix.transpose();
-    
+  shader.BindBuffers(this);
   for( var i=0;i<this.submeshes.length;++i){
     shader.UseTexture(this.textures[i]);
     gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
   }
 }
 
-Mesh.prototype.BindBuffers = function(shader){
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-  gl.vertexAttribPointer( shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
-  gl.enableVertexAttribArray( shader.attribLocations.vertexPosition); 
-
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-  gl.vertexAttribPointer( shader.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray( shader.attribLocations.vertexNormal);
-    
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-  gl.vertexAttribPointer( shader.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray( shader.attribLocations.textureCoord);
-
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-}
-
 Mesh.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
 Mesh.prototype.Rotation = function (x,y,z) { this.rx=x; this.ry=y; this.rz=z; this.dirty = true;}
+Mesh.prototype.Rotate = function (x,y,z) { this.rx+=x; this.ry+=y; this.rz+=z; this.dirty = true;}

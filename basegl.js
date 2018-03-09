@@ -1,5 +1,5 @@
 //var table;
-//var dice;
+var dice;
 var shader;
 var camera;
 var gl;
@@ -11,7 +11,7 @@ function main() {
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
   
-  var scene = new Scene();
+  var scene = new Scene();  
   
   camera = new Camera();
   camera.Position(0, 8.5, -10)
@@ -29,13 +29,19 @@ function main() {
         mesh.textures.push( tex1 );
     });
 
-    scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
+    dice = scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
       function (mesh){
         var tex0 = new Texture();
         tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
         mesh.textures.push(tex0);
     });
   });
+  
+  scene.Update = function(deltaTime){
+    dice.Rotate(0,deltaTime*90,0);
+  }
+  
+  
 }
 
 /*
