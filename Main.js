@@ -16,8 +16,8 @@ function main() {
   
   var scene = new Scene();
   
-  scene.camera.Position(0, 4, -8)
-  scene.camera.Rotation(40, 0, 0);
+//  scene.camera.Position(0, 4, -8)
+//  scene.camera.Rotation(40, 0, 0);
   scene.LoadAnim("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fshots.data?1520792464068");
   var shader = new Shader("Default.shader", function(shader){    
 

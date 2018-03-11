@@ -88,10 +88,10 @@ Mesh.prototype.Draw = function(scene){
   if(this.dirty) {
     this.modelMatrix.rotationEuler(this.rx, this.ry, this.rz);
     this.modelMatrix.position( this.px, this.py, this.pz);
-    this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
     this.normalMatrix.rotationEuler( this.rx, this.ry, this.rz);
     this.dirty=false;
   }  
+    this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
 
   shader.setNormalMatrix(this.normalMatrix);
   shader.setModelViewProjectionMatrix(this.modelViewProyectionMatrix);

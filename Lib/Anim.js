@@ -41,6 +41,7 @@ Anim.prototype.Update = function(deltaTime, dice, camera ){
   
   camera.Position( this.cameraPosition[this.currentIndex+0], this.cameraPosition[this.currentIndex+1], this.cameraPosition[this.currentIndex+2] );
   camera.Rotation( this.cameraRotation[this.currentIndex+0], this.cameraRotation[this.currentIndex+1], this.cameraRotation[this.currentIndex+2] );
+
   this.time+=deltaTime;
   if(this.time > 0.03) {
     this.time-=0.03;
