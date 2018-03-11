@@ -42,3 +42,8 @@ Scene.prototype.LoadAnim = function(url){
   this.anim = new Anim();
   this.anim.Load(url);
 }
+
+Scene.prototype.updateAnimation(deltaTime,dice,camera){
+  this.anim.update( dice,camera);
+}
+

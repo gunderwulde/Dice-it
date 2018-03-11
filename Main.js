@@ -41,31 +41,10 @@ function main() {
   });
   
   scene.Update = function(deltaTime){
-    dice.Position(0, 3.5, -7.5);
+    scene.updateAnimation(deltaTime, dice,scene.camerera);
+//    dice.Position(0, 3.5, -7.5);
   }
   
   
 }
 
-/*
-var currentIndex = 0;
-var time = 0;
-
-function drawScene(programInfo, deltaTime) {
-  scene.Draw(shader);
-
-	modelMatrix.rotationEuler( rotations[currentIndex+0] * 0.0174532924, rotations[currentIndex+1] * 0.0174532924, rotations[currentIndex+2] * 0.0174532924);
-  modelMatrix.position( positions[currentIndex+0], positions[currentIndex+1], positions[currentIndex+2]);
-  
-  time+=deltaTime;
-  if(time>0.03){
-    time-=0.03;
-  if(currentIndex>=positions.length){
-    currentIndex=0;
-  }else{
-    currentIndex+=3;
-  }  
-  }
-
-}
-*/
