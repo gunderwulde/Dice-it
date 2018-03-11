@@ -17,33 +17,33 @@ Anim.prototype.Load = function(url, onLoad ){
     if (this.status == 200) {
       var view = new DataView( this.response );
       var idx=0;
-      this.frames = view.getUint16(idx,true); idx+=2;
-      this.dicePosition =[];
-      this.diceRotation =[];
-      this.cameraPosition =[];
-      this.cameraRotation =[];
-      for(var i=0;i<this.frames*3;i++){ this.dicePosition.push(view.getFloat32(idx,true));idx+=4;}
-      for(var i=0;i<this.frames*3;i++){ this.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
-      for(var i=0;i<this.frames*3;i++){ this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
-      for(var i=0;i<this.frames*3;i++){ this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
+      self.frames = view.getUint16(idx,true); idx+=2;
+      self.dicePosition =[];
+      self.diceRotation =[];
+      self.cameraPosition =[];
+      self.cameraRotation =[];
+      for(var i=0;i<self.frames*3;i++){ self.dicePosition.push(view.getFloat32(idx,true));idx+=4;}
+      for(var i=0;i<self.frames*3;i++){ self.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
+      for(var i=0;i<self.frames*3;i++){ self.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
+      for(var i=0;i<self.frames*3;i++){ self.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
+      
+      console.log(">> "+self.dicePosition[0] + " "+self.dicePosition[1]+" "+self.dicePosition[2]);
       if(onLoad!=undefined) onLoad(self);
       mainScene.Loader.Pop(self);
+      console.log("Loaded");
     }
   }
   xhr.send();
 }
 
-Anim.prototype.Upate = function(deltaTime, dice, camera ){
-  dice.Position( this.dicePosition[this.currentIndex+0], this.dicePosition[currentIndex+1], this.dicePosition[currentIndex+2] );
-  dice.this.Rotation( this.diceRotationthis.currentIndex+0], this.diceRotation[currentIndex+1], this.diceRotation [currntIndex+2] );
+Anim.prototype.Update = function(deltaTime, dice, camera ){
+  dice.Position( this.dicePosition[this.currentIndex+0], this.dicePosition[this.currentIndex+1], this.dicePosition[this.currentIndex+2] );
+  dice.Rotation( this.diceRotation[this.currentIndex+0], this.diceRotation[this.currentIndex+1], this.diceRotation[this.currentIndex+2] );
   
   this.time+=deltaTime;
-  if(this.time>0.03){
+  if(this.time > 0.03) {
     this.time-=0.03;
-    if(this.currentIndex>=this.frames){
-      this.currentIndex=0;
-    }else{
-      this.currentIndex+=3;
-    }  
+    if(this.currentIndex>=this.frames) this.currentIndex=0;
+    else this.currentIndex+=3;
   }
 }

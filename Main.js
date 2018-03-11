@@ -41,8 +41,7 @@ function main() {
   });
   
   scene.Update = function(deltaTime){
-    scene.updateAnimation(deltaTime, dice,scene.camerera);
-//    dice.Position(0, 3.5, -7.5);
+    scene.updateAnimation(deltaTime, dice,scene.camera);
   }
   
   
