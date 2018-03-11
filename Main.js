@@ -18,7 +18,7 @@ function main() {
   
   scene.camera.Position(0, 4, -8)
   scene.camera.Rotation(40, 0, 0);
-  scene.LoadAnim("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fshots.data?1520790162117");
+  scene.LoadAnim("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fshots.data?1520792464068");
   var shader = new Shader("Default.shader", function(shader){    
 
     scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
@@ -41,7 +41,7 @@ function main() {
   });
   
   scene.Update = function(deltaTime){
-    scene.updateAnimation(deltaTime, dice,scene.camera);
+    scene.updateAnimation(deltaTime, dice, scene.camera);
   }
   
   

@@ -20,10 +20,6 @@ Camera.prototype.Rotation = function (x,y,z) { this.rx=x* Math.PI / 180; this.ry
 
 Camera.prototype.Update = function(){
   if(this.dirty){
-/*
-    this.viewMatrix.rotationEuler(this.rx, this.ry, this.rz);
-    this.viewMatrix.position( this.px, this.py, this.pz);
-*/    
     var rotationMatrix = new Matrix4();
 	  rotationMatrix.rotationEuler(-this.rx, -this.ry, -this.rz);
     var positionMatrix = new Matrix4();

@@ -27,7 +27,6 @@ Anim.prototype.Load = function(url, onLoad ){
       for(var i=0;i<self.frames*3;i++){ self.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
       for(var i=0;i<self.frames*3;i++){ self.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
       
-      console.log(">> "+self.dicePosition[0] + " "+self.dicePosition[1]+" "+self.dicePosition[2]);
       if(onLoad!=undefined) onLoad(self);
       mainScene.Loader.Pop(self);
       console.log("Loaded");
@@ -40,10 +39,12 @@ Anim.prototype.Update = function(deltaTime, dice, camera ){
   dice.Position( this.dicePosition[this.currentIndex+0], this.dicePosition[this.currentIndex+1], this.dicePosition[this.currentIndex+2] );
   dice.Rotation( this.diceRotation[this.currentIndex+0], this.diceRotation[this.currentIndex+1], this.diceRotation[this.currentIndex+2] );
   
+  camera.Position( this.cameraPosition[this.currentIndex+0], this.cameraPosition[this.currentIndex+1], this.cameraPosition[this.currentIndex+2] );
+  camera.Rotation( this.cameraRotation[this.currentIndex+0], this.cameraRotation[this.currentIndex+1], this.cameraRotation[this.currentIndex+2] );
   this.time+=deltaTime;
   if(this.time > 0.03) {
     this.time-=0.03;
-    if(this.currentIndex>=this.frames) this.currentIndex=0;
+    if(this.currentIndex>=this.frames*3) this.currentIndex=0;
     else this.currentIndex+=3;
   }
 }
