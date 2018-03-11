@@ -37,3 +37,8 @@ Scene.prototype.OnReady = function(self){
   }
   requestAnimationFrame(render);
 }
+
+Scene.prototype.LoadAnim = function(url){
+  this.anim = new Anim();
+  this.anim.Load(url);
+}
