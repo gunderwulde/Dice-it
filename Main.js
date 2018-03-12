@@ -17,7 +17,7 @@ function main() {
 //  scene.camera.Position(0, 4, -8)
 //  scene.camera.Rotation(40, 0, 0);
   scene.results = new Results();
-  scene.results.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520857894072");
+  scene.results.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520858992017");
   
   
   var shader = new Shader("Default.shader", function(shader){    
