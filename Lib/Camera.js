@@ -16,12 +16,12 @@ function Camera() {
 }
 
 Camera.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
-Camera.prototype.Rotation = function (x,y,z) { this.rx=x* Math.PI / 180; this.ry=y* Math.PI / 180; this.rz=z* Math.PI / 180; this.dirty = true;}
+//Camera.prototype.Rotation = function (x,y,z) { this.rx=x* Math.PI / 180; this.ry=y* Math.PI / 180; this.rz=z* Math.PI / 180; this.dirty = true;}
+Camera.prototype.Rotation = function (q) { this.rotation=q; this.dirty = true;}
 
 Camera.prototype.Update = function(){
   if(this.dirty){
-    var rotationMatrix = new Matrix4();
-	  rotationMatrix.rotationEuler(-this.rx, -this.ry, -this.rz);
+    var rotationMatrix = this.rotation.ToMatrix();
     var positionMatrix = new Matrix4();
     positionMatrix.position( -this.px, -this.py, -this.pz);
     this.viewMatrix.multiply(rotationMatrix, positionMatrix );

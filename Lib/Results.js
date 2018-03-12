@@ -71,9 +71,17 @@ Result.prototype.Load = function(view,idx){
     this.cameraPosition =[];
     this.cameraRotation =[];      
     for(var i=0;i<this.frames;i++){ this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;}
-    for(var i=0;i<this.frames;i++){ this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
+    for(var i=0;i<this.frames;i++){ 
+      this.diceRotation.push(new Quaternion( view.getFloat32(idx,true), view.getFloat32(idx+4,true), view.getFloat32(idx+8,true), view.getFloat32(idx+12,true) ) );
+      idx+=16;
+    }
+//    for(var i=0;i<this.frames;i++){ this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
     for(var i=0;i<this.frames;i++){ this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
-    for(var i=0;i<this.frames;i++){ this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
+    for(var i=0;i<this.frames;i++){ 
+      this.cameraRotation.push(new Quaternion( view.getFloat32(idx,true), view.getFloat32(idx+4,true), view.getFloat32(idx+8,true), view.getFloat32(idx+12,true) ) );
+      idx+=16;
+    }
+//    for(var i=0;i<this.frames;i++){ this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
   
   return idx;
 }
@@ -90,9 +98,12 @@ Result.prototype.Update = function(deltaTime, dice, camera){
       
       var idx = this.currentIndex*3;
       camera.Position( this.cameraPosition[idx+0], this.cameraPosition[idx+1], this.cameraPosition[idx+2] );
-      camera.Rotation( this.cameraRotation[idx+0], this.cameraRotation[idx+1], this.cameraRotation[idx+2] );
+//      camera.Rotation( this.cameraRotation[idx], this.cameraRotation[idx+1], this.cameraRotation[idx+2] );
+      camera.Rotation( this.cameraRotation[this.currentIndex]);
+      
       dice.Position( this.dicePosition[idx+0], this.dicePosition[idx+1], this.dicePosition[idx+2] );
-      dice.Rotation( this.diceRotation[idx+0], this.diceRotation[idx+1], this.diceRotation[idx+2] );
+      dice.Rotation( this.diceRotation[this.currentIndex]);
+//      dice.Rotation( this.diceRotation[idx+0], this.diceRotation[idx+1], this.diceRotation[idx+2] );
     }
   return true;
 }

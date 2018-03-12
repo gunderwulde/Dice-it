@@ -19,17 +19,19 @@ Quaternion.prototype.ToMatrix = function(){
   m.elements[5] = (-sqx + sqy - sqz + sqw)*invs ;
   m.elements[10] = (-sqx - sqy + sqz + sqw)*invs ;
     
-    var tmp1 = q.x*q.y;
-    var tmp2 = q.z*q.w;
-    m.elements[4] = 2.0 * (tmp1 + tmp2)*invs ; // m10
-    m.elements[1] = 2.0 * (tmp1 - tmp2)*invs ; // m01
-    
-    var = q.x*q.z;
-    var = q.y*q.w;
-    m.elements[8] = 2.0 * (tmp1 - tmp2)*invs ; // m20
-    m.elements[2] = 2.0 * (tmp1 + tmp2)*invs ; // m02
-    var = q.y*q.z;
-    var = q.x*q.w;
-    m21 = 2.0 * (tmp1 + tmp2)*invs ; // m21
-    m12 = 2.0 * (tmp1 - tmp2)*invs ; // m12     
+  var tmp1 = q.x*q.y;
+  var tmp2 = q.z*q.w;
+  m.elements[4] = 2.0 * (tmp1 + tmp2)*invs ; // m10
+  m.elements[1] = 2.0 * (tmp1 - tmp2)*invs ; // m01
+
+  var tmp1 = q.x*q.z;
+  var tmp2 = q.y*q.w;
+  m.elements[8] = 2.0 * (tmp1 - tmp2)*invs ; // m20
+  m.elements[2] = 2.0 * (tmp1 + tmp2)*invs ; // m02
+  var tmp1 = q.y*q.z;
+  var tmp2 = q.x*q.w;
+  m.elements[9] = 2.0 * (tmp1 + tmp2)*invs ; // m21
+  m.elements[6] = 2.0 * (tmp1 - tmp2)*invs ; // m12
+  
+return m;
 }

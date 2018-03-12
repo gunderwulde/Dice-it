@@ -8,7 +8,7 @@ function Mesh(shader) {
   this.modelViewProyectionMatrix = new Matrix4();
   this.textures = [];
   this.Position(0,0,0);
-  this.Rotation(0,0,0);
+  this.Rotation(new Quaternion());
 }
 
 Mesh.prototype.Load = function(url, onLoad ){
@@ -86,9 +86,9 @@ Mesh.prototype.Draw = function(scene){
   shader.Use(gl);
   
   if(this.dirty) {
-    this.modelMatrix.rotationEuler(this.rx, this.ry, this.rz);
+    this.modelMatrix = this.rotation.ToMatrix();
     this.modelMatrix.position( this.px, this.py, this.pz);
-    this.normalMatrix.rotationEuler( this.rx, this.ry, this.rz);
+    this.normalMatrix.this.rotation.ToMatrix();
     this.dirty=false;
   }  
     this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
@@ -104,5 +104,4 @@ Mesh.prototype.Draw = function(scene){
 }
 
 Mesh.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
-Mesh.prototype.Rotation = function (x,y,z) { this.rx=x* Math.PI / 180; this.ry=y* Math.PI / 180; this.rz=z* Math.PI / 180; this.dirty = true;}
-Mesh.prototype.Rotate   = function (x,y,z) { this.rx+=x* Math.PI / 180; this.ry+=y* Math.PI / 180; this.rz+=z* Math.PI / 180; this.dirty = true;}
+Mesh.prototype.Rotation = function (q) { this.rotation=q; this.dirty = true;}
