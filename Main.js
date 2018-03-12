@@ -14,8 +14,6 @@ function main() {
   
   var scene = new Scene();
   
-//  scene.camera.Position(0, 4, -8)
-//  scene.camera.Rotation(40, 0, 0);
   scene.results = new Results();
   scene.results.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520858992017");
   
@@ -41,7 +39,7 @@ function main() {
     });
     
     canvas.onclick = function(ev){
-      scene.results.Throw(1);
+      scene.results.Throw(getRandomInt(1,6));
     };
     
   });
@@ -49,5 +47,9 @@ function main() {
   scene.Update = function(deltaTime){
     scene.results.Update( deltaTime, dice, scene.camera);
   }
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 

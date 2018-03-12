@@ -16,9 +16,9 @@ Results.prototype.Load = function(url, onLoad ){
       var idx=0;
       self.valores = [];
       for(var j=0;j<6;j++){
-        self.valores.push({});
-        self.valores[j].count = view.getUint16(idx,true); idx+=2;
-        self.valores[j].result = [];
+        var value = { count:view.getUint16(idx,true), result: [] };
+        idx+=2;        
+        self.valores.push(value);
         for(var i=0;i<self.valores[j].count;i++){
           self.valores[j].result[i] = new Result();
           idx = self.valores[j].result[i].Load(view,idx);
@@ -34,18 +34,24 @@ Results.prototype.Load = function(url, onLoad ){
 
 Results.prototype.Update = function(deltaTime, dice, camera ){
   if(this.current!=null){
-    if( !this.current.Update(deltaTime, dice, camera) ){
-      console.log(">> End ");
+    if( !this.current.Update(deltaTime, dice, camera) ){      
       this.current=null;
     }
   }
 }
 
+Results.prototype.getRandomInt = function(min, max) {
+    return Math.floor( Math.random() * (max - min + 1)) + min;
+}
+
 Results.prototype.Throw = function(value){
-  this.current = self.valores[value].result[0];
+  var rand = this.getRandomInt(0,4);
+  this.current = this.valores[value-1].result[rand];
   this.current.Reset();
 }
 
+function Value() {
+}
 
 function Result() {
   this.currentIndex = 0;
@@ -64,9 +70,9 @@ Result.prototype.Load = function(view,idx){
     this.diceRotation =[];
     this.cameraPosition =[];
     this.cameraRotation =[];      
-    for(var i=0;i<this.frames*3;i++){ this.dicePosition.push(view.getFloat32(idx,true));idx+=4;}
+    for(var i=0;i<this.frames;i++){ this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;}
     for(var i=0;i<this.frames*3;i++){ this.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
-    for(var i=0;i<this.frames*3;i++){ this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
+    for(var i=0;i<this.frames;i++){ this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
     for(var i=0;i<this.frames*3;i++){ this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
   
   return idx;
