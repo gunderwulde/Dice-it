@@ -86,9 +86,16 @@ Mesh.prototype.Draw = function(scene){
   shader.Use(gl);
   
   if(this.dirty) {
-    this.modelMatrix = this.rotation.ToMatrix();
-    this.modelMatrix.position( this.px, this.py, this.pz);
-    this.normalMatrix.this.rotation.ToMatrix();
+    
+    var rotationMatrix = this.rotation.ToMatrix();
+    var positionMatrix = new Matrix4();
+    positionMatrix.position( this.px, this.py, this.pz);
+    this.modelMatrix.multiply(rotationMatrix, positionMatrix );
+    
+    
+//    this.modelMatrix = this.rotation.ToMatrix();
+//    this.modelMatrix.position( this.px, this.py, this.pz);
+    this.normalMatrix = this.rotation.ToMatrix();
     this.dirty=false;
   }  
     this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );

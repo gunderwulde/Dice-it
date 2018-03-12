@@ -6,11 +6,12 @@ function Quaternion( x, y, z, w ) {
 }
 
 Quaternion.prototype.ToMatrix = function(){
-  var m = new Matrix();
-  var sqw = q.w*q.w;
-  var sqx = q.x*q.x;
-  var sqy = q.y*q.y;
-   var sqz = q.z*q.z;
+  var m = new Matrix4();
+  
+  var sqw = this._w*this._w;
+  var sqx = this._x*this._x;
+  var sqy = this._y*this._y;
+  var sqz = this._z*this._z;
 
     // invs (inverse square length) is only required if quaternion is not already normalised
   var invs = 1 / (sqx + sqy + sqz + sqw);
@@ -19,17 +20,17 @@ Quaternion.prototype.ToMatrix = function(){
   m.elements[5] = (-sqx + sqy - sqz + sqw)*invs ;
   m.elements[10] = (-sqx - sqy + sqz + sqw)*invs ;
     
-  var tmp1 = q.x*q.y;
-  var tmp2 = q.z*q.w;
+  var tmp1 = this._x*this._y;
+  var tmp2 = this._z*this._w;
   m.elements[4] = 2.0 * (tmp1 + tmp2)*invs ; // m10
   m.elements[1] = 2.0 * (tmp1 - tmp2)*invs ; // m01
 
-  var tmp1 = q.x*q.z;
-  var tmp2 = q.y*q.w;
+  var tmp1 = this._x*this._z;
+  var tmp2 = this._y*this._w;
   m.elements[8] = 2.0 * (tmp1 - tmp2)*invs ; // m20
   m.elements[2] = 2.0 * (tmp1 + tmp2)*invs ; // m02
-  var tmp1 = q.y*q.z;
-  var tmp2 = q.x*q.w;
+  var tmp1 = this._y*this._z;
+  var tmp2 = this._x*this._w;
   m.elements[9] = 2.0 * (tmp1 + tmp2)*invs ; // m21
   m.elements[6] = 2.0 * (tmp1 - tmp2)*invs ; // m12
   
