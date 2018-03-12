@@ -71,9 +71,9 @@ Result.prototype.Load = function(view,idx){
     this.cameraPosition =[];
     this.cameraRotation =[];      
     for(var i=0;i<this.frames;i++){ this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;}
-    for(var i=0;i<this.frames*3;i++){ this.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
+    for(var i=0;i<this.frames;i++){ this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
     for(var i=0;i<this.frames;i++){ this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
-    for(var i=0;i<this.frames*3;i++){ this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
+    for(var i=0;i<this.frames;i++){ this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
   
   return idx;
 }
