@@ -90,7 +90,7 @@ Mesh.prototype.Draw = function(scene){
     var rotationMatrix = this.rotation.ToMatrix();
     var positionMatrix = new Matrix4();
     positionMatrix.position( this.px, this.py, this.pz);
-    this.modelMatrix.multiply(rotationMatrix, positionMatrix );
+    this.modelMatrix.multiply(positionMatrix,rotationMatrix );
     
     
 //    this.modelMatrix = this.rotation.ToMatrix();
