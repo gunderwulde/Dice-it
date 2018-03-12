@@ -17,7 +17,7 @@ function main() {
 //  scene.camera.Position(0, 4, -8)
 //  scene.camera.Rotation(40, 0, 0);
   scene.results = new Results();
-  scene.results.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520856594971");
+  scene.results.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520857894072");
   
   
   var shader = new Shader("Default.shader", function(shader){    
@@ -40,8 +40,10 @@ function main() {
         mesh.textures.push(tex0);
     });
     
-    scene.results.Throw(5);
-    canvas.addEventListener("touchstart", touchstart, false);
+    canvas.onclick = function(ev){
+      scene.results.Throw(1);
+    };
+    
   });
   
   scene.Update = function(deltaTime){
