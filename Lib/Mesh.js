@@ -87,15 +87,12 @@ Mesh.prototype.Draw = function(scene){
   
   if(this.dirty) {
     
-    var rotationMatrix = this.rotation.ToMatrix();
+    var rotationMatrix = new Matrix4();
+    rotationMatrix.fromQuaternion(this.rotation);
     var positionMatrix = new Matrix4();
     positionMatrix.position( this.px, this.py, this.pz);
     this.modelMatrix.multiply(positionMatrix,rotationMatrix );
-    
-    
-//    this.modelMatrix = this.rotation.ToMatrix();
-//    this.modelMatrix.position( this.px, this.py, this.pz);
-    this.normalMatrix = this.rotation.ToMatrix();
+    this.normalMatrix.fromQuaternion(this.rotation);
     this.dirty=false;
   }  
     this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
