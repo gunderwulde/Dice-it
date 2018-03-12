@@ -38,12 +38,3 @@ Scene.prototype.OnReady = function(self){
   requestAnimationFrame(render);
 }
 
-Scene.prototype.LoadAnim = function(url){
-  this.anim = new Anim();
-  this.anim.Load(url);
-}
-
-Scene.prototype.updateAnimation = function(deltaTime,dice,camera){
-  this.anim.Update( deltaTime, dice, camera);
-}
-

@@ -4,12 +4,10 @@ var gl;
 
 function main() {
   const canvas =  document.getElementById("glcanvas");
-  canvas.width  = 720;//window.innerWidth;
-  canvas.height = 1280;//window.innerHeight;
-  /*
+//  canvas.width  = 720;//window.innerWidth;
+//  canvas.height = 1280;//window.innerHeight;
   canvas.width  = window.innerHeight * 0.56;
   canvas.height = window.innerHeight;
-  */
   
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
@@ -18,7 +16,10 @@ function main() {
   
 //  scene.camera.Position(0, 4, -8)
 //  scene.camera.Rotation(40, 0, 0);
-  scene.LoadAnim("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520856594971");
+  scene.results = new Results();
+  scene.results.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520856594971");
+  
+  
   var shader = new Shader("Default.shader", function(shader){    
 
     scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
@@ -38,12 +39,13 @@ function main() {
         tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
         mesh.textures.push(tex0);
     });
+    
+    scene.results.Throw(5);
+    canvas.addEventListener("touchstart", touchstart, false);
   });
   
   scene.Update = function(deltaTime){
-    scene.updateAnimation(deltaTime, dice, scene.camera);
+    scene.results.Update( deltaTime, dice, scene.camera);
   }
-  
-  
 }
 
