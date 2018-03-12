@@ -4,6 +4,7 @@ function Anim() {
   this.name="Anim";
   this.currentIndex = 0;
   this.time = 0;
+  this.play = true;
 }
 
 Anim.prototype.Load = function(url, onLoad ){
@@ -17,6 +18,7 @@ Anim.prototype.Load = function(url, onLoad ){
     if (this.status == 200) {
       var view = new DataView( this.response );
       var idx=0;
+      self.results = view.getUint16(idx,true); idx+=2;
       self.frames = view.getUint16(idx,true); idx+=2;
       self.dicePosition =[];
       self.diceRotation =[];
@@ -36,16 +38,18 @@ Anim.prototype.Load = function(url, onLoad ){
 }
 
 Anim.prototype.Update = function(deltaTime, dice, camera ){
-  dice.Position( this.dicePosition[this.currentIndex+0], this.dicePosition[this.currentIndex+1], this.dicePosition[this.currentIndex+2] );
-  dice.Rotation( this.diceRotation[this.currentIndex+0], this.diceRotation[this.currentIndex+1], this.diceRotation[this.currentIndex+2] );
-  
-  camera.Position( this.cameraPosition[this.currentIndex+0], this.cameraPosition[this.currentIndex+1], this.cameraPosition[this.currentIndex+2] );
-  camera.Rotation( this.cameraRotation[this.currentIndex+0], this.cameraRotation[this.currentIndex+1], this.cameraRotation[this.currentIndex+2] );
+  if(this.play){
+    var idx = this.currentIndex*3;
+    dice.Position( this.dicePosition[idx+0], this.dicePosition[idx+1], this.dicePosition[idx+2] );
+    dice.Rotation( this.diceRotation[idx+0], this.diceRotation[idx+1], this.diceRotation[idx+2] );
 
-  this.time+=deltaTime;
-  if(this.time > 0.03) {
-    this.time-=0.03;
-    if(this.currentIndex>=this.frames*3) this.currentIndex=0;
-    else this.currentIndex+=3;
+    camera.Position( this.cameraPosition[idx+0], this.cameraPosition[idx+1], this.cameraPosition[idx+2] );
+    camera.Rotation( this.cameraRotation[idx+0], this.cameraRotation[idx+1], this.cameraRotation[idx+2] );
+    this.time+=deltaTime;
+    if(this.time > 0.03) {
+      this.time=0.00;
+      if(this.currentIndex>this.frames) this.play=false;
+      else this.currentIndex++;
+    }
   }
 }
