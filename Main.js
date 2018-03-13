@@ -3,6 +3,7 @@ var dice;
 var gl;
 
 function main() {
+  console.log(">>> "+window.location.href );
   const canvas =  document.getElementById("glcanvas");
 //  canvas.width  = 720;//window.innerWidth;
 //  canvas.height = 1280;//window.innerHeight;
