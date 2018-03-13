@@ -27,7 +27,8 @@ Results.prototype.Load = function(url, onLoad ){
       
       if(onLoad!=undefined) onLoad(self);
       mainScene.Loader.Pop(self);
-    }
+    }else
+      console.log(">>> "+this.status);
   }
   xhr.send();
 }

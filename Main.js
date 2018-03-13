@@ -2,6 +2,8 @@
 var dice;
 var gl;
 
+var baseURL = "https://gunderwulde.github.io/dice-gl/";
+
 function main() {
   const canvas =  document.getElementById("glcanvas");
 //  canvas.width  = 720;//window.innerWidth;
@@ -15,26 +17,26 @@ function main() {
   var scene = new Scene();
   
   scene.results = new Results();
-  scene.results.Load("https://gunderwulde.github.io/dice-gl/Assets/dice.results");
+  scene.results.Load(baseURL+"Assets/dice.results");
   
   
   var shader = new Shader("Default.shader", function(shader){    
 
-    scene.CreateMesh(shader).Load("https://gunderwulde.github.io/dice-gl/Assets/Mesa.mesh", 
+    scene.CreateMesh(shader).Load(baseURL+"Assets/Mesa.mesh", 
       function (mesh){
         var tex0 = new Texture();
-        tex0.Load("https://gunderwulde.github.io/dice-gl/Assets/felt.png");
+        tex0.Load(baseURL+"Assets/felt.png");
         mesh.textures.push(tex0 );
 
         var tex1 = new Texture();
-        tex1.Load("https://gunderwulde.github.io/dice-gl/Assets/foam.jpg");
+        tex1.Load(baseURL+"Assets/foam.jpg");
         mesh.textures.push( tex1 );
     });
 
-    dice = scene.CreateMesh(shader).Load("https://gunderwulde.github.io/dice-gl/Assets/SquaredDice.mesh", 
+    dice = scene.CreateMesh(shader).Load(baseURL+"Assets/SquaredDice.mesh", 
       function (mesh){
         var tex0 = new Texture();
-        tex0.Load("https://gunderwulde.github.io/dice-gl/Assets/DadoRojo.png");
+        tex0.Load(baseURL+"Assets/DadoRojo.png");
         mesh.textures.push(tex0);
     });
     
