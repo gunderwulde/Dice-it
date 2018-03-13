@@ -30,40 +30,40 @@ function main() {
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
   
-  var scene = new Scene();
-  
-  var assets = new Assets();
-  
-  scene.results = new Results();
-  scene.results.Load( loadResource("dice.results") );
-    
-  var shader = new Shader("Default.shader", function(shader){    
-    scene.CreateMesh(shader).Load(loadResource("Mesa.mesh"), 
-      function (mesh){
-        var tex0 = new Texture();
-        tex0.Load(loadResource("felt.png"));
-        mesh.textures.push(tex0 );
+  var scene = new Scene();  
+  new Assets().then = function(assets){
+    console.log(">>> Assets "+assets);
+    scene.results = new Results();
+    scene.results.Load( loadResource("dice.results") );
 
-        var tex1 = new Texture();
-        tex1.Load(loadResource("foam.jpg"));
-        mesh.textures.push( tex1 );
+    var shader = new Shader("Default.shader", function(shader){    
+      scene.CreateMesh(shader).Load(loadResource("Mesa.mesh"), 
+        function (mesh){
+          var tex0 = new Texture();
+          tex0.Load(loadResource("felt.png"));
+          mesh.textures.push(tex0 );
+
+          var tex1 = new Texture();
+          tex1.Load(loadResource("foam.jpg"));
+          mesh.textures.push( tex1 );
+      });
+
+      dice = scene.CreateMesh(shader).Load(loadResource("SquaredDice.mesh"), 
+        function (mesh){
+          var tex0 = new Texture();
+          tex0.Load(loadResource("DadoRojo.png"));
+          mesh.textures.push(tex0);
+      });
+
+      canvas.onclick = function(ev){
+        scene.results.Throw(getRandomInt(1,6));
+      };
+
     });
 
-    dice = scene.CreateMesh(shader).Load(loadResource("SquaredDice.mesh"), 
-      function (mesh){
-        var tex0 = new Texture();
-        tex0.Load(loadResource("DadoRojo.png"));
-        mesh.textures.push(tex0);
-    });
-    
-    canvas.onclick = function(ev){
-      scene.results.Throw(getRandomInt(1,6));
-    };
-    
-  });
-  
-  scene.Update = function(deltaTime){
-    scene.results.Update( deltaTime, dice, scene.camera);
+    scene.Update = function(deltaTime){
+      scene.results.Update( deltaTime, dice, scene.camera);
+    }
   }
 }
 

@@ -15,6 +15,8 @@ function Assets(){
       var elems = JSON.parse('{"elems":[' + str + "{}]}").elems;
       for( var i=0;i<elems.length;++i)
         self.elements[elems[i].name]  = elems[i].url;
+      
+      self.then(self);      
       mainScene.Loader.Pop(self);
     }
   }
