@@ -3,7 +3,6 @@ var dice;
 var gl;
 
 function main() {
-  console.log(">>> "+window.location.href );
   const canvas =  document.getElementById("glcanvas");
 //  canvas.width  = 720;//window.innerWidth;
 //  canvas.height = 1280;//window.innerHeight;
@@ -16,26 +15,26 @@ function main() {
   var scene = new Scene();
   
   scene.results = new Results();
-  scene.results.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520865831507");
+  scene.results.Load("https://gunderwulde.github.io/dice-gl/Assets/dice.results");
   
   
   var shader = new Shader("Default.shader", function(shader){    
 
-    scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105", 
+    scene.CreateMesh(shader).Load("https://gunderwulde.github.io/dice-gl/Assets/Mesa.mesh", 
       function (mesh){
         var tex0 = new Texture();
-        tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857");
+        tex0.Load("https://gunderwulde.github.io/dice-gl/Assets/felt.png");
         mesh.textures.push(tex0 );
 
         var tex1 = new Texture();
-        tex1.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891");
+        tex1.Load("https://gunderwulde.github.io/dice-gl/Assets/foam.jpg");
         mesh.textures.push( tex1 );
     });
 
-    dice = scene.CreateMesh(shader).Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807", 
+    dice = scene.CreateMesh(shader).Load("https://gunderwulde.github.io/dice-gl/Assets/SquaredDice.mesh", 
       function (mesh){
         var tex0 = new Texture();
-        tex0.Load("https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809");
+        tex0.Load("https://gunderwulde.github.io/dice-gl/Assets/DadoRojo.png");
         mesh.textures.push(tex0);
     });
     
