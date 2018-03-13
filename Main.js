@@ -18,7 +18,7 @@ function main() {
     scene.results.Load( assets.getURL("dice.results") );
 
     var shader = new Shader("Default.shader", function(shader){    
-      scene.CreateMesh(shader).Load(assets.getURL("Mesa.mesh"), 
+      scene.CreateMesh(shader).Load(assets.getURL("MesaNew.mesh"), 
         function (mesh){
           var tex0 = new Texture();
           tex0.Load(assets.getURL("felt.png"));
@@ -29,7 +29,7 @@ function main() {
           mesh.textures.push( tex1 );
       });
 
-      dice = scene.CreateMesh(shader).Load(assets.getURL("SquaredDice.mesh"), 
+      dice = scene.CreateMesh(shader).Load(assets.getURL("DadoRojoEsquinas.mesh"), 
         function (mesh){
           var tex0 = new Texture();
           tex0.Load(assets.getURL("DadoRojo.png"));

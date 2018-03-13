@@ -24,8 +24,11 @@ Mesh.prototype.Load = function(url, onLoad ){
       var positions = [];
       var normals = [];
       var uvs = [];
+      var uvs2 = [];
       var indices = []; 
       var idx = 0;
+      var uvCount = view.getUint16(idx,true); idx+=2;
+      
       var vertices = view.getUint16(idx,true); idx+=2;
       for (var i = 0; i < vertices; i++) {
         positions.push( view.getFloat32(idx,true) ); idx+=4;
@@ -42,7 +45,15 @@ Mesh.prototype.Load = function(url, onLoad ){
         var v = view.getFloat32(idx,true); idx+=4;
         uvs.push( u ); 
         uvs.push( v-0.06 ); //???? Magic number
-        
+      }
+      
+      if(uvCount==2){
+        for (var i = 0; i < vertices; i++) {
+          var u = view.getFloat32(idx,true); idx+=4;
+          var v = view.getFloat32(idx,true); idx+=4;
+          uvs2.push( u ); 
+          uvs2.push( v-0.06 ); //???? Magic number
+        }
       }
       var indexOffset = 0;
       var subMeshCount = view.getUint16(idx,true); idx+=2;
