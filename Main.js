@@ -32,6 +32,8 @@ function main() {
   
   var scene = new Scene();
   
+  var assets = new Assets();
+  
   scene.results = new Results();
   scene.results.Load( loadResource("dice.results") );
     

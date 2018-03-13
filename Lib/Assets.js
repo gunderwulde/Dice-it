@@ -1,35 +1,26 @@
 function Assets(){
-}
-
-Assets.prototype.Load = function(){
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', "", true);
-  xhr.responseType = 'arraybuffer';
+  xhr.open('GET', ".glitch-assets", true);
+//  xhr.responseType = 'arraybuffer';
  
   var self = this;
+  
+  self.elements=[];
 
   mainScene.Loader.Push(self);  
   xhr.onload = function(e){
     if (this.status == 200) {
-      var view = new DataView( this.response );
-      var idx=0;
-      self.valores = [];
-      for(var j=0;j<6;j++){
-        var value = { count:view.getUint16(idx,true), result: [] };
-        idx+=2;        
-        self.valores.push(value);
-        for(var i=0;i<self.valores[j].count;i++){
-          self.valores[j].result[i] = new Result();
-          idx = self.valores[j].result[i].Load(view,idx);
-        }
-      }
-
-      if(onLoad!=undefined) onLoad(self);
+      
+      var str = this.response.split("\n").join(",\n");
+      var elems = JSON.parse('{"elems":[' + str + "{}]}").elems;
+      for( var i=0;i<elems.length;++i)
+        self.elements[elems[i].name]  = elems[i].url;
       mainScene.Loader.Pop(self);
     }
   }
-  xhr.onerror = function(e) {
-      console.error(xhr.statusText);
-  };    
-  xhr.send(null);
+  xhr.send();
+}
+
+Assets.prototype.getURL = function(name){
+  return self.elements[name];
 }
