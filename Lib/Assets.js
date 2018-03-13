@@ -13,8 +13,10 @@ function Assets(){
       
       var str = this.response.split("\n").join(",\n");
       var elems = JSON.parse('{"elems":[' + str + "{}]}").elems;
-      for( var i=0;i<elems.length;++i)
+      for( var i=0;i<elems.length;++i){
+        
         self.elements[elems[i].name]  = elems[i].url;
+      }
       
       self.then(self);      
       mainScene.Loader.Pop(self);
@@ -24,5 +26,8 @@ function Assets(){
 }
 
 Assets.prototype.getURL = function(name){
-  return self.elements[name];
+  if(window.location.href =="https://dice-gl.glitch.me/")
+    return this.elements[name];
+  
+return "https://gunderwulde.github.io/dice-gl/Assets/"+name;
 }
