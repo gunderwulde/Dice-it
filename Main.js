@@ -2,7 +2,23 @@
 var dice;
 var gl;
 
-var baseURL = "https://gunderwulde.github.io/dice-gl/";
+function loadResource(name){
+  if(window.location.href =="https://dice-gl.glitch.me/"){
+    switch(name){
+      case "dice.results": return "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Fdice.results?1520865831507";
+      case "Mesa.mesh": return "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FMesa.mesh?1520512249105";
+      case "SquaredDice.mesh": return "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FSquaredDice.mesh?1520581541807";      
+      case "felt.png": return "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffelt.bmp?1520513317857";        
+      case "foam.jpg": return "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2Ffoam.jpg?1520546066891";      
+      case "DadoRojo.png": return "https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDadoRojo.png?1520581517809";
+    }
+  }
+  else{
+    return "https://gunderwulde.github.io/dice-gl/Assets/"+name;
+  }
+}
+
+
 
 function main() {
   const canvas =  document.getElementById("glcanvas");
@@ -17,26 +33,24 @@ function main() {
   var scene = new Scene();
   
   scene.results = new Results();
-  scene.results.Load(baseURL+"Assets/dice.results");
-  
-  
+  scene.results.Load( loadResource("dice.results") );
+    
   var shader = new Shader("Default.shader", function(shader){    
-
-    scene.CreateMesh(shader).Load(baseURL+"Assets/Mesa.mesh", 
+    scene.CreateMesh(shader).Load(loadResource("Mesa.mesh"), 
       function (mesh){
         var tex0 = new Texture();
-        tex0.Load(baseURL+"Assets/felt.png");
+        tex0.Load(loadResource("felt.png"));
         mesh.textures.push(tex0 );
 
         var tex1 = new Texture();
-        tex1.Load(baseURL+"Assets/foam.jpg");
+        tex1.Load(loadResource("foam.jpg"));
         mesh.textures.push( tex1 );
     });
 
-    dice = scene.CreateMesh(shader).Load(baseURL+"Assets/SquaredDice.mesh", 
+    dice = scene.CreateMesh(shader).Load(loadResource("SquaredDice.mesh"), 
       function (mesh){
         var tex0 = new Texture();
-        tex0.Load(baseURL+"Assets/DadoRojo.png");
+        tex0.Load(loadResource("DadoRojo.png"));
         mesh.textures.push(tex0);
     });
     

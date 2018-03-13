@@ -7,8 +7,9 @@ Results.prototype.Load = function(url, onLoad ){
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
+ 
   var self = this;
-  
+
   mainScene.Loader.Push(self);  
   xhr.onload = function(e){
     if (this.status == 200) {
@@ -24,13 +25,16 @@ Results.prototype.Load = function(url, onLoad ){
           idx = self.valores[j].result[i].Load(view,idx);
         }
       }
-      
+
       if(onLoad!=undefined) onLoad(self);
       mainScene.Loader.Pop(self);
-    }else
-      console.log(">>> "+this.status);
+    }
   }
-  xhr.send();
+  xhr.onerror = function(e) {
+      console.error(xhr.statusText);
+  };    
+  xhr.send(null);
+ 
 }
 
 Results.prototype.Update = function(deltaTime, dice, camera ){
