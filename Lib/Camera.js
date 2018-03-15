@@ -21,6 +21,8 @@ Camera.prototype.Rotation = function (q) { this.rotation=q; this.dirty = true;}
 Camera.prototype.Update = function(){
   if(this.dirty){
     var rotationMatrix = this.rotation.ToMatrix();
+//    var rotationMatrix = new Matrix4();
+    //rotationMatrix.fromQuaternion(this.rotation);
     var positionMatrix = new Matrix4();
     positionMatrix.position( -this.px, -this.py, -this.pz);
     this.viewMatrix.multiply(rotationMatrix, positionMatrix );
