@@ -63,7 +63,7 @@ Mesh.prototype.Load = function(url, onLoad ){
           var u = view.getFloat32(idx,true); idx+=4;
           var v = view.getFloat32(idx,true); idx+=4;
           uvs2.push( u ); 
-          uvs2.push( v ); //???? Magic number
+          uvs2.push( -v ); //???? Magic number
         }
         self.textureCoord2Buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, self.textureCoord2Buffer);      
