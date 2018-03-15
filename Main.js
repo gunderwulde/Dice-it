@@ -17,30 +17,34 @@ function main() {
     scene.results = new Results();
     scene.results.Load( assets.getURL("dice.results") );
 
-    var shader = new Shader("Default.shader", function(shader){    
-      scene.CreateMesh(shader).Load(assets.getURL("MesaNew.mesh"), 
-        function (mesh){
-          var tex0 = new Texture();
-          tex0.Load(assets.getURL("felt.png"));
-          mesh.textures.push(tex0 );
+    var normalShader = new Shader("Default.shader");
+    normalShader.then = function(shader){
+      var lightMappedShader = new Shader("Default.shader");
+      lightMappedShader.then = function(shader) {
+        scene.CreateMesh(lightMappedShader).Load(assets.getURL("MesaNew.mesh"), 
+          function (mesh){
+            var tex0 = new Texture();
+            tex0.Load(assets.getURL("felt.png"));
+            mesh.textures.push(tex0 );
 
-          var tex1 = new Texture();
-          tex1.Load(assets.getURL("foam.jpg"));
-          mesh.textures.push( tex1 );
-      });
+            var tex1 = new Texture();
+            tex1.Load(assets.getURL("foam.jpg"));
+            mesh.textures.push( tex1 );
+        });
 
-      dice = scene.CreateMesh(shader).Load(assets.getURL("DadoRojoEsquinas.mesh"), 
-        function (mesh){
-          var tex0 = new Texture();
-          tex0.Load(assets.getURL("DadoRojo.png"));
-          mesh.textures.push(tex0);
-      });
+        dice = scene.CreateMesh(normalShader).Load(assets.getURL("DadoRojoEsquinas.mesh"), 
+          function (mesh){
+            var tex0 = new Texture();
+            tex0.Load(assets.getURL("DadoRojo.png"));
+            mesh.textures.push(tex0);
+        });
 
-      canvas.onclick = function(ev){
-        scene.results.Throw(getRandomInt(1,6));
+        canvas.onclick = function(ev){
+          scene.results.Throw(getRandomInt(1,6));
+        };
+
       };
-
-    });
+    };
 
     scene.Update = function(deltaTime){
       scene.results.Update( deltaTime, dice, scene.camera);

@@ -21,7 +21,7 @@ Shader.prototype.Load = function(url){
       var vsSource = this.response.substring(vertexStar+8,faceStar);
       var fsSource = this.response.substring(faceStar+6);
       self.Init(vsSource,fsSource);
-      if (self.OnLoad!=undefined) self.OnLoad(self);
+      if (self.then!=undefined) self.then(self);
       mainScene.Loader.Pop(self);
     }
   }
@@ -46,11 +46,13 @@ Shader.prototype.Init = function(vsSource,fsSource){
     vertexPosition:   gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
     vertexNormal:     gl.getAttribLocation(this.shaderProgram, 'aVertexNormal'),
     textureCoord:     gl.getAttribLocation(this.shaderProgram, 'aTextureCoord'),
+    lightmapCoord:    gl.getAttribLocation(this.shaderProgram, 'aLightmapCoord'),
   };
   this.uniformLocations = {
     modelViewProjectionMatrix:  gl.getUniformLocation(this.shaderProgram, 'uModelViewProjectionMatrix'),
     normalMatrix:               gl.getUniformLocation(this.shaderProgram, 'uNormalMatrix'),
     uSampler:                   gl.getUniformLocation(this.shaderProgram, 'uSampler'),
+    uLightmapSampler:           gl.getUniformLocation(this.shaderProgram, 'uLightmapSampler'),
   }
 }
 
@@ -61,10 +63,11 @@ Shader.prototype.Use = function(){
   }
 }
 
-Shader.prototype.UseTexture= function(texture){
+Shader.prototype.UseTexture= function(texture, channel){
+  channel = channel || 0;
   if(texture!=undefined){
     this.Use();
-    gl.activeTexture(gl.TEXTURE0);
+    gl.activeTexture(channel==0?gl.TEXTURE0:gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture.texture);
     gl.uniform1i(this.uniformLocations.uSampler, 0);
   }
@@ -104,6 +107,13 @@ Shader.prototype.BindBuffers = function(mesh){
   gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoordBuffer);
   gl.vertexAttribPointer( this.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray( this.attribLocations.textureCoord);
+  
+  if(mesh.textureCoord2Buffer){
+    gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoord2Buffer);
+    gl.vertexAttribPointer( this.attribLocations.lightmapCoord, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray( this.attribLocations.lightmapCoord);
+  }
+  
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mesh.indexBuffer);
 

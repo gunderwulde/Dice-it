@@ -35,17 +35,28 @@ Mesh.prototype.Load = function(url, onLoad ){
         positions.push( view.getFloat32(idx,true) ); idx+=4;
         positions.push( view.getFloat32(idx,true) ); idx+=4;
       }
+      self.positionBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, self.positionBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
       for (var i = 0; i < vertices; i++) {
         normals.push( view.getFloat32(idx,true) ); idx+=4;
         normals.push( view.getFloat32(idx,true) ); idx+=4;
         normals.push( view.getFloat32(idx,true) ); idx+=4;
       }
+      self.normalBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, self.normalBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
+      
       for (var i = 0; i < vertices; i++) {
         var u = view.getFloat32(idx,true); idx+=4;
         var v = view.getFloat32(idx,true); idx+=4;
         uvs.push( u ); 
         uvs.push( v-0.06 ); //???? Magic number
       }
+      self.textureCoordBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, self.textureCoordBuffer);      
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW );
       
       if(uvCount==2){
         for (var i = 0; i < vertices; i++) {
@@ -54,10 +65,12 @@ Mesh.prototype.Load = function(url, onLoad ){
           uvs2.push( u ); 
           uvs2.push( v-0.06 ); //???? Magic number
         }
+        self.textureCoord2Buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, self.textureCoord2Buffer);      
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs2), gl.STATIC_DRAW );
       }
       var indexOffset = 0;
-      var subMeshCount = view.getUint16(idx,true); idx+=2;
-      
+      var subMeshCount = view.getUint16(idx,true); idx+=2;      
       for (var j = 0; j < subMeshCount; j++) {
         var indexCount = view.getUint16(idx,true); idx+=2;
         self.submeshes.push( { offset:indexOffset, count: indexCount } );
@@ -66,19 +79,6 @@ Mesh.prototype.Load = function(url, onLoad ){
         }
         indexOffset += indexCount;
       }
-      
-      self.positionBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, self.positionBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-      
-      self.normalBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, self.normalBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
-
-      self.textureCoordBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, self.textureCoordBuffer);      
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW );
-      
       self.indexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, self.indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);      
