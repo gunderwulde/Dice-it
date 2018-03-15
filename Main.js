@@ -4,10 +4,10 @@ var gl;
 
 function main() {
   const canvas =  document.getElementById("glcanvas");
-//  canvas.width  = 720;//window.innerWidth;
-//  canvas.height = 1280;//window.innerHeight;
-  canvas.width  = window.innerHeight * 0.56;
+  canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
+//  canvas.width  = window.innerHeight * 0.56;
+//  canvas.height = window.innerHeight;
   
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
@@ -18,7 +18,18 @@ function main() {
     scene.results.Load( assets.getURL("dice.results") );
 
     var normalShader = new Shader("Default.shader");
-    normalShader.then = function(shader){
+    normalShader.then = function(shader){      
+      /*
+        dice = scene.CreateMesh(normalShader).Load(assets.getURL("Cube.mesh"), 
+          function (mesh){
+            var tex0 = new Texture();
+            tex0.Load(assets.getURL("CHECKER_512.png"));
+            mesh.textures.push(tex0);
+        });
+      
+      dice.Position( 0,0,10)
+      */
+      
       var lightMappedShader = new Shader("LightMapped.shader");
       lightMappedShader.then = function(shader) {
         scene.CreateMesh(lightMappedShader).Load(assets.getURL("MesaNew.mesh"), 
