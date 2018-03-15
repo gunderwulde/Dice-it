@@ -102,15 +102,17 @@ Shader.prototype.setModelViewProjectionMatrix = function(matrix){
 }
 
 Shader.prototype.setNormalMatrix = function(matrix){
-  this.Use();    
+  this.Use();
   gl.uniformMatrix4fv( this.uniformLocations.normalMatrix, false, matrix.elements);
 }
 
 Shader.prototype.BindBuffers = function(mesh){
-  if(this.attribLocations.vertexNormal!=-1){
-  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.positionBuffer);
-  gl.vertexAttribPointer( this.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
-  gl.enableVertexAttribArray( this.attribLocations.vertexPosition); 
+  this.Use();
+  if(this.attribLocations.vertexPosition!=-1){
+    gl.bindBuffer(gl.ARRAY_BUFFER, mesh.positionBuffer);
+    gl.vertexAttribPointer( this.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( this.attribLocations.vertexPosition); 
+  }
 
   if(this.attribLocations.vertexNormal!=-1){
     gl.bindBuffer(gl.ARRAY_BUFFER, mesh.normalBuffer);
@@ -118,18 +120,18 @@ Shader.prototype.BindBuffers = function(mesh){
     gl.enableVertexAttribArray( this.attribLocations.vertexNormal);
   }
     
-  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoordBuffer);
-  gl.vertexAttribPointer( this.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray( this.attribLocations.textureCoord);
+  if(this.attribLocations.textureCoord!=-1){
+    gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoordBuffer);
+    gl.vertexAttribPointer( this.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray( this.attribLocations.textureCoord);
+  }
   
-  if(mesh.textureCoord2Buffer!=null){
+  if(this.attribLocations.lightmapCoord!=-1){
     gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoord2Buffer);
     gl.vertexAttribPointer( this.attribLocations.lightmapCoord, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray( this.attribLocations.lightmapCoord);
   }
   
-
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mesh.indexBuffer);
-
 }
 

@@ -17,8 +17,9 @@ function main() {
     scene.results = new Results();
     scene.results.Load( assets.getURL("dice.results") );
 
-    var normalShader = new Shader("LightMapped.shader");
-    normalShader.then = function(shader){      
+    var normalShader = new Shader("Default.shader");
+    normalShader.then = function(shader){
+/*************************************************************      
         dice = scene.CreateMesh(normalShader).Load(assets.getURL("Cube.mesh"), 
           function (mesh){
             var tex0 = new Texture();
@@ -30,10 +31,11 @@ function main() {
         });
       
       dice.Position( 0,0,10);
-/*      
+*************************************************************/
+////////////////////////////////////////
       var lightMappedShader = new Shader("LightMapped.shader");
       lightMappedShader.then = function(shader) {
-        scene.CreateMesh(lightMappedShader).Load(assets.getURL("MesaNew.mesh"), 
+        scene.CreateMesh(normalShader).Load(assets.getURL("MesaNew.mesh"), 
           function (mesh){
             var tex0 = new Texture();
             tex0.Load(assets.getURL("felt.png"));
@@ -45,8 +47,6 @@ function main() {
           
             mesh.lightmap  = new Texture();
             mesh.lightmap.Load(assets.getURL("Lightmap-0_comp_light.png"));
-            
-          
         });
 
         dice = scene.CreateMesh(normalShader).Load(assets.getURL("DadoRojoEsquinas.mesh"), 
@@ -60,7 +60,7 @@ function main() {
           scene.results.Throw(getRandomInt(1,6));
         };
       };
-*/
+////////////////////////////////////////
     };
 
     scene.Update = function(deltaTime){
