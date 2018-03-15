@@ -67,9 +67,9 @@ Shader.prototype.Use = function(){
 Shader.prototype.UseTexture= function(texture, channel){
   if(texture!=undefined){
     this.Use();
-    gl.activeTexture(channel==0?gl.TEXTURE0:gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture.texture);
-    gl.uniform1i(this.uniformLocations.uLightmapSampler, channel);
+    gl.activeTexture(channel==0?gl.TEXTURE0:gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, texture.texture);    
+    gl.uniform1i(channel==0?this.uniformLocations.uSampler:this.uniformLocations.uLightmapSampler, channel);
   }
 }
 
