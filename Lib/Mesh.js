@@ -51,8 +51,8 @@ Mesh.prototype.Load = function(url, onLoad ){
       for (var i = 0; i < vertices; i++) {
         var u = view.getFloat32(idx,true); idx+=4;
         var v = view.getFloat32(idx,true); idx+=4;
-        uvs.push( u ); 
-        uvs.push( -v ); //???? Magic number
+        uvs.push( u); 
+        uvs.push(-v);
       }
       self.textureCoordBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, self.textureCoordBuffer);      
@@ -62,14 +62,15 @@ Mesh.prototype.Load = function(url, onLoad ){
         for (var i = 0; i < vertices; i++) {
           var u = view.getFloat32(idx,true); idx+=4;
           var v = view.getFloat32(idx,true); idx+=4;
-          uvs2.push( u ); 
-          uvs2.push( -v ); //???? Magic number
+          uvs2.push( u); 
+          uvs2.push(-v);
         }
         self.textureCoord2Buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, self.textureCoord2Buffer);      
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs2), gl.STATIC_DRAW );
       }else
         self.textureCoord2Buffer = null;
+      
       var indexOffset = 0;
       var subMeshCount = view.getUint16(idx,true); idx+=2;      
       for (var j = 0; j < subMeshCount; j++) {
