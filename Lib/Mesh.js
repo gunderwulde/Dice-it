@@ -63,12 +63,13 @@ Mesh.prototype.Load = function(url, onLoad ){
           var u = view.getFloat32(idx,true); idx+=4;
           var v = view.getFloat32(idx,true); idx+=4;
           uvs2.push( u ); 
-          uvs2.push( v-0.06 ); //???? Magic number
+          uvs2.push( v); //???? Magic number
         }
         self.textureCoord2Buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, self.textureCoord2Buffer);      
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs2), gl.STATIC_DRAW );
-      }
+      }else
+        self.textureCoord2Buffer = null;
       var indexOffset = 0;
       var subMeshCount = view.getUint16(idx,true); idx+=2;      
       for (var j = 0; j < subMeshCount; j++) {
@@ -112,8 +113,9 @@ Mesh.prototype.Draw = function(scene){
   shader.setModelViewProjectionMatrix(this.modelViewProyectionMatrix);
   
   shader.BindBuffers(this);
+  shader.UseTexture(this.lightmap,1);
   for( var i=0;i<this.submeshes.length;++i){
-    shader.UseTexture(this.textures[i]);
+    shader.UseTexture(this.textures[i],0);
     gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);
   }
 }

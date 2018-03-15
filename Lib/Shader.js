@@ -8,6 +8,7 @@ function Shader(url, OnLoad ){
 }
 
 Shader.prototype.Load = function(url){
+  this.name=url;
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'text';
@@ -64,12 +65,11 @@ Shader.prototype.Use = function(){
 }
 
 Shader.prototype.UseTexture= function(texture, channel){
-  channel = channel || 0;
   if(texture!=undefined){
     this.Use();
     gl.activeTexture(channel==0?gl.TEXTURE0:gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture.texture);
-    gl.uniform1i(this.uniformLocations.uSampler, 0);
+    gl.uniform1i(this.uniformLocations.uLightmapSampler, channel);
   }
 }
 
@@ -108,7 +108,7 @@ Shader.prototype.BindBuffers = function(mesh){
   gl.vertexAttribPointer( this.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray( this.attribLocations.textureCoord);
   
-  if(mesh.textureCoord2Buffer){
+  if(mesh.textureCoord2Buffer!=null){
     gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoord2Buffer);
     gl.vertexAttribPointer( this.attribLocations.lightmapCoord, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray( this.attribLocations.lightmapCoord);

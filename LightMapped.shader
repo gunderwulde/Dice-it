@@ -35,5 +35,5 @@ varying highp vec3 vLighting;
 void main(void) {
   highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
   texelColor.rgb = texelColor.rgb * texture2D(uLightmapSampler, vLightmapCoord).rgb;
-  gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
+  gl_FragColor = vec4(texelColor.rgb /** vLighting*/, texelColor.a);
 }

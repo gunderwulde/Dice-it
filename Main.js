@@ -19,7 +19,7 @@ function main() {
 
     var normalShader = new Shader("Default.shader");
     normalShader.then = function(shader){
-      var lightMappedShader = new Shader("Default.shader");
+      var lightMappedShader = new Shader("LightMapped.shader");
       lightMappedShader.then = function(shader) {
         scene.CreateMesh(lightMappedShader).Load(assets.getURL("MesaNew.mesh"), 
           function (mesh){
@@ -30,6 +30,11 @@ function main() {
             var tex1 = new Texture();
             tex1.Load(assets.getURL("foam.jpg"));
             mesh.textures.push( tex1 );
+          
+            mesh.lightmap  = new Texture();
+            mesh.lightmap.Load(assets.getURL("Lightmap-0_comp_light.png"));
+            
+          
         });
 
         dice = scene.CreateMesh(normalShader).Load(assets.getURL("DadoRojoEsquinas.mesh"), 
