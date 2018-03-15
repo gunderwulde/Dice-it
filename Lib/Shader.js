@@ -80,7 +80,7 @@ Shader.prototype.UseLightmap= function(texture, lightmapScaleOffset){
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, texture.texture);    
     gl.uniform1i(this.uniformLocations.uLightmapSampler, 1);
-    gl.uniform4fv(this.uniformLocations.lightmapScaleOffset, lightmapScaleOffset);
+    gl.uniform4fv(this.uniformLocations.uLightmapScaleOffset, lightmapScaleOffset);
   }
 }
 
@@ -107,13 +107,16 @@ Shader.prototype.setNormalMatrix = function(matrix){
 }
 
 Shader.prototype.BindBuffers = function(mesh){
+  if(this.attribLocations.vertexNormal!=-1){
   gl.bindBuffer(gl.ARRAY_BUFFER, mesh.positionBuffer);
   gl.vertexAttribPointer( this.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( this.attribLocations.vertexPosition); 
 
-  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.normalBuffer);
-  gl.vertexAttribPointer( this.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray( this.attribLocations.vertexNormal);
+  if(this.attribLocations.vertexNormal!=-1){
+    gl.bindBuffer(gl.ARRAY_BUFFER, mesh.normalBuffer);
+    gl.vertexAttribPointer( this.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray( this.attribLocations.vertexNormal);
+  }
     
   gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureCoordBuffer);
   gl.vertexAttribPointer( this.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
