@@ -7,6 +7,8 @@ attribute vec2 aLightmapCoord;
 uniform mat4 uNormalMatrix;
 uniform mat4 uModelViewProjectionMatrix;
 
+uniform vec4 uLightmapScaleOffset;
+
 varying highp vec2 vTextureCoord;
 varying highp vec2 vLightmapCoord;
 varying highp vec3 vLighting;
@@ -14,7 +16,7 @@ varying highp vec3 vLighting;
 void main(void) {
   gl_Position = uModelViewProjectionMatrix* aVertexPosition;
   vTextureCoord = aTextureCoord;
-  vLightmapCoord = aLightmapCoord;
+  vLightmapCoord = aLightmapCoord * uLightmapScaleOffset.xy + uLightmapScaleOffset.zw;
   // Apply lighting effect
   highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
   highp vec3 directionalLightColor = vec3(0.8, 0.8, 0.8);
@@ -33,7 +35,7 @@ varying highp vec2 vLightmapCoord;
 varying highp vec3 vLighting;
 
 void main(void) {
-  gl_FragColor = vec4( texture2D(uLightmapSampler, vLightmapCoord * vec2(0.5361869,0.5361869) + vec2(-0.00209448,-0.00209448)).rgb,1);
+  gl_FragColor = vec4( texture2D(uLightmapSampler, vLightmapCoord ).rgb,1);
   
 //  highp vec4 texelColor = texture2D(uSampler, vTextureCoord.xy   );
 //  texelColor.rgb = texelColor.rgb * texture2D(uLightmapSampler, vLightmapCoord).rgb;

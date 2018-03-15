@@ -113,7 +113,7 @@ Mesh.prototype.Draw = function(scene){
   shader.setModelViewProjectionMatrix(this.modelViewProyectionMatrix);
   
   shader.BindBuffers(this);
-  if(this.lightmap) shader.UseTexture(this.lightmap,1);
+  if(this.lightmap) shader.UseLightmap(this.lightmap,[0.5361869,0.5361869,-0.00209448,-0.00209448]);
   for( var i=0;i<this.submeshes.length;++i){ 
     shader.UseTexture(this.textures[i],0);
     gl.drawElements(gl.TRIANGLES, this.submeshes[i].count, gl.UNSIGNED_SHORT, this.submeshes[i].offset*2);

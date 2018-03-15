@@ -54,6 +54,7 @@ Shader.prototype.Init = function(vsSource,fsSource){
     normalMatrix:               gl.getUniformLocation(this.shaderProgram, 'uNormalMatrix'),
     uSampler:                   gl.getUniformLocation(this.shaderProgram, 'uSampler'),
     uLightmapSampler:           gl.getUniformLocation(this.shaderProgram, 'uLightmapSampler'),
+    uLightmapScaleOffset:       gl.getUniformLocation(this.shaderProgram, 'uLightmapScaleOffset'),
   }
 }
 
@@ -64,12 +65,22 @@ Shader.prototype.Use = function(){
   }
 }
 
-Shader.prototype.UseTexture= function(texture, channel){
+Shader.prototype.UseTexture= function(texture){
   if(texture!=undefined){
     this.Use();
-    gl.activeTexture(channel==0?gl.TEXTURE0:gl.TEXTURE1);
+    gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture.texture);    
-    gl.uniform1i(channel==0?this.uniformLocations.uSampler:this.uniformLocations.uLightmapSampler, channel);
+    gl.uniform1i(this.uniformLocations.uSampler, 0);
+  }
+}
+
+Shader.prototype.UseLightmap= function(texture, lightmapScaleOffset){
+  if(texture!=undefined){
+    this.Use();
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, texture.texture);    
+    gl.uniform1i(this.uniformLocations.uLightmapSampler, 1);
+    gl.uniform4fv(this.uniformLocations.lightmapScaleOffset, lightmapScaleOffset);
   }
 }
 
