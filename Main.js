@@ -35,7 +35,7 @@ function main() {
 ////////////////////////////////////////
       var lightMappedShader = new Shader("LightMapped.shader");
       lightMappedShader.then = function(shader) {
-        scene.CreateMesh(normalShader).Load(assets.getURL("MesaNew.mesh"), 
+        scene.CreateMesh(lightMappedShader).Load(assets.getURL("MesaNew.mesh"), 
           function (mesh){
             var tex0 = new Texture();
             tex0.Load(assets.getURL("felt.png"));
