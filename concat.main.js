@@ -500,9 +500,10 @@ Mesh.prototype.Rotation = function (q) { this.rotation=q; this.dirty = true;}
         1,1,0 
       ];
 
-      var bot = new Color(1, 0.26, 0.26,1); 
-      var top = new Color(0.87, 0, 0, 1); 
-      var colors = []; 
+    var bot = new Color(1, 0.26, 0.26,1); 
+    var top = new Color(0.87, 0, 0, 1); 
+    var colors = [];
+    
     bot.ToArray(colors);
     top.ToArray(colors);
     top.ToArray(colors);
@@ -524,7 +525,7 @@ Mesh.prototype.Rotation = function (q) { this.rotation=q; this.dirty = true;}
 
 Quad.prototype.Draw = function (val) {
     this.blurShader.Use(gl);
-    this.blurShader.setAlpha(1,1,1,0.1);
+    this.blurShader.setAlpha(0.15);
     this.blurShader.BindBuffers(this);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);

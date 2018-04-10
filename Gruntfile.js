@@ -25,7 +25,7 @@ module.exports = function(grunt) {
           // Notice the angle-bracketed ERB-like templating,
           // which allows you to reference other properties.
           // This is equivalent to 'dist/main.js'.
-          dest: '<%= distFolder %>/main.js'
+          dest: 'concat.main.js'
           // You can reference any grunt config property you want.
           // Ex: '<%= concat.options.separator %>' instead of ';'
         }
