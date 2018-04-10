@@ -3,8 +3,9 @@ function Results() {
   this.current = null;
 }
 
-Results.prototype.Load = function(url, onLoad ){
+Results.prototype.Load = function(url, nocache, onLoad ){
   var xhr = new XMLHttpRequest();
+  if(nocache!=null) url+='?_=' + new Date().getTime();
   xhr.open('GET', url, true);
   xhr.responseType = 'arraybuffer';
  
@@ -71,44 +72,49 @@ Result.prototype.Reset = function(){
 
 Result.prototype.Load = function(view,idx){
     this.frames = view.getUint16(idx,true); idx+=2;
+    this.scaleTime = [];
     this.dicePosition =[];
     this.diceRotation =[];
     this.cameraPosition =[];
-    this.cameraRotation =[];      
-    for(var i=0;i<this.frames;i++){ this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;this.dicePosition.push(view.getFloat32(idx,true));idx+=4;}
+    this.cameraRotation =[];
+    for(var i=0;i<this.frames;i++){ 
+      this.scaleTime.push(view.getFloat32(idx,true)); // <-- se leera del fichero
+      idx+=4;
+    }
+    for(var i=0;i<this.frames;i++){ 
+        this.dicePosition.push( new Vector3( view.getFloat32(idx,true), view.getFloat32(idx+4,true), view.getFloat32(idx+8,true) ) );
+        idx+=12;
+    }
     for(var i=0;i<this.frames;i++){ 
       this.diceRotation.push(new Quaternion( view.getFloat32(idx,true), view.getFloat32(idx+4,true), view.getFloat32(idx+8,true), view.getFloat32(idx+12,true) ) );
       idx+=16;
     }
-//    for(var i=0;i<this.frames;i++){ this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;this.diceRotation.push(view.getFloat32(idx,true));idx+=4;}
-    for(var i=0;i<this.frames;i++){ this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;this.cameraPosition.push(view.getFloat32(idx,true));idx+=4;}
+    for(var i=0;i<this.frames;i++){ 
+      this.cameraPosition.push( new Vector3( view.getFloat32(idx,true), view.getFloat32(idx+4,true), view.getFloat32(idx+8,true) ) );
+      idx+=12;
+    }
     for(var i=0;i<this.frames;i++){ 
       this.cameraRotation.push(new Quaternion( view.getFloat32(idx,true), view.getFloat32(idx+4,true), view.getFloat32(idx+8,true), view.getFloat32(idx+12,true) ) );
       idx+=16;
     }
-//    for(var i=0;i<this.frames;i++){ this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;this.cameraRotation.push(view.getFloat32(idx,true));idx+=4;}
-  
   return idx;
 }
 
 Result.prototype.Update = function(deltaTime, dice, camera){
-    this.time += deltaTime;
+    this.time += deltaTime*this.scaleTime[this.currentIndex];
     if(this.time > 0.03) {
       this.time=0.00;      
-      if(this.currentIndex>=this.frames-1) {
+      if(this.currentIndex>=this.frames-2) {
         return false;
       }
       else
         this.currentIndex++;
-      
-      var idx = this.currentIndex*3;
-      camera.Position( this.cameraPosition[idx+0], this.cameraPosition[idx+1], this.cameraPosition[idx+2] );
-//      camera.Rotation( this.cameraRotation[idx], this.cameraRotation[idx+1], this.cameraRotation[idx+2] );
-      camera.Rotation( this.cameraRotation[this.currentIndex]);
-      
-      dice.Position( this.dicePosition[idx+0], this.dicePosition[idx+1], this.dicePosition[idx+2] );
-      dice.Rotation( this.diceRotation[this.currentIndex]);
-//      dice.Rotation( this.diceRotation[idx+0], this.diceRotation[idx+1], this.diceRotation[idx+2] );
     }
-  return true;
+    var t =  this.time/0.03;
+    camera.Position( Vector3.Lerp(this.cameraPosition[this.currentIndex],this.cameraPosition[this.currentIndex+1], t ) );
+    camera.Rotation(Quaternion.Lerp(  this.cameraRotation[this.currentIndex],this.cameraRotation[this.currentIndex+1],t));
+    
+    dice.Position( Vector3.Lerp(this.dicePosition[this.currentIndex],this.dicePosition[this.currentIndex+1], t ) );
+    dice.Rotation( Quaternion.Lerp(this.diceRotation[this.currentIndex],this.diceRotation[this.currentIndex+1],t));
+return true;
 }

@@ -1,4 +1,5 @@
 [vertex]
+// Hola!!!
 attribute vec4 aVertexPosition;
 attribute vec3 aVertexNormal;
 attribute vec2 aTextureCoord;
@@ -12,7 +13,7 @@ varying highp vec3 vLighting;
 void main(void) {
   gl_Position = uModelViewProjectionMatrix* aVertexPosition;
   vTextureCoord = aTextureCoord;
-  // Apply lighting effect
+
   highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
   highp vec3 directionalLightColor = vec3(0.8, 0.8, 0.8);
   highp vec3 directionalVector = normalize(vec3(0.8, 0.8, -0.8));

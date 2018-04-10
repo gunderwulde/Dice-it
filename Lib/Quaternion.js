@@ -5,6 +5,11 @@ function Quaternion( x, y, z, w ) {
 	this._w = ( w !== undefined ) ? w : 1;
 }
 
+Quaternion.Lerp = function(a,b,t){
+  var it = 1-t;
+  return new Quaternion( a._x*it+b._x*t, a._y*it+b._y*t, a._z*it+b._z*t, a._w*it+b._w*t);
+}
+
 Quaternion.prototype.ToMatrix = function(){
   var m = new Matrix4();
   

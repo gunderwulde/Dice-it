@@ -6,3 +6,6 @@ html, body {
   overflow: hidden;
   display: block;
 }
+canvas{
+	background: linear-gradient(#FF4444,#E00000);
+}

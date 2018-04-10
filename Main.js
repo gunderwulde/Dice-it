@@ -9,60 +9,30 @@ function main() {
 //  canvas.width  = window.innerHeight * 0.56;
 //  canvas.height = window.innerHeight;
   
-  gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  gl = canvas.getContext('webgl', {preserveDrawingBuffer: true}) || canvas.getContext('experimental-webgl', {preserveDrawingBuffer: true});
   if (!gl) return;
   
   var scene = new Scene();
   new Assets().then = function(assets){    
     scene.results = new Results();
-    scene.results.Load( assets.getURL("dice.results") );
+    scene.results.Load( assets.getURL("dice.results"), true );
 
-    var normalShader = new Shader("Default.shader");
+    var normalShader = new Shader("Normal.shader",true);
     normalShader.then = function(shader){
-/*************************************************************      
-        dice = scene.CreateMesh(normalShader).Load(assets.getURL("Cube.mesh"), 
-          function (mesh){
+        dice = scene.CreateMesh(normalShader).Load(assets.getURL("DadoAzulRedondeado.mesh"), 
+            function (mesh){
             var tex0 = new Texture();
-            tex0.Load(assets.getURL("CHECKER_512.png"));
+            tex0.Load(assets.getURL("DadoBlanco05.png"));
             mesh.textures.push(tex0);
-          
-            mesh.lightmap = new Texture();
-            mesh.lightmap.Load(assets.getURL("lightmap.png"));
-        });
-      
-      dice.Position( 0,0,10);
-*************************************************************/
-////////////////////////////////////////
-      var lightMappedShader = new Shader("LightMapped.shader");
-      lightMappedShader.then = function(shader) {
-        scene.CreateMesh(lightMappedShader).Load(assets.getURL("MesaNew.mesh"), 
-          function (mesh){
-            var tex0 = new Texture();
-            tex0.Load(assets.getURL("felt.png"));
-            mesh.textures.push(tex0 );
+            mesh.normal  = new Texture();
+            mesh.normal.Load(assets.getURL("NormalDados.png"));
 
-            var tex1 = new Texture();
-            tex1.Load(assets.getURL("foam.jpg"));
-            mesh.textures.push( tex1 );
-          
-            mesh.lightmap  = new Texture();
-            mesh.lightmap.Load(assets.getURL("Lightmap-0_comp_light.png"));
-        });
-
-        dice = scene.CreateMesh(normalShader).Load(assets.getURL("DadoRojoEsquinas.mesh"), 
-          function (mesh){
-            var tex0 = new Texture();
-            tex0.Load(assets.getURL("DadoRojo.png"));
-            mesh.textures.push(tex0);
         });
 
         canvas.onclick = function(ev){
-          scene.results.Throw(getRandomInt(1,6));
+            scene.results.Throw(getRandomInt(1,6));
         };
-      };
-////////////////////////////////////////
     };
-
     scene.Update = function(deltaTime){
       scene.results.Update( deltaTime, dice, scene.camera);
     }

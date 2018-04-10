@@ -188,22 +188,22 @@ Matrix4.prototype.invert = function(a) {
   
 
 
-Matrix4.prototype.position = function ( x,y,z ) {
+Matrix4.prototype.position = function ( p ) {
 	var te = this.elements;
 
-	te[ 12 ] = x;
-	te[ 13 ] = y;
-	te[ 14 ] = z;
+	te[ 12 ] = p._x;
+	te[ 13 ] = p._y;
+	te[ 14 ] = p._z;
 
 	return this;
 }
 
-Matrix4.prototype.scale = function ( x,y,z ) {
+Matrix4.prototype.scale = function ( s ) {
 	var te = this.elements;
   
-	te[ 0 ] *= x;
-	te[ 5 ] *= y;
-	te[ 10 ] *= z;
+	te[ 0 ] *= s._x;
+	te[ 5 ] *= s._y;
+	te[ 10 ] *= s._z;
   
 	return this;
 }

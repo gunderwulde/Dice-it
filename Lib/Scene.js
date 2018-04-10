@@ -6,6 +6,8 @@ function Scene() {
   this.name = "Scene";
   this.Entities = [];  
   this.Loader = new Loader(this, this.OnReady );
+  this.blurCleaner = new Quad();
+  this.blur = 0.5;
 }
 
 Scene.prototype.Push = function (entity) {
@@ -17,8 +19,13 @@ Scene.prototype.CreateMesh = function(shader){
   return this.Push(new Mesh(shader));
 }
 
-Scene.prototype.Draw = function() {  
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+Scene.prototype.Draw = function() {
+  if(this.blur==0)  
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  else{
+    gl.clear(gl.DEPTH_BUFFER_BIT);
+    this.blurCleaner.Draw(this.blur);
+  }
   this.camera.Update();
   for( var i=0;i<this.Entities.length;++i){
     this.Entities[i].Draw(this);
@@ -37,4 +44,3 @@ Scene.prototype.OnReady = function(self){
   }
   requestAnimationFrame(render);
 }
-
