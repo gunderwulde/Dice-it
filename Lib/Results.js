@@ -42,8 +42,10 @@ Results.prototype.Update = function(deltaTime, dice, camera ){
   if(this.current!=null){
     if( !this.current.Update(deltaTime, dice, camera) ){      
       this.current=null;
+      return false;
     }
   }
+  return true;
 }
 
 Results.prototype.getRandomInt = function(min, max) {
@@ -104,7 +106,7 @@ Result.prototype.Update = function(deltaTime, dice, camera){
     this.time += deltaTime*this.scaleTime[this.currentIndex];
     if(this.time > 0.03) {
       this.time=0.00;      
-      if(this.currentIndex>=this.frames-2) {
+      if(this.currentIndex >= this.frames-2) {
         return false;
       }
       else

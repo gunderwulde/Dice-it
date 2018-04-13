@@ -36,13 +36,38 @@ function main() {
 */
     };
     scene.Update = function(deltaTime){
-      scene.results.Update( deltaTime, dice, scene.camera);
+
+      if( !scene.results.Update( deltaTime, dice, scene.camera) )
+      {
+        //rolling=false;
+        console.log("Finish!!!");
+       
+        document.getElementById("endRoll").style.display = 'block';
+      }
     }
   }
 }
 
 function roll(){
-  scene.results.Throw(getRandomInt(1,6));
+  document.getElementById("roll").style.display = 'none';
+  scene.results.Throw(getRandomInt(1,6), finish);
+  rolling = true;
+}
+
+function finish(ret){
+
+}
+
+function showProgress(){
+  document.getElementById("glcanvas").style.display = 'none';
+  document.getElementById("roll").style.display = 'none';
+  document.getElementById("progress").style.display = 'block';
+}
+
+function hideProgress(){
+  document.getElementById("glcanvas").style.display = 'block';
+  document.getElementById("roll").style.display = 'block';
+  document.getElementById("progress").style.display = 'none';
 }
 
 function getRandomInt(min, max) {

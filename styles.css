@@ -91,6 +91,7 @@ html, body {
   font-size: 50%;
 }
 .mini-title-light {
+  margin: 0;
   font-family: Monserrat-Light, sans-serif;
   font-size: 50%;
 }
@@ -105,4 +106,9 @@ html, body {
 
 .selected{
   border-color: #26df67;
+}
+
+.dice-little{
+  box-sizing: border-box;
+  width: 12vh;
 }

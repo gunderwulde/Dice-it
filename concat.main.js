@@ -619,8 +619,10 @@ Results.prototype.Update = function(deltaTime, dice, camera ){
   if(this.current!=null){
     if( !this.current.Update(deltaTime, dice, camera) ){      
       this.current=null;
+      return false;
     }
   }
+  return true;
 }
 
 Results.prototype.getRandomInt = function(min, max) {
@@ -681,7 +683,7 @@ Result.prototype.Update = function(deltaTime, dice, camera){
     this.time += deltaTime*this.scaleTime[this.currentIndex];
     if(this.time > 0.03) {
       this.time=0.00;      
-      if(this.currentIndex>=this.frames-2) {
+      if(this.currentIndex >= this.frames-2) {
         return false;
       }
       else
@@ -983,13 +985,38 @@ function main() {
 */
     };
     scene.Update = function(deltaTime){
-      scene.results.Update( deltaTime, dice, scene.camera);
+
+      if( !scene.results.Update( deltaTime, dice, scene.camera) )
+      {
+        //rolling=false;
+        console.log("Finish!!!");
+       
+        document.getElementById("endRoll").style.display = 'block';
+      }
     }
   }
 }
 
 function roll(){
-  scene.results.Throw(getRandomInt(1,6));
+  document.getElementById("roll").style.display = 'none';
+  scene.results.Throw(getRandomInt(1,6), finish);
+  rolling = true;
+}
+
+function finish(ret){
+
+}
+
+function showProgress(){
+  document.getElementById("glcanvas").style.display = 'none';
+  document.getElementById("roll").style.display = 'none';
+  document.getElementById("progress").style.display = 'block';
+}
+
+function hideProgress(){
+  document.getElementById("glcanvas").style.display = 'block';
+  document.getElementById("roll").style.display = 'block';
+  document.getElementById("progress").style.display = 'none';
 }
 
 function getRandomInt(min, max) {
