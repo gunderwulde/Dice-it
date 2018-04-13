@@ -4,8 +4,9 @@
     <title>DiceMe</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, height=device-width">
     <link rel="stylesheet" href="styles.css">
+  <!--
     <script src="Lib/Assets.js" defer></script>
     <script src="Lib/Matrix4.js" defer></script>
     <script src="Lib/Quaternion.js" defer></script>
@@ -20,9 +21,49 @@
     <script src="Lib/Shader.js" defer></script>    
     <script src="Lib/Texture.js" defer></script>
     <script src="Main.js" defer></script>
-<!--    <script src="main.min.js" defer></script> -->
+  -->
+    <script src="main.min.js" defer></script>
   </head>
   <body onload="main()">
-    <canvas id="glcanvas"> Tu navegador parece no soportar el elemento HTML5 <code>&lt;canvas&gt;</code>. </canvas>
+    <canvas id="glcanvas" class="red-background on-back hidden"> Tu navegador parece no soportar el elemento HTML5 <code>&lt;canvas&gt;</code>. </canvas>  
+    <div id="roll" class ="transparent-background hidden">
+        <div style="height: 10%"></div>
+        <div class ="roll-dice-title">
+            <p class ="title-centered" >ROLL THE DICE</p>
+        </div>
+        <div style="height: 52%"></div>
+        <button onclick="roll()" class="green-button">ROLL DICE</button>
+        <div style="height: 5%"></div>
+        <button onclick="showProgress()" class="dark-red-button">SHOW PROGRESS</button>
+        <div style="height: 5%"></div>
+    </div>
+    <div id="progress" class ="dark-background">
+      <div style="height: 10%;">
+       <p class="title-centered mini-title-bold">Faces</p>
+        <p class="title-centered mini-title-light">Here you can see your rewards & progress</p>
+      </div>
+      <div style="height: 5%"></div>
+      <div style="height: 65%;">
+        <div style="height: 47.5%">
+            <div class="result-box selected">
+              <p class="title-centered mini-title-bold">€5 Cash</p>
+          <!--    <img src="">-->
+              <p class="title-centered mini-title-light">Status:</p>
+              <p class="title-centered mini-title-light">INCOMPLETE</p>
+            </div>
+            <div class="result-box"></div>
+            <div class="result-box"></div>
+        </div>
+        <div style="height: 5%;"></div>
+        <div style="height: 47.5%">
+            <div class="result-box"></div>
+            <div class="result-box"></div>
+            <div class="result-box"></div>
+        </div>
+      </div>
+      <div style="height: 5%"></div>
+      <button onclick="showRoll()" class="green-button">OKAY</button>
+      <div style="height: 5%"></div>
+    </div>
   </body>
 </html>

@@ -1,6 +1,7 @@
 //var table;
 var dice;
 var gl;
+var scene;
 
 function main() {
   const canvas =  document.getElementById("glcanvas");
@@ -12,7 +13,7 @@ function main() {
   gl = canvas.getContext('webgl', {preserveDrawingBuffer: true}) || canvas.getContext('experimental-webgl', {preserveDrawingBuffer: true});
   if (!gl) return;
   
-  var scene = new Scene();
+  scene = new Scene();
   new Assets().then = function(assets){    
     scene.results = new Results();
     scene.results.Load( assets.getURL("dice.results"), true );
@@ -28,15 +29,20 @@ function main() {
             mesh.normal.Load(assets.getURL("NormalDados.png"));
 
         });
-
+/*
         canvas.onclick = function(ev){
             scene.results.Throw(getRandomInt(1,6));
         };
+*/
     };
     scene.Update = function(deltaTime){
       scene.results.Update( deltaTime, dice, scene.camera);
     }
   }
+}
+
+function roll(){
+  scene.results.Throw(getRandomInt(1,6));
 }
 
 function getRandomInt(min, max) {
