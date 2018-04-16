@@ -14,19 +14,21 @@ function main() {
   if (!gl) return;
   
   scene = new Scene();
-  new Assets().then = function(assets){    
+  new Assets().then = function(assets){
     scene.results = new Results();
     scene.results.Load( assets.getURL("dice.results"), true );
 
-    var normalShader = new Shader("Normal.shader",true);
+    var normalShader = new Shader("Default.shader",true);
     normalShader.then = function(shader){
         dice = scene.CreateMesh(normalShader).Load(assets.getURL("DadoAzulRedondeado.mesh"), 
             function (mesh){
             var tex0 = new Texture();
-            tex0.Load(assets.getURL("DadoBlanco05.png"));
+            tex0.Load(assets.getURL("WhiteDice.png"));
             mesh.textures.push(tex0);
-            mesh.normal  = new Texture();
-            mesh.normal.Load(assets.getURL("NormalDados.png"));
+//            mesh.normal  = new Texture();
+//            mesh.normal.Load(assets.getURL("NormalDados.png"));
+//confetti = new Confetti(normalShader);
+//scene.Push(confetti);
 
         });
 /*

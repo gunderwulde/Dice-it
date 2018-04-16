@@ -7,12 +7,12 @@ function Camera() {
   
   gl.clearColor(0, 0, 0, 0);
   gl.clearDepth(1.0);
-  
+
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
 
   this.projectionMatrix = new Matrix4();
-  this.projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 20.0);  
+  this.projectionMatrix.perspective( 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 20.0);
 }
 
 Camera.prototype.Position = function (p) { this.position=p; this.dirty = true;}

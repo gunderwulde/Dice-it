@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, height=device-width">
     <link rel="stylesheet" href="styles.css">
-  <!--
+  
     <script src="Lib/Assets.js" defer></script>
     <script src="Lib/Matrix4.js" defer></script>
     <script src="Lib/Quaternion.js" defer></script>
@@ -20,9 +20,9 @@
     <script src="Lib/Mesh.js" defer></script>    
     <script src="Lib/Shader.js" defer></script>    
     <script src="Lib/Texture.js" defer></script>
+    <script src="Lib/Confetti.js" defer></script>
     <script src="Main.js" defer></script>
-  -->
-    <script src="main.min.js" defer></script>
+  
   </head>
   <body onload="main()">
     <canvas id="glcanvas" class="red-background on-back"> Tu navegador parece no soportar el elemento HTML5 <code>&lt;canvas&gt;</code>. </canvas>  
@@ -45,50 +45,39 @@
       <div style="height: 5%"></div>
       <div style="height: 65%;">
         <div style="height: 47.5%">
-            <div class="result-box">
-              <p class="title-centered mini-title-bold">€5 Cash</p>
-              <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-1.png?1523633221302">
-<!--              <img class="dice-little" src="Assets/Dices/Dice-1.png"> -->
-              <p class="title-centered mini-title-light">Status:</p>
-              <p class="title-centered mini-title-light">INCOMPLETE</p>
-            </div>
-            <div class="result-box selected">
-              <p class="title-centered mini-title-bold">€5 Cash</p>
-              <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-2.png?1523633221746">
-<!--              <img class="dice-little" src="Assets/Dices/Dice-2.png"> -->
-              <p class="title-centered mini-title-light">Status:</p>
-              <p class="title-centered mini-title-light">INCOMPLETE</p>
-            </div>
-            <div class="result-box">
-              <p class="title-centered mini-title-bold">€5 Cash</p>
-              <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-3.png?1523633221454">
-<!--              <img class="dice-little" src="Assets/Dices/Dice-3.png"> -->
-              <p class="title-centered mini-title-light">Status:</p>
-              <p class="title-centered mini-title-light">INCOMPLETE</p>
-            </div>
+          <div class="result-box">
+            <p class="title-centered mini-title-bold">€5 Cash</p>
+            <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-1.png?1523887372123">
+            <p class="title-centered mini-title-light">Status:<br/>INCOMPLETE</p>
+          </div>
+          <div class="result-box selected">
+            <p class="title-centered mini-title-bold">€5 Cash</p>
+            <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-2.png?1523887372215">
+
+            <p class="title-centered mini-title-light">Status:<br/>COMPLETE</p>
+          </div>
+          <div class="result-box">
+            <p class="title-centered mini-title-bold">€5 Cash</p>
+            <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-3.png?1523887372430">
+            <p class="title-centered mini-title-light">Status:<br/>INCOMPLETE</p>
+          </div>
         </div>
         <div style="height: 5%;"></div>
         <div style="height: 47.5%">
           <div class="result-box">
             <p class="title-centered mini-title-bold">€5 Cash</p>
             <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-4.png?1523633221824">
-            <!--              <img class="dice-little" src="Assets/Dices/Dice-4.png"> -->
-            <p class="title-centered mini-title-light">Status:</p>
-            <p class="title-centered mini-title-light">INCOMPLETE</p>
+              <p class="title-centered mini-title-light">Status:<br/>INCOMPLETE</p>
           </div>
           <div class="result-box selected">
             <p class="title-centered mini-title-bold">€5 Cash</p>
             <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-5.png?1523633221384">
-            <!--              <img class="dice-little" src="Assets/Dices/Dice-5.png"> -->
-            <p class="title-centered mini-title-light">Status:</p>
-            <p class="title-centered mini-title-light">INCOMPLETE</p>
+            <p class="title-centered mini-title-light">Status:<br/>COMPLETE</p>
           </div>
           <div class="result-box">
-            <p class="title-centered mini-title-bold">€5 Cash</p>
-            <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-6.png?1523633221086">
-            <!--              <img class="dice-little" src="Assets/Dices/Dice-6.png"> -->
-            <p class="title-centered mini-title-light">Status:</p>
-            <p class="title-centered mini-title-light">INCOMPLETE</p>
+            <p class="title-centered mini-title-bold">€0 Cash</p>
+            <img class="dice-little" src="https://cdn.glitch.com/6b9bae08-1c15-4de1-b8de-0acf17c0e056%2FDice-6.png?1523633221086" style="margin: 0;">
+            <p class="title-centered mini-title-light">Status:<br/>INCOMPLETE</p>
           </div>
         </div>
       </div>
@@ -108,4 +97,5 @@
       <div style="height: 5%"></div>
   </div>
   </body>
+  
 </html>

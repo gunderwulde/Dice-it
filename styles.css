@@ -89,7 +89,9 @@ html, body {
 
 .mini-title-bold {
   font-size: 50%;
+  margin-top: 0;
 }
+
 .mini-title-light {
   margin: 0;
   font-family: Monserrat-Light, sans-serif;
@@ -97,6 +99,7 @@ html, body {
 }
 
 .result-box{
+  padding-top: 10px;
   display: inline-block;
   width: 30%;
   height: 100%;
